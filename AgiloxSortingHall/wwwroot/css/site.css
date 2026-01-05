@@ -266,6 +266,13 @@ body {
 @media (max-width: 1199.98px) {
     .hall-columns-container {
         justify-content: flex-start;
+
+        .hall-page.container,
+        .container.hall-page {
+            max-width: 100% !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
     }
 }
 
@@ -432,4 +439,3 @@ html.dark-mode .btn-outline-primary {
     .btn-done i {
         color: #000 !important;
     }
-
