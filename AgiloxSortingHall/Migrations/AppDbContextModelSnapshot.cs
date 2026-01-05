@@ -132,7 +132,14 @@ namespace AgiloxSortingHall.Migrations
                     b.Property<int>("Category")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("InputStationName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OutputStationName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

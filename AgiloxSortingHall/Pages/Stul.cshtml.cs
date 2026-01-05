@@ -276,7 +276,7 @@ namespace AgiloxSortingHall.Pages
             var payload = new Dictionary<string, string>
             {
                 ["@ROW"] = row.Name,
-                ["@TABLE"] = callToDispatch.WorkTable.Name
+                ["@TABLE"] = callToDispatch.WorkTable.OutputStationName
             };
 
             var json = JsonSerializer.Serialize(payload);
@@ -327,8 +327,11 @@ namespace AgiloxSortingHall.Pages
             await _db.SaveChangesAsync();
 
             _logger.LogInformation(
-                "Odeslán workflow 501 pro řadu {Row} a stůl {Table}, OrderId={Req}",
-                row.Name, callToDispatch.WorkTable.Name, callToDispatch.OrderId);
+               "Stůl – odeslán workflow 501 pro řadu {Row} a stůl {Table} (stanice {}), OrderId={Req}",
+               row.Name,
+               callToDispatch.WorkTable.DisplayName,
+               callToDispatch.WorkTable.InputStationName,
+               callToDispatch.OrderId);
         }
 
 
@@ -372,9 +375,10 @@ namespace AgiloxSortingHall.Pages
                     resp.EnsureSuccessStatusCode();
 
                     _logger.LogInformation(
-                        "Agilox order {OrderId} pro stůl {Table} byl zrušen.",
+                        "Agilox order {OrderId} pro stůl {Table} (stanice {}) byl zrušen.",
                         call.OrderId.Value,
-                        call.WorkTable.Name);
+                        call.WorkTable.DisplayName,
+                        call.WorkTable.InputStationName);
                 }
                 catch (Exception ex)
                 {

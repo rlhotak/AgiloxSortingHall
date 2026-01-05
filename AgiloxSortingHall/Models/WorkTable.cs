@@ -14,9 +14,19 @@ namespace AgiloxSortingHall.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// Zobrazovaný název stolu (např. "Stůl 4").
+        /// Zobrazovaný název stolu (např. "Stůl 1").
         /// </summary>
-        public string Name { get; set; } = string.Empty;
+        public string? DisplayName { get; set; }
+
+        /// <summary>
+        /// Název stanice v Agilox systému pro vstup.
+        /// </summary>
+        public string InputStationName { get; set; } = null!;
+
+        /// <summary>
+        /// Název stanice v Agilox systému pro výstup.
+        /// </summary>
+        public string OutputStationName { get; set; } = null!;
 
         /// <summary>
         /// Kategorie stolu (např. Kontrola, Pracoviště 7)

@@ -6,9 +6,25 @@ using Microsoft.Extensions.Options;
 
 namespace AgiloxSortingHall.Services
 {
+    /// <summary>
+    /// Konfigurace jedné řady na hale.
+    /// </summary>
     public record HallRowConfig(string Name, string ColorHex, int Capacity);
-    public record WorkTableConfig(string Name);
 
+    /// <summary>
+    /// Konfigurace jednoho pracovního stolu (logický stůl viditelný v UI),
+    /// včetně Agilox vstupní/výstupní stanice a kategorie pro filtr.
+    /// </summary>
+    public record WorkTableConfig(
+        string DisplayName,
+        string InputStationName,
+        string OutputStationName,
+        int Category
+    );
+
+    /// <summary>
+    /// Konfigurace haly (řady + stoly).
+    /// </summary>
     public class HallConfig
     {
         public List<HallRowConfig> Rows { get; set; } = new();
@@ -16,8 +32,7 @@ namespace AgiloxSortingHall.Services
     }
 
     /// <summary>
-    /// Třída umožňující inicializaci databáze
-    /// podle konfigurace haly (řady a stoly).
+    /// Třída umožňující inicializaci databáze podle konfigurace haly (řady a stoly).
     /// </summary>
     public class DataSeeder
     {
@@ -25,8 +40,7 @@ namespace AgiloxSortingHall.Services
         private readonly HallConfig _config;
 
         /// <summary>
-        /// Inicializuje DataSeeder injektovaným AppDbContextem
-        /// a konfiguračními daty haly.
+        /// Inicializuje DataSeeder injektovaným AppDbContextem a konfiguračními daty haly.
         /// </summary>
         public DataSeeder(AppDbContext db, IOptions<HallConfig> config)
         {
@@ -36,12 +50,13 @@ namespace AgiloxSortingHall.Services
 
         /// <summary>
         /// Naplní databázi výchozími daty:
-        /// - vytvoří řady dle konfigurace, včetně všech slotů
-        /// - vytvoří pracovní stoly dle konfigurace
+        /// - vytvoří/aktualizuje řady dle konfigurace, včetně slotů
+        /// - vytvoří/aktualizuje pracovní stoly dle konfigurace
         /// Metoda je idempotentní (opakované spuštění nic nezdvojí).
         /// </summary>
         public async Task SeedAsync()
         {
+            // Řady (HallRows)
             foreach (var rowCfg in _config.Rows)
             {
                 var row = await _db.HallRows
@@ -50,7 +65,6 @@ namespace AgiloxSortingHall.Services
 
                 if (row == null)
                 {
-                    // vytvoření nové řady
                     row = new HallRow
                     {
                         Name = rowCfg.Name,
@@ -71,7 +85,6 @@ namespace AgiloxSortingHall.Services
                 }
                 else
                 {
-                    // aktualizace existující řady = synchronizace kapacity
                     row.ColorHex = rowCfg.ColorHex;
                     row.Capacity = rowCfg.Capacity;
 
@@ -100,21 +113,34 @@ namespace AgiloxSortingHall.Services
 
             await _db.SaveChangesAsync();
 
-            // Stoly (WorkTables)
+            // Stoly (WorkTables) – logické stoly pro UI, s Agilox vstup/výstup stanicí
             foreach (var tblCfg in _config.Tables)
             {
-                var exists = await _db.WorkTables.AnyAsync(t => t.Name == tblCfg.Name);
-                if (!exists)
+                // Unikátní klíč pro idempotenci: podle vstupní stanice (musí být unikátní)
+                var table = await _db.WorkTables
+                    .FirstOrDefaultAsync(t => t.InputStationName == tblCfg.InputStationName);
+
+                if (table == null)
                 {
                     _db.WorkTables.Add(new WorkTable
                     {
-                        Name = tblCfg.Name
+                        DisplayName = tblCfg.DisplayName,
+                        InputStationName = tblCfg.InputStationName,
+                        OutputStationName = tblCfg.OutputStationName,
+                        Category = (WorkTableCategory)tblCfg.Category
                     });
+                }
+                else
+                {
+                    // aktualizace existujícího záznamu (sync s configem)
+                    table.DisplayName = tblCfg.DisplayName;
+                    table.InputStationName = tblCfg.InputStationName;
+                    table.OutputStationName = tblCfg.OutputStationName;
+                    table.Category = (WorkTableCategory)tblCfg.Category;
                 }
             }
 
             await _db.SaveChangesAsync();
         }
-
     }
 }

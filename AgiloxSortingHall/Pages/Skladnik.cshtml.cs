@@ -222,9 +222,10 @@ namespace AgiloxSortingHall.Pages
             await _db.SaveChangesAsync();
 
             _logger.LogInformation(
-                "Skladník – odeslán workflow 501 pro øadu {Row} a stùl {Table}, OrderId={Req}",
+                "Skladník – odeslán workflow 501 pro øadu {Row} a stùl {Table} (stanice {}), OrderId={Req}",
                 row.Name,
-                callToDispatch.WorkTable.Name,
+                callToDispatch.WorkTable.DisplayName,
+                callToDispatch.WorkTable.InputStationName,
                 callToDispatch.OrderId);
         }
 
@@ -272,7 +273,7 @@ namespace AgiloxSortingHall.Pages
             var payload = new Dictionary<string, string>
             {
                 ["@ROW"] = row.Name,
-                ["@TABLE"] = callToDispatch.WorkTable.Name
+                ["@TABLE"] = callToDispatch.WorkTable.InputStationName
             };
 
             var json = JsonSerializer.Serialize(payload);

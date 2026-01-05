@@ -1,4 +1,4 @@
-using AgiloxSortingHall.Data;
+Ôªøusing AgiloxSortingHall.Data;
 using AgiloxSortingHall.Enums;
 using AgiloxSortingHall.Helpers;
 using AgiloxSortingHall.Models;
@@ -12,7 +12,7 @@ using System.Text.Json;
 namespace AgiloxSortingHall.Pages
 {
     /// <summary>
-    /// ⁄vodnÌ str·nka ñ p¯ehled vöech stol˘ a jejich aktu·lnÌho stavu.
+    /// √övodn√≠ str√°nka ‚Äì p≈ôehled v≈°ech stol≈Ø a jejich aktu√°ln√≠ho stavu.
     /// </summary>
     public class IndexModel : PageModel
     {
@@ -31,30 +31,34 @@ namespace AgiloxSortingHall.Pages
         }
 
         /// <summary>
-        /// P¯ehledovÈ poloûky pro jednotlivÈ stoly
-        /// (st˘l + pending call + poslednÌ call).
+        /// P≈ôehledov√© polo≈æky pro jednotliv√© stoly
+        /// (st≈Øl + pending call + posledn√≠ call).
         /// </summary>
         public List<TableOverviewViewModel> Tables { get; set; } = new();
 
-        // Aktu·lnÏ zvolen· kategorie z query stringu, nap¯. ?category=Kontrola
+        /// <summary>
+        /// Aktu√°lnƒõ zvolen√° kategorie z query stringu, nap≈ô. ?category=Kontrola.
+        /// </summary>
         [BindProperty(SupportsGet = true)]
         public WorkTableCategory? Category { get; set; }
 
+        /// <summary>
+        /// Mo≈ænosti do dropdownu filtru kategori√≠ (bez Unknown).
+        /// </summary>
         public IEnumerable<WorkTableCategory> CategoryOptions { get; } =
-        Enum.GetValues<WorkTableCategory>()
-            .Where(x => x != WorkTableCategory.Unknown);
+            Enum.GetValues<WorkTableCategory>()
+                .Where(x => x != WorkTableCategory.Unknown);
 
         public async Task OnGetAsync()
         {
             var tablesQuery = _db.WorkTables.AsQueryable();
 
             if (Category.HasValue)
-            {
                 tablesQuery = tablesQuery.Where(t => t.Category == Category.Value);
-            }
 
+            // Nem√°≈° .Name ‚Üí ≈ôad√≠me podle friendly n√°zvu
             var tables = await tablesQuery
-                .OrderBy(t => t.Name)
+                .OrderBy(t => t.DisplayName)
                 .ToListAsync();
 
             var tableIds = tables.Select(t => t.Id).ToList();
@@ -107,26 +111,25 @@ namespace AgiloxSortingHall.Pages
         }
 
         /// <summary>
-        /// Textov˝ popis aktivity pro dan˝ RowCall (kv˘li kompatibilitÏ).
+        /// Textov√Ω popis aktivity pro dan√Ω RowCall (kv≈Øli kompatibilitƒõ).
         /// </summary>
         public string GetActivityDescription(RowCall call)
             => AgiloxActivityDescriptionHelper.GetActivityDescription(call);
 
         /// <summary>
-        /// Handler pro tlaËÌtko "Hotovo" na indexu.
-        /// Poöle na Agilox workflow 501, aby odvezl paletu od stolu
-        /// do ¯ady "hotovo".
+        /// Handler pro tlaƒç√≠tko "Odv√©zt" na indexu.
+        /// Po≈°le na Agilox workflow 502 s OUTPUT stanic√≠ stolu.
         /// </summary>
         public async Task<IActionResult> OnPostDoneAsync(int tableId)
         {
             var table = await _db.WorkTables.FindAsync(tableId);
             if (table == null)
             {
-                _logger.LogWarning("OnPostDoneAsync: st˘l {TableId} nebyl nalezen.", tableId);
+                _logger.LogWarning("OnPostDoneAsync: st≈Øl {TableId} nebyl nalezen.", tableId);
                 return RedirectToPage();
             }
 
-            // vytvo¯Ìme RowCall bez ¯ady ñ reprezentuje "odvoz od stolu"
+            // vytvo≈ô√≠me RowCall bez ≈ôady ‚Äì reprezentuje "odvoz od stolu"
             var call = new RowCall
             {
                 WorkTableId = table.Id,
@@ -140,30 +143,34 @@ namespace AgiloxSortingHall.Pages
 
             var client = _httpClientFactory.CreateClient("Agilox");
 
+            // pro Agilox bereme OUTPUT station z helperu
+            var station = WorkTableStations.GetOutputStation(table);
+
             var payload = new Dictionary<string, string>
             {
-                ["@TABLE"] = table.Name
+                ["@TABLE"] = station
             };
 
             var json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             _logger.LogInformation(
-                "OnPostDoneAsync: posÌl·m workflow 502 pro st˘l {Table}. Payload={Payload}",
-                table.Name,
+                "OnPostDoneAsync: pos√≠l√°m workflow 502 pro st≈Øl {Table}. Station={Station}. Payload={Payload}",
+                table.DisplayName,
+                station,
                 json);
 
             var response = await client.PostAsync("workflow/502", content);
             var responseBody = await response.Content.ReadAsStringAsync();
 
             _logger.LogInformation(
-                "OnPostDoneAsync: Agilox odpovÏÔ pro st˘l {Table}: {Body}",
-                table.Name,
+                "OnPostDoneAsync: Agilox odpovƒõƒè pro st≈Øl {Table}: {Body}",
+                table.DisplayName,
                 responseBody);
 
             response.EnsureSuccessStatusCode();
 
-            // zkus vyt·hnout ID z odpovÏdi Agiloxu a uloûit do RowCall.OrderId
+            // zkus vyt√°hnout ID z odpovƒõdi Agiloxu a ulo≈æit do RowCall.OrderId
             try
             {
                 using var doc = JsonDocument.Parse(responseBody);
@@ -187,14 +194,15 @@ namespace AgiloxSortingHall.Pages
                     {
                         call.OrderId = agiloxId.Value;
                         await _db.SaveChangesAsync();
+
                         _logger.LogInformation(
-                            "OnPostDoneAsync: RowCall {RowCallId} pro st˘l {Table} m· OrderId={OrderId}",
-                            call.Id, table.Name, call.OrderId);
+                            "OnPostDoneAsync: RowCall {RowCallId} pro st≈Øl {Table} m√° OrderId={OrderId}",
+                            call.Id, table.DisplayName, call.OrderId);
                     }
                     else
                     {
                         _logger.LogWarning(
-                            "OnPostDoneAsync: odpovÏÔ Agiloxu neobsahuje pouûitelnÈ 'id'. Body={Body}",
+                            "OnPostDoneAsync: odpovƒõƒè Agiloxu neobsahuje pou≈æiteln√© 'id'. Body={Body}",
                             responseBody);
                     }
                 }
@@ -202,12 +210,11 @@ namespace AgiloxSortingHall.Pages
             catch (Exception ex)
             {
                 _logger.LogError(ex,
-                    "OnPostDoneAsync: chyba p¯i parsov·nÌ odpovÏdi Agiloxu: {Body}",
+                    "OnPostDoneAsync: chyba p≈ôi parsov√°n√≠ odpovƒõdi Agiloxu: {Body}",
                     responseBody);
             }
 
-            return RedirectToPage();
+            return RedirectToPage(new { category = Category });
         }
-
     }
 }

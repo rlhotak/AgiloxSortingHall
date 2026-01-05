@@ -1,5 +1,6 @@
 ﻿using AgiloxSortingHall.Data;
 using AgiloxSortingHall.Enums;
+using AgiloxSortingHall.Helpers;
 using AgiloxSortingHall.Hubs;
 using AgiloxSortingHall.Models;
 using Microsoft.AspNetCore.SignalR;
@@ -32,11 +33,12 @@ namespace AgiloxSortingHall.Services
         /// Podle <see cref="AgiloxCallbackDto.Action"/> a <see cref="AgiloxCallbackDto.Status"/>
         /// přepne na odpovídající obslužnou rutinu (pickup, drop, order_canceled).
         /// Umí zpracovat jak klasické "řada → stůl" cally (s HallRow),
-        /// tak i "table-only" cally (např. workflow po stisku tlačítka HOTOVO),
+        /// tak i "table-only" cally (např. workflow po stisku tlačítka Odvézt),
         /// kde je <see cref="RowCall.HallRowId"/> null.
         /// </summary>
         /// <param name="dto">
         /// Data z callbacku obsahující OrderId, Action, Status a případně Row/Table název.
+        /// Pozn.: <see cref="AgiloxCallbackDto.Table"/> reprezentuje název stanice v Agiloxu (input/output).
         /// </param>
         public async Task ProcessCallbackAsync(AgiloxCallbackDto dto)
         {
@@ -69,24 +71,27 @@ namespace AgiloxSortingHall.Services
             call.LastAgiloxAction = dto.Action;
             call.LastAgiloxStatus = dto.Status;
 
-            // sanity check na jméno řady / stolu – neblokuje zpracování, jen loguje.
+            // sanity check na jméno řady / stanice – neblokuje zpracování, jen loguje.
             if (call.HallRow != null)
             {
                 LogRowTableMismatchIfAny(call, dto);
             }
             else
             {
-                // "table-only" RowCall – kontrolujeme jen stůl
-                var tableMatches = string.Equals(call.WorkTable.Name, dto.Table, StringComparison.OrdinalIgnoreCase);
-                if (!tableMatches)
+                // "table-only" RowCall – kontrolujeme jen stanici (input/output)
+                var stationMatches = WorkTableStations.MatchesStation(call.WorkTable, dto.Table);
+                if (!stationMatches)
                 {
                     _logger.LogWarning(
-                        "Agilox callback table mismatch for table-only RowCall. Call has table={TableDb}, callback table={TableDto}, orderid={OrderId}.",
-                        call.WorkTable.Name, dto.Table, dto.OrderId);
+                        "Agilox callback station mismatch for table-only RowCall. Call table={TableUi}, stations={StationsDb}, callback station={StationDto}, orderid={OrderId}.",
+                        call.WorkTable.DisplayName,
+                        WorkTableStations.StationsToString(call.WorkTable),
+                        dto.Table,
+                        dto.OrderId);
                 }
             }
 
-            // Pokud je RowCall bez HallRow (např. workflow po stisku HOTOVO),
+            // Pokud je RowCall bez HallRow (např. workflow po stisku Odvézt),
             // nešaháme na sloty v řadách – jen udržujeme stav v RowCallu.
             if (call.HallRow == null)
             {
@@ -101,17 +106,15 @@ namespace AgiloxSortingHall.Services
                     call.Status = RowCallStatus.Delivered;
 
                     _logger.LogInformation(
-                        "Table-only pickup OK for RowCall {RowCallId} (OrderId={OrderId}, Table={Table}). " +
-                        "Table is now considered free (Delivered).",
-                        call.Id, dto.OrderId, call.WorkTable.Name);
+                        "Table-only pickup OK for RowCall {RowCallId} (OrderId={OrderId}, Table={TableUi}, Station={Station}). Table is now considered free (Delivered).",
+                        call.Id, dto.OrderId, call.WorkTable.DisplayName, dto.Table);
                 }
                 else
                 {
                     // ostatní stavy jen logujeme, UI je uvidí přes LastAgiloxStatus/Action
                     _logger.LogInformation(
-                        "Agilox callback for table-only RowCall {RowCallId} (OrderId={OrderId}, Table={Table}) – Action={Action}, Status={Status}. " +
-                        "No HallRow attached, row slots are not updated.",
-                        call.Id, dto.OrderId, call.WorkTable.Name, action, status);
+                        "Agilox callback for table-only RowCall {RowCallId} (OrderId={OrderId}, Table={TableUi}, Station={Station}) – Action={Action}, Status={Status}. No HallRow attached, row slots are not updated.",
+                        call.Id, dto.OrderId, call.WorkTable.DisplayName, dto.Table, action, status);
                 }
 
                 await _db.SaveChangesAsync();
@@ -146,9 +149,6 @@ namespace AgiloxSortingHall.Services
             await _hub.Clients.All.SendAsync("HallUpdated");
         }
 
-
-
-
         #region Handlery pro jednotlivé typy callbacků
 
         /// <summary>
@@ -180,8 +180,7 @@ namespace AgiloxSortingHall.Services
                         else
                         {
                             _logger.LogWarning(
-                                "Pickup OK received but no occupied slot found in row {RowName} for RowCall {RowCallId}. " +
-                                "Row state may be out-of-sync with Agilox.",
+                                "Pickup OK received but no occupied slot found in row {RowName} for RowCall {RowCallId}. Row state may be out-of-sync with Agilox.",
                                 call.HallRow.Name, call.Id);
                         }
 
@@ -244,8 +243,7 @@ namespace AgiloxSortingHall.Services
                             call.Status = RowCallStatus.Delivered;
 
                             _logger.LogWarning(
-                                "Drop OK received but no InTransit/Occupied slot found in row {RowName} for RowCall {RowCallId}. " +
-                                "RowCall marked as Delivered but row state may be incorrect.",
+                                "Drop OK received but no InTransit/Occupied slot found in row {RowName} for RowCall {RowCallId}. RowCall marked as Delivered but row state may be incorrect.",
                                 call.HallRow.Name, call.Id);
                         }
 
@@ -257,9 +255,8 @@ namespace AgiloxSortingHall.Services
                         // Výdejní stanice je obsazená – Agilox čeká.
                         // V našem modelu ponecháme RowCall jako Pending, jen logujeme.
                         _logger.LogInformation(
-                            "Drop occupied for RowCall {RowCallId} at table {TableName}. " +
-                            "Target table is busy, Agilox is waiting.",
-                            call.Id, call.WorkTable.Name);
+                            "Drop occupied for RowCall {RowCallId} at table {TableUi}. Callback station={Station}. Target table is busy, Agilox is waiting.",
+                            call.Id, call.WorkTable.DisplayName, dto.Table);
                         break;
                     }
 
@@ -359,20 +356,25 @@ namespace AgiloxSortingHall.Services
         }
 
         /// <summary>
-        /// Zaloguje případný rozdíl mezi řadou/stolem z našeho RowCallu a daty z callbacku.
+        /// Zaloguje případný rozdíl mezi řadou a cílovou stanicí z callbacku.
         /// Neslouží k blokaci logiky – pouze ke snadnějšímu debugování.
         /// </summary>
         private void LogRowTableMismatchIfAny(RowCall call, AgiloxCallbackDto dto)
         {
             var rowMatches = string.Equals(call.HallRow.Name, dto.Row, StringComparison.OrdinalIgnoreCase);
-            var tableMatches = string.Equals(call.WorkTable.Name, dto.Table, StringComparison.OrdinalIgnoreCase);
 
-            if (!rowMatches || !tableMatches)
+            // dto.Table reprezentuje Agilox stanici -> match proti input/output stanicím
+            var stationMatches = WorkTableStations.MatchesStation(call.WorkTable, dto.Table);
+
+            if (!rowMatches || !stationMatches)
             {
                 _logger.LogWarning(
-                    "Agilox callback row/table mismatch. Call has row={RowDb}, table={TableDb}, callback row={RowDto}, table={TableDto}, orderid={OrderId}.",
-                    call.HallRow.Name, call.WorkTable.Name,
-                    dto.Row, dto.Table,
+                    "Agilox callback row/station mismatch. Call has row={RowDb}, table={TableUi}, stations={StationsDb}, callback row={RowDto}, station={StationDto}, orderid={OrderId}.",
+                    call.HallRow.Name,
+                    call.WorkTable.DisplayName,
+                    WorkTableStations.StationsToString(call.WorkTable),
+                    dto.Row,
+                    dto.Table,
                     dto.OrderId);
             }
         }

@@ -39,7 +39,7 @@
         var slot = occupiedSlots[i];
         var call = dispatchedCalls[i];
 
-        var tableName = call.WorkTable?.Name ?? $"Stůl {call.WorkTableId}";
+        var tableName = call.WorkTable?.DisplayName ?? $"Stůl {call.WorkTableId}";
 
         // zvýraznění aktuálního stolu (na stránce konkrétního stolu)
         if (Model.CurrentTableId.HasValue && call.WorkTableId == Model.CurrentTableId.Value)
@@ -57,7 +57,7 @@
     // text pro tooltip – seznam stolů, které ještě čekají
     string? remainingQueueTooltip = remainingQueue.Any()
         ? string.Join(", ",
-            remainingQueue.Select(c => c.WorkTable?.Name ?? $"Stůl {c.WorkTableId}"))
+            remainingQueue.Select(c => c.WorkTable?.DisplayName ?? $"Stůl {c.WorkTableId}"))
         : null;
 }
 
