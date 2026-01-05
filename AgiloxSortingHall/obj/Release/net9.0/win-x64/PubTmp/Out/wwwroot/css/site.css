@@ -278,6 +278,17 @@ body {
     }
 }
 
+/* VŠECHNO do 1599px = bez container okrajů */
+@media (max-width: 1599.98px) {
+    .container,
+    .container-fluid {
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+
 /* Tlačítka artiklů na stránce stolu */
 .stul-article-btn {
     border-radius: 10px;
@@ -433,3 +444,16 @@ html.dark-mode .btn-outline-primary {
         color: #000 !important;
     }
 
+
+.article-input {
+    font-size: 0.9rem; /* menší text */
+    padding: 8px 10px; /* menší výška než form-control-lg */
+}
+
+.article-save-btn {
+    padding: 10px 12px; /* rozumná výška tlačítka */
+}
+
+.article-label {
+    min-height: 1.2em; /* výška jednoho řádku textu */
+}

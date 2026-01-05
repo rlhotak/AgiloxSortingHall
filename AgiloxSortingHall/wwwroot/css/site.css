@@ -266,13 +266,6 @@ body {
 @media (max-width: 1199.98px) {
     .hall-columns-container {
         justify-content: flex-start;
-
-        .hall-page.container,
-        .container.hall-page {
-            max-width: 100% !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-        }
     }
 }
 
@@ -284,6 +277,17 @@ body {
         overflow-x: visible;
     }
 }
+
+/* VŠECHNO do 1599px = bez container okrajů */
+@media (max-width: 1599.98px) {
+    .container,
+    .container-fluid {
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
 
 /* Tlačítka artiklů na stránce stolu */
 .stul-article-btn {
@@ -439,3 +443,28 @@ html.dark-mode .btn-outline-primary {
     .btn-done i {
         color: #000 !important;
     }
+
+
+.article-input {
+    font-size: 0.9rem; /* menší text */
+    padding: 8px 10px; /* menší výška než form-control-lg */
+}
+
+.article-save-btn {
+    padding: 10px 12px; /* rozumná výška tlačítka */
+}
+
+.article-label {
+    min-height: 1.2em; /* výška jednoho řádku textu */
+}
+
+/* Zákaz scrollu jen pro vybrané stránky */
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
+
+.hall-page > .row {
+    margin-left: 0;
+    margin-right: 0;
+}
