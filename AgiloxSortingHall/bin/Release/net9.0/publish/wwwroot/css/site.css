@@ -457,3 +457,14 @@ html.dark-mode .btn-outline-primary {
 .article-label {
     min-height: 1.2em; /* výška jednoho řádku textu */
 }
+
+/* Zákaz scrollu jen pro vybrané stránky */
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
+
+.hall-page > .row {
+    margin-left: 0;
+    margin-right: 0;
+}

@@ -36,9 +36,24 @@ namespace AgiloxSortingHall.Pages
         /// </summary>
         public List<TableOverviewViewModel> Tables { get; set; } = new();
 
+        // Aktuálnì zvolená kategorie z query stringu, napø. ?category=Kontrola
+        [BindProperty(SupportsGet = true)]
+        public WorkTableCategory? Category { get; set; }
+
+        public IEnumerable<WorkTableCategory> CategoryOptions { get; } =
+        Enum.GetValues<WorkTableCategory>()
+            .Where(x => x != WorkTableCategory.Unknown);
+
         public async Task OnGetAsync()
         {
-            var tables = await _db.WorkTables
+            var tablesQuery = _db.WorkTables.AsQueryable();
+
+            if (Category.HasValue)
+            {
+                tablesQuery = tablesQuery.Where(t => t.Category == Category.Value);
+            }
+
+            var tables = await tablesQuery
                 .OrderBy(t => t.Name)
                 .ToListAsync();
 
@@ -193,7 +208,6 @@ namespace AgiloxSortingHall.Pages
 
             return RedirectToPage();
         }
-
 
     }
 }

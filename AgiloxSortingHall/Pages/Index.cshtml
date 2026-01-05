@@ -17,12 +17,53 @@
             <div class="text-secondary fs-6">Vyber stůl pro obsluhu</div>
         </div>
 
-        <!-- Odkaz na skladníka -->
-        <a asp-page="/Skladnik"
-           class="btn btn-outline-info btn-lg d-flex align-items-center px-4 py-2">
-            <i class="bi bi-box-seam me-2 fs-3"></i>
-            <span class="fs-5">Obrazovka skladníka</span>
-        </a>
+        <div class="d-flex align-items-center gap-2">
+
+            <!-- Odkaz na skladníka -->
+            <a asp-page="/Skladnik"
+               class="btn btn-outline-info btn-lg d-flex align-items-center px-4 py-2">
+                <i class="bi bi-box-seam me-2 fs-3"></i>
+                <span class="fs-5">Obrazovka skladníka</span>
+            </a>
+
+            <!-- Dropdown filtr -->
+            <div class="dropdown">
+                <button class="btn btn-outline-light btn-lg dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    <i class="bi bi-funnel me-2"></i>
+                    @(Model.Category.HasValue
+                                        ? Model.Category.Value.ToUiText()
+                                        : "Všechny stoly")
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end">
+
+                    <li>
+                        <a class="dropdown-item @(Model.Category == null ? "active" : "")"
+                           asp-page="/Index">
+                            Všechny
+                        </a>
+                    </li>
+
+                    <li><hr class="dropdown-divider" /></li>
+
+                    @foreach (var opt in Model.CategoryOptions)
+                    {
+                        <li>
+                            <a class="dropdown-item @(Model.Category == opt ? "active" : "")"
+                               asp-page="/Index"
+                               asp-route-category="@opt">
+                                @opt.ToUiText()
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+
     </div>
 
     @if (!Model.Tables.Any())
