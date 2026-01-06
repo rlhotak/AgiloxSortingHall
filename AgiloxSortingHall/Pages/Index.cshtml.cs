@@ -146,10 +146,13 @@ namespace AgiloxSortingHall.Pages
             // pro Agilox bereme OUTPUT station z helperu
             var station = WorkTableStations.GetOutputStation(table);
 
+            // ze stolu na kontrolu, z kontroly na hotovo
+            var destination = table.Category != WorkTableCategory.Kontrola ? "Kontrola" : "Hotovo";
+
             var payload = new Dictionary<string, string>
             {
                 ["@TABLE"] = station,
-                ["@DESTINATION"] = "Kontrola"
+                ["@DESTINATION"] = destination
             };
 
             var json = JsonSerializer.Serialize(payload);
