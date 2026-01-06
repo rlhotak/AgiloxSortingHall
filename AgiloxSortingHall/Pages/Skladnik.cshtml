@@ -23,18 +23,27 @@
                     Skladník
                 </h1>
 
-                <button class="btn btn-dark btn-lg d-flex align-items-center px-3 py-2"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#settingsPanel"
-                        aria-expanded="false"
-                        aria-controls="settingsPanel">
-                    <i class="bi bi-gear-fill me-2 fs-4"></i>
-                    <span class="fs-5">Nastavení</span>
-                </button>
+                <div class="d-flex gap-2">
+                    <!-- Tlačítko zpět -->
+                    <a asp-page="/Index" class="btn btn-outline-secondary btn-lg d-flex align-items-center px-3 py-2">
+                        <i class="bi bi-arrow-left me-2 fs-4"></i>
+                        <span class="fs-5">Zpět</span>
+                    </a>
+
+                    <button class="btn btn-dark btn-lg d-flex align-items-center px-3 py-2"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#settingsPanel"
+                            aria-expanded="false"
+                            aria-controls="settingsPanel">
+                        <i class="bi bi-gear-fill me-2 fs-4"></i>
+                        <span class="fs-5">Nastavení</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
+
 
     @if (!string.IsNullOrEmpty(Model.ErrorMessage))
     {
