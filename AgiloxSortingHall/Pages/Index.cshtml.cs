@@ -148,7 +148,8 @@ namespace AgiloxSortingHall.Pages
 
             var payload = new Dictionary<string, string>
             {
-                ["@TABLE"] = station
+                ["@TABLE"] = station,
+                ["@DESTINATION"] = "Kontrola"
             };
 
             var json = JsonSerializer.Serialize(payload);

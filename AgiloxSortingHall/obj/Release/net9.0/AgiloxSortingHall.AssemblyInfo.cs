@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AgiloxSortingHall")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7f585d7a9a7ae6e012abfac7fde7f8eaba620870")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+210018ad48646259f66e1b8298aebadf95bdf10e")]
 [assembly: System.Reflection.AssemblyProductAttribute("AgiloxSortingHall")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AgiloxSortingHall")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

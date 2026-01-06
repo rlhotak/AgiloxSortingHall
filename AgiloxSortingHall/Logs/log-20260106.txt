@@ -1,0 +1,4 @@
+2026-01-06 12:08:17.573 +01:00 [INF] Starting AgiloxSortingHall application...
+2026-01-06 12:08:33.395 +01:00 [INF] Agilox callback HIT. DTO = {"OrderId":123456,"Action":"drop","Row":"Řada 1","Table":"Stůl 2","Status":"ok","$type":"AgiloxCallbackDto"}
+2026-01-06 12:08:33.405 +01:00 [INF] Processing Agilox callback: orderid=123456, action=drop, row=Řada 1, table=Stůl 2, status=ok
+2026-01-06 12:08:33.460 +01:00 [WRN] No pending RowCall found for OrderId=123456 (row=Řada 1, table=Stůl 2).

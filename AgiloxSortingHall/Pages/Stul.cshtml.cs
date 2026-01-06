@@ -276,7 +276,7 @@ namespace AgiloxSortingHall.Pages
             var payload = new Dictionary<string, string>
             {
                 ["@ROW"] = row.Name,
-                ["@TABLE"] = callToDispatch.WorkTable.OutputStationName
+                ["@TABLE"] = callToDispatch.WorkTable.InputStationName
             };
 
             var json = JsonSerializer.Serialize(payload);

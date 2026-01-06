@@ -35,7 +35,10 @@ namespace AgiloxSortingHall.Controllers
             _logger.LogInformation("Agilox callback HIT. DTO = {@dto}", dto);
 
             await _service.ProcessCallbackAsync(dto);
-            return Ok();
+            return Ok(new
+            {
+                status = "ok"
+            });
         }
     }
 }
