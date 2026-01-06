@@ -27,15 +27,15 @@
             </a>
 
             <!-- Dropdown filtr -->
-            <div class="dropdown">
-                <button class="btn btn-outline-light btn-lg dropdown-toggle"
+            <div class="dropdown hall-filter">
+                <button class="btn btn-outline-info btn-lg dropdown-toggle d-flex align-items-center"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false">
-                    <i class="bi bi-funnel me-2"></i>
+                    <i class="bi bi-funnel me-2 fs-4"></i>
                     @(Model.Category.HasValue
                                         ? Model.Category.Value.ToUiText()
-                                        : "Všechny stoly")
+                                        : "Všechny")
                 </button>
 
                 <ul class="dropdown-menu dropdown-menu-end">

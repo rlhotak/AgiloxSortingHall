@@ -468,3 +468,95 @@ body.no-scroll {
     margin-left: 0;
     margin-right: 0;
 }
+/* =====================================================
+   Dropdown filtr – CTA jako "Obrazovka skladníka"
+   ===================================================== */
+
+/* === ZÁKLAD TLAČÍTKA (stejný box model jako btn-lg) === */
+.hall-filter .dropdown-toggle.btn-lg {
+    display: inline-flex;
+    align-items: center;
+    /* Bootstrap btn-lg – PIXEL PERFECT */
+    padding: 0.75rem 1.25rem;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    font-weight: 600;
+    color: #ffffff !important;
+    background-color: transparent !important;
+    border: 1px solid #ffffff !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* caret zarovnání */
+.hall-filter .dropdown-toggle::after {
+    margin-left: 8px;
+    transform: translateY(1px);
+}
+
+/* === HOVER (zavřený stav) === */
+.hall-filter .dropdown-toggle.btn-lg:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+}
+
+/* === FOCUS / ACTIVE – jen když dropdown NENÍ otevřený (žádná bootstrap modrá) === */
+.hall-filter .dropdown-toggle.btn-lg:focus:not([aria-expanded="true"]),
+.hall-filter .dropdown-toggle.btn-lg:focus-visible:not([aria-expanded="true"]),
+.hall-filter .dropdown-toggle.btn-lg:active:not([aria-expanded="true"]) {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* === OTEVŘENÝ DROPDOWN – žlutý + černý text + tmavý border === */
+.hall-filter .dropdown-toggle.btn-lg[aria-expanded="true"] {
+    background-color: #ffd610 !important;
+    color: #000 !important;
+    border-color: #141414 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+
+
+/* =====================================================
+   Dropdown MENU – tmavé, bílé písmo
+   ===================================================== */
+
+.hall-filter .dropdown-menu {
+    background-color: #1b1b1d;
+    border: 1px solid #2c2c2e;
+    border-radius: 12px;
+    padding: 6px;
+    margin-top: 8px;
+    min-width: 220px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+}
+
+.hall-filter .dropdown-divider {
+    border-top-color: #2c2c2e;
+}
+
+/* položky */
+.hall-filter .dropdown-item {
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-weight: 500;
+}
+
+    /* hover položky */
+    .hall-filter .dropdown-item:hover,
+    .hall-filter .dropdown-item:focus {
+        background-color: rgba(255, 214, 16, 0.18);
+        color: #ffffff;
+    }
+
+    /* aktivní položka */
+    .hall-filter .dropdown-item.active,
+    .hall-filter .dropdown-item:active {
+        background-color: #ffd610;
+        color: #000;
+    }
