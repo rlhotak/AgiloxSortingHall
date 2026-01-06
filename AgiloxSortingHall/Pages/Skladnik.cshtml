@@ -43,17 +43,7 @@
             </div>
         </div>
     </div>
-
-
-    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
-    {
-        <div class="row">
-            <div class="col-12">
-                <div class="alert alert-danger py-2">@Model.ErrorMessage</div>
-            </div>
-        </div>
-    }
-
+    
     <div class="row">
         <div class="col-12">
             <div class="collapse" id="settingsPanel">
@@ -223,13 +213,37 @@
     </div>
 </div>
 
+<!-- Modal pro chybovou hlášku -->
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-light border-danger">
+            <div class="modal-header border-danger">
+                <h5 class="modal-title d-flex align-items-center" id="errorModalLabel">
+                    <i class="bi bi-x-octagon-fill text-danger me-2"></i>
+                    Chyba
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Zavřít"></button>
+            </div>
+            <div class="modal-body">
+                @Model.ErrorMessage
+            </div>
+            <div class="modal-footer border-danger">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+
+            // --- tvůj existující kód pro confirmRemoveModal ---
             var confirmModal = document.getElementById('confirmRemoveModal');
             var rowIdInput = document.getElementById('removePalletRowId');
 
-            // Když se modal otevírá, vezmeme z tlačítka rowId a vložíme do hidden inputu
             confirmModal.addEventListener('show.bs.modal', function (event) {
                 var button = event.relatedTarget;
                 var rowId = button ? button.getAttribute('data-row-id') : null;
@@ -238,6 +252,21 @@
                     rowIdInput.value = rowId;
                 }
             });
+
+            // --- AUTO-OPEN error modal (klik mimo zavře) ---
+            var errorMessage = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ErrorMessage ?? ""));
+            if (errorMessage.trim().length > 0) {
+                var errorModalEl = document.getElementById('errorModal');
+                if (errorModalEl) {
+                    var errorModal = new bootstrap.Modal(errorModalEl, {
+                        backdrop: true,  // klik mimo zavře
+                        keyboard: true   // ESC zavře
+                    });
+                    errorModal.show();
+                }
+            }
         });
     </script>
+}
+
 }
