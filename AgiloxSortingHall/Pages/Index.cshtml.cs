@@ -147,7 +147,7 @@ namespace AgiloxSortingHall.Pages
             var station = WorkTableStations.GetOutputStation(table);
 
             // ze stolu na kontrolu, z kontroly na hotovo
-            var destination = table.Category != WorkTableCategory.Kontrola ? "Kontrola" : "Hotovo";
+            var destination = WorkTableStations.GetDestination(table);
 
             var payload = new Dictionary<string, string>
             {

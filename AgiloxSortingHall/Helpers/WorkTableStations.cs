@@ -1,4 +1,6 @@
-﻿using AgiloxSortingHall.Models;
+﻿using AgiloxSortingHall.Enums;
+using AgiloxSortingHall.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AgiloxSortingHall.Helpers
 {
@@ -12,6 +14,9 @@ namespace AgiloxSortingHall.Helpers
 
         public static string GetUiName(WorkTable t)
             => t.DisplayName;
+
+        public static string GetDestination(WorkTable t)
+            => t.Category != WorkTableCategory.Kontrola ? "Kontrola" : "Hotovo";
 
         public static bool MatchesStation(WorkTable t, string? station)
         {
