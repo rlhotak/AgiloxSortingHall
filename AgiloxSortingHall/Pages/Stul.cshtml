@@ -20,9 +20,12 @@
         </div>
 
         <!-- Tlačítko zpět -->
-        <a asp-page="/Index" class="btn btn-outline-secondary btn-lg">
+        <a asp-page="/Index"
+           asp-route-category="@Model.Category"
+           class="btn btn-outline-secondary btn-lg">
             Zpět
         </a>
+
     </div>
 
     @* Pokud má stůl aktivní pending call, zobrazíme čekací obrazovku *@
@@ -100,6 +103,7 @@
 
                         <input type="hidden" name="id" value="@Model.Table.Id" />
                         <input type="hidden" name="rowId" value="@row.Id" />
+                        <input type="hidden" name="category" value="@Model.Category" />
 
                         <button type="submit" class="btn btn-outline-primary column-button w-100 p-2">
                             @await Html.PartialAsync(

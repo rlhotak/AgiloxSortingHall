@@ -104,7 +104,8 @@
 
                 var hasArticleOrRow = !string.IsNullOrWhiteSpace(article) || rowName != "neznámá řada";
 
-                var detailUrl = Url.Page("/Stul", new { id = table.Id });
+                var detailUrl = Url.Page("/Stul", new { id = table.Id, category = Model.Category });
+
 
                 <div class="col-12 col-md-6 col-lg-4 d-flex">
                     <div class="bg-dark text-light border border-secondary rounded-3

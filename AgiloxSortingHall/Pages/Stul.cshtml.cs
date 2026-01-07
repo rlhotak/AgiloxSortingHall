@@ -57,6 +57,13 @@ namespace AgiloxSortingHall.Pages
         public string ViewMode { get; set; } = "articles";
 
         /// <summary>
+        /// Kategorie z query stringu, např. ?category=Kontrola.
+        /// </summary>
+        [BindProperty(SupportsGet = true)]
+        public WorkTableCategory? Category { get; set; }
+
+
+        /// <summary>
         /// Načte data pro stránku stolu: konkrétní stůl, všechny řady,
         /// aktuální čekající call daného stolu a všechny pending call-y
         /// pro zobrazení stavu fronty.
@@ -130,17 +137,17 @@ namespace AgiloxSortingHall.Pages
             _logger.LogInformation("OnPostCallArticleAsync HIT: id={Id}, article={Article}", id, article);
 
             if (await HasPendingCallForTableAsync(id))
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Index", new { category = Category });
 
             var table = await _db.WorkTables.FindAsync(id);
             if (table == null)
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Index", new { category = Category });
 
             var selectedRow = await SelectRowForArticleAsync(article);
             if (selectedRow == null)
             {
                 // žádná řada s tímto artiklem
-                return RedirectToPage("/Index");
+                return RedirectToPage("/Index", new { category = Category });
             }
 
             await CreateCallAndDispatchAsync(table, selectedRow);
@@ -149,7 +156,7 @@ namespace AgiloxSortingHall.Pages
 
             _logger.LogInformation("OnPostCallArticleAsync finished OK, redirecting to Index");
 
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Index", new { category = Category });
         }
 
         /// <summary>
