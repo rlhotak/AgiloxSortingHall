@@ -282,47 +282,59 @@ namespace AgiloxSortingHall.Pages
             var json = JsonSerializer.Serialize(payload);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync("workflow/501", content);
-
-            var responseBody = await response.Content.ReadAsStringAsync();
-            _logger.LogInformation("Agilox odpověď pro řadu {Row}: {Body}", row.Name, responseBody);
-
-            response.EnsureSuccessStatusCode();
-
-            long? agiloxId = null;
+            HttpResponseMessage? response = null;
             try
             {
-                using var doc = JsonDocument.Parse(responseBody);
-
-                if (doc.RootElement.TryGetProperty("id", out var idProp))
-                {
-                    if (idProp.ValueKind == JsonValueKind.Number &&
-                        idProp.TryGetInt64(out var numericId))
-                    {
-                        agiloxId = numericId;
-                    }
-                    else if (idProp.ValueKind == JsonValueKind.String &&
-                             long.TryParse(idProp.GetString(), out var stringId))
-                    {
-                        agiloxId = stringId;
-                    }
-                }
+                response = await client.PostAsync("workflow/501", content);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Chyba při parsování odpovědi Agiloxu: {Body}", responseBody);
+                _logger.LogError(ex, "Chyba při odesílání workflow na Agilox pro řadu {Row}", row.Name);
             }
 
-            if (agiloxId.HasValue)
+            if (response != null)
             {
-                callToDispatch.OrderId = agiloxId.Value;
+                var responseBody = await response.Content.ReadAsStringAsync();
+                _logger.LogInformation("Agilox odpověď pro řadu {Row}: {Body}", row.Name, responseBody);
+
+                response.EnsureSuccessStatusCode();
+
+                long? agiloxId = null;
+                try
+                {
+                    using var doc = JsonDocument.Parse(responseBody);
+
+                    if (doc.RootElement.TryGetProperty("id", out var idProp))
+                    {
+                        if (idProp.ValueKind == JsonValueKind.Number &&
+                            idProp.TryGetInt64(out var numericId))
+                        {
+                            agiloxId = numericId;
+                        }
+                        else if (idProp.ValueKind == JsonValueKind.String &&
+                                 long.TryParse(idProp.GetString(), out var stringId))
+                        {
+                            agiloxId = stringId;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Chyba při parsování odpovědi Agiloxu: {Body}", responseBody);
+                }
+
+                if (agiloxId.HasValue)
+                {
+                    callToDispatch.OrderId = agiloxId.Value;
+                }
+                else
+                {
+                    _logger.LogWarning(
+                        "Odpověď pro řadu {Row} neobsahuje 'id'. OrderId zůstává null. Body: {Body}",
+                        row.Name, responseBody);
+                }
             }
-            else
-            {
-                _logger.LogWarning(
-                    "Odpověď pro řadu {Row} neobsahuje 'id'. OrderId zůstává null. Body: {Body}",
-                    row.Name, responseBody);
-            }
+
 
             await _db.SaveChangesAsync();
 

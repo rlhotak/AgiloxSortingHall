@@ -50,7 +50,7 @@
                 <div class="card my-2 bg-dark text-light border-secondary">
                     <div class="card-header bg-secondary bg-opacity-25 border-secondary d-flex align-items-center">
                         <i class="bi bi-sliders me-2"></i>
-                        <span>Nastavení výběru řady pro artikly (používají stoly)</span>
+                        <span>Nastavení prioritního výběru řady</span>
                     </div>
 
                     <div class="card-body">
@@ -79,7 +79,7 @@
                                        value="NearestLeft"
                                        @(Model.CurrentStrategy == RowSelectionStrategy.NearestLeft ? "checked" : "") />
                                 <label class="form-check-label" for="strategyLeft">
-                                    Nejblíž vlevo
+                                    Nejnižší číslo řady
                                     <small class="text-muted d-block">
                                         Vždy bere řadu nejvíc vlevo.
                                     </small>
@@ -94,7 +94,7 @@
                                        value="NearestRight"
                                        @(Model.CurrentStrategy == RowSelectionStrategy.NearestRight ? "checked" : "") />
                                 <label class="form-check-label" for="strategyRight">
-                                    Nejblíž vpravo
+                                    Nejvyšší číslo řady
                                     <small class="text-muted d-block">
                                         Vždy bere řadu nejvíc vpravo.
                                     </small>
