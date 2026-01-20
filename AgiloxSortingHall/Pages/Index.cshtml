@@ -109,9 +109,15 @@
 
                 <div class="col-12 col-md-6 col-lg-4 d-flex">
                     <div class="bg-dark text-light border border-secondary rounded-3
-                    flex-fill p-4 text-start d-flex flex-column justify-content-between shadow-sm
-                    js-table-card"
-                         data-url="@(table.Category != WorkTableCategory.Kontrola ? detailUrl : null)">
+                 flex-fill p-4 text-start d-flex flex-column justify-content-between shadow-sm
+                 js-table-card"
+                         data-url="@(
+                         table.Category != WorkTableCategory.Kontrola
+                         || hasPending
+                             ? detailUrl
+                             : null
+                          )">
+
 
 
                         <!-- Horní řádek: ikonka + název + Odvézt -->
