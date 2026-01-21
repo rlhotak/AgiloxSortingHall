@@ -1,6 +1,7 @@
 using AgiloxSortingHall.Data;
 using AgiloxSortingHall.Hubs;
 using AgiloxSortingHall.Services;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
@@ -57,10 +58,34 @@ try
     using (var scope = app.Services.CreateScope())
     {
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        // zjistit cestu k sqlite souboru z connection stringu
+        var cs = builder.Configuration.GetConnectionString("DefaultConnection")
+                 ?? throw new Exception("Missing DefaultConnection");
+
+        var csb = new SqliteConnectionStringBuilder(cs);
+        var dataSource = csb.DataSource;
+
+        // u relativnÌ cesty ji ukotvi do base directory aplikace (aù kontrola File.Exists sedÌ)
+        var dbPath = Path.IsPathRooted(dataSource)
+            ? dataSource
+            : Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, dataSource));
+
+        var dbFileExistsBeforeMigrate = File.Exists(dbPath);
+
         db.Database.Migrate();
-        var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-        await seeder.SeedAsync();
+
+        // Seed jen pokud DB soubor p¯ed migracÌ neexistoval
+        if (!dbFileExistsBeforeMigrate)
+        {
+            if (!db.HallRows.Any() && !db.WorkTables.Any())
+            {
+                var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+                await seeder.SeedAsync();
+            }
+        }
     }
+
 
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())

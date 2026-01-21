@@ -68,8 +68,8 @@ body {
     /* šířka jednoho SLOUPCE:
        (šířka okna - paddingy - mezery) / počet sloupců
        → tj. přesně se vejde do šířky obrazovky, bez overflow */
-    --column-width: calc( (100vw - 2 * var(--horizontal-padding)
-               - (var(--column-count) - 1) * var(--column-gap)) / var(--column-count) );
+    --column-width: min( 240px, calc( (100vw - 2 * var(--horizontal-padding)
+            - (var(--column-count) - 1) * var(--column-gap)) / var(--column-count) ) );
 }
 
 /* Kontejner všech sloupců (řad) */
@@ -178,7 +178,7 @@ body {
 .slot {
     width: 100%;
     max-width: 100%;
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1.25 / 1;
     border: 2px solid var(--slot-border);
     box-sizing: border-box;
     border-radius: 10px;
@@ -560,3 +560,71 @@ body.no-scroll {
         background-color: #ffd610;
         color: #000;
     }
+
+/* KIOSK: 960x600 – žádný scroll, vše se musí vejít */
+@media (max-width: 1000px) and (max-height: 700px) {
+
+    /* stránka na 100% výšky kiosku */
+    .hall-page {
+        height: 100vh;
+    }
+
+    /* sloupce ať zaberou zbytek výšky pod hlavičkou */
+    .hall-columns-container {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden; /* žádné scrollování */
+        align-items: stretch;
+    }
+
+    /* každý sloupec přes celou výšku a jako flex */
+    .hall-column {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 6px 6px 8px; /* trochu utáhnout */
+    }
+
+        /* form (input + tlačítka) vždy dole */
+        .hall-column form {
+            margin-top: auto; /* ✅ připíchne dolů */
+        }
+
+    /* Sloty: zrušit čtverce podle šířky a nechat je "vmáčknout" */
+    .slot {
+        aspect-ratio: auto !important; /* pryč čtverec */
+        height: auto !important;
+        min-height: 26px; /* aby to nezmizelo úplně */
+    }
+
+    /* Tohle je ten hlavní trik: sloty se rozdělí o dostupnou výšku.
+     Funguje, pokud jsou sloty ve sloupci poskládané pod sebou (což máš). */
+    .slot-wrapper {
+        flex: 1 1 0;
+        min-height: 0;
+    }
+
+        /* uvnitř wrapperu roztáhnout samotný slot na výšku wrapperu */
+        .slot-wrapper .slot {
+            height: 100% !important;
+            width: 100% !important;
+        }
+
+    /* Zmenšit ovládání, ať to žere míň místa */
+    .article-input {
+        padding: 6px 8px;
+        font-size: 0.85rem;
+        margin-top: 6px !important;
+    }
+
+    .article-save-btn {
+        padding: 6px 8px;
+        margin-top: 6px !important;
+    }
+
+    .btn-success.btn-lg,
+    .btn-outline-danger.btn-lg {
+        padding: 10px 10px;
+        font-size: 1rem;
+    }
+}
