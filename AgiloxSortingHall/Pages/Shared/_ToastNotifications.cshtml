@@ -1,0 +1,52 @@
+﻿@{
+    var success = TempData["SuccessMessage"] as string;
+    var error = TempData["ErrorMessage"] as string;
+}
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1080">
+
+    @if (!string.IsNullOrWhiteSpace(success))
+    {
+        <div class="toast align-items-center text-bg-success border-0 mb-2"
+             role="alert"
+             aria-live="assertive"
+             aria-atomic="true"
+             data-bs-delay="3500">
+
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="bi bi-check-circle-fill"></i>
+                    @success
+                </div>
+
+                <button type="button"
+                        class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast"
+                        aria-label="Zavřít"></button>
+            </div>
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(error))
+    {
+        <div class="toast align-items-center text-bg-danger border-0 mb-2"
+             role="alert"
+             aria-live="assertive"
+             aria-atomic="true"
+             data-bs-delay="5000">
+
+            <div class="d-flex">
+                <div class="toast-body d-flex align-items-center gap-2">
+                    <i class="bi bi-x-octagon-fill"></i>
+                    @error
+                </div>
+
+                <button type="button"
+                        class="btn-close btn-close-white me-2 m-auto"
+                        data-bs-dismiss="toast"
+                        aria-label="Zavřít"></button>
+            </div>
+        </div>
+    }
+
+</div>

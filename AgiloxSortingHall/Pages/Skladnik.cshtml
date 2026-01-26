@@ -30,7 +30,7 @@
                         <span class="fs-5">Zpět</span>
                     </a>
 
-                    <button class="btn btn-dark btn-lg d-flex align-items-center px-3 py-2"
+                  @*   <button class="btn btn-dark btn-lg d-flex align-items-center px-3 py-2"
                             type="button"
                             data-bs-toggle="collapse"
                             data-bs-target="#settingsPanel"
@@ -38,7 +38,13 @@
                             aria-controls="settingsPanel">
                         <i class="bi bi-gear-fill me-2 fs-4"></i>
                         <span class="fs-5">Nastavení</span>
-                    </button>
+                    </button> *@
+                    <a asp-page="/SkladnikSettings"
+                       class="btn btn-dark btn-lg d-flex align-items-center px-3 py-2">
+                        <i class="bi bi-gear-fill me-2 fs-4"></i>
+                        <span class="fs-5">Nastavení</span>
+                    </a>
+
                 </div>
             </div>
         </div>

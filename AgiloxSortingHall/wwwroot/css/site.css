@@ -628,3 +628,217 @@ body.no-scroll {
         font-size: 1rem;
     }
 }
+
+/**********************************************
+ * SETTINGS PAGE – sjednocený design
+ **********************************************/
+
+.settings-page {
+    padding: 16px 32px 24px;
+}
+
+/* Hlavička stránky – podobně jako ostatní */
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.settings-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--header-text);
+}
+
+/* Panel (card) ve stylu hall-column */
+.settings-panel {
+    background: var(--column-bg);
+    border: 1px solid var(--column-border);
+    border-radius: 14px;
+    box-shadow: 0 1px 6px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.settings-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--column-border);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.settings-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--header-text);
+}
+
+.settings-panel-body {
+    padding: 14px;
+}
+
+/* Radio “strategie” jako příjemné tile */
+.strategy-list {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+}
+
+.strategy-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 12px;
+    border: 1px solid var(--column-border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    width: 100%;
+}
+
+    .strategy-item input {
+        margin-top: 4px;
+        cursor: pointer;
+    }
+
+    .strategy-item:hover {
+        box-shadow: 0 0 0 2px var(--accent-primary-soft);
+    }
+
+    .strategy-item small {
+        color: var(--queue-text-color);
+    }
+
+    .strategy-item:has(input:checked) {
+        border-color: var(--accent-primary);
+        background: var(--accent-primary-soft);
+    }
+
+/* Řádky nastavení řad (místo tabulky) */
+.rows-list {
+    display: grid;
+    gap: 10px;
+}
+
+.row-item {
+    display: grid;
+    grid-template-columns: 64px 1fr 140px 170px 200px;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 10px;
+    border: 1px solid var(--column-border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+    .row-item .row-id {
+        font-weight: 700;
+        color: var(--header-text);
+        text-align: center;
+        opacity: 0.9;
+    }
+
+    .row-item .form-control {
+        border-radius: 10px;
+    }
+
+    .row-item .form-control-color {
+        width: 56px;
+        height: 40px;
+        padding: 4px;
+        border-radius: 10px;
+        border: 1px solid var(--column-border);
+        background: transparent;
+    }
+
+.row-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+}
+
+.btn-soft {
+    border-radius: 10px;
+}
+
+/* Jemnější danger tlačítko (ať nekřičí) */
+.btn-danger-outline {
+    border: 1px solid rgba(239, 68, 68, 0.75);
+    color: rgb(239, 68, 68);
+    background: transparent;
+    border-radius: 10px;
+}
+
+    .btn-danger-outline:hover {
+        background: rgba(239, 68, 68, 0.12);
+    }
+
+/* Horní “+” tlačítko jako square CTA */
+.btn-add-row {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+/* Mobil / tablet: rozpad mřížky */
+@media (max-width: 992px) {
+    .row-item {
+        grid-template-columns: 64px 1fr;
+        grid-template-areas:
+            "id name"
+            "id color"
+            "id cap"
+            "id actions";
+    }
+
+        .row-item .row-id {
+            grid-area: id;
+        }
+
+        .row-item .row-name {
+            grid-area: name;
+        }
+
+        .row-item .row-color {
+            grid-area: color;
+        }
+
+        .row-item .row-cap {
+            grid-area: cap;
+        }
+
+        .row-item .row-actions {
+            grid-area: actions;
+            justify-content: flex-start;
+        }
+}
+
+/* Globální success barva jen pro text/border/badge… */
+.bg-success,
+.border-success,
+.text-success {
+    color: #28d17c !important;
+}
+
+/* Success tlačítko má mít čitelný text */
+.btn-success {
+    background-color: #28d17c !important;
+    border-color: #1fb86a !important;
+    color: #000 !important;
+}
+
+    .btn-success i {
+        color: #000 !important;
+    }
