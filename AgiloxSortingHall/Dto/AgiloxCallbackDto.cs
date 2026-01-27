@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace AgiloxSortingHall.Models
+namespace AgiloxSortingHall.Dto
 {
     /// <summary>
     /// DTO objekt reprezentující callback zprávu posílanou systémem Agilox.

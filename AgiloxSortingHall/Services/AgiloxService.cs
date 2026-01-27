@@ -1,4 +1,5 @@
 ﻿using AgiloxSortingHall.Data;
+using AgiloxSortingHall.Dto;
 using AgiloxSortingHall.Enums;
 using AgiloxSortingHall.Helpers;
 using AgiloxSortingHall.Hubs;

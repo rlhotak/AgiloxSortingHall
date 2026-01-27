@@ -18,5 +18,14 @@ namespace AgiloxSortingHall.Models
         /// </summary>
         public RowSelectionStrategy RowSelectionStrategy { get; set; }
             = RowSelectionStrategy.MostFreePallets;
+
+        /// <summary>
+        /// Název oblasti (stationarea) v systému Agilox, která určuje:
+        /// - maximální počet reálných pozic/stanic v Agiloxu (limit přidání řad)
+        /// - "kontext" pro skladníka (na jakou oblast se nastavení vztahuje)
+        ///
+        /// Default: "Hotovo" (dřívější fixní stav).
+        /// </summary>
+        public string StationAreaName { get; set; } = "Hotovo";
     }
 }

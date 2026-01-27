@@ -1,4 +1,4 @@
-﻿using AgiloxSortingHall.Models;
+﻿using AgiloxSortingHall.Dto;
 using AgiloxSortingHall.Services;
 using Microsoft.AspNetCore.Mvc;
 

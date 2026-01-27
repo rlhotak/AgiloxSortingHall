@@ -245,4 +245,4 @@ C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Debug\n
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Debug\net9.0\staticwebassets.build.json.cache
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Debug\net9.0\swae.build.ex.cache
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
-C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Debug\net9.0\compressed\exdf17do33-{0}-xumbl9ln7q-xumbl9ln7q.gz
+C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Debug\net9.0\compressed\exdf17do33-{0}-97z88jdn93-97z88jdn93.gz

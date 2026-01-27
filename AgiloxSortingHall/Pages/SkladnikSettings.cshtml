@@ -36,13 +36,13 @@
                 @Html.AntiForgeryToken()
 
                 <div class="strategy-list">
-                    <label class="strategy-item">
-                        <input class="form-check-input"
+                    <label class="strategy-item strategy-card">
+                        <input class="strategy-radio"
                                type="radio"
                                name="strategy"
                                value="MostFreePallets"
                                @(Model.CurrentStrategy == RowSelectionStrategy.MostFreePallets ? "checked" : "") />
-                        <div>
+                        <div class="strategy-content">
                             <div class="fw-bold">Nejvíc volných palet</div>
                             <small class="d-block">
                                 Vybere řadu s daným artiklem, kde je nejvíc volných palet.
@@ -50,13 +50,13 @@
                         </div>
                     </label>
 
-                    <label class="strategy-item">
-                        <input class="form-check-input"
+                    <label class="strategy-item strategy-card">
+                        <input class="strategy-radio"
                                type="radio"
                                name="strategy"
                                value="NearestLeft"
                                @(Model.CurrentStrategy == RowSelectionStrategy.NearestLeft ? "checked" : "") />
-                        <div>
+                        <div class="strategy-content">
                             <div class="fw-bold">Nejnižší číslo řady</div>
                             <small class="d-block">
                                 Vždy bere řadu nejvíc vlevo.
@@ -64,13 +64,13 @@
                         </div>
                     </label>
 
-                    <label class="strategy-item">
-                        <input class="form-check-input"
+                    <label class="strategy-item strategy-card">
+                        <input class="strategy-radio"
                                type="radio"
                                name="strategy"
                                value="NearestRight"
                                @(Model.CurrentStrategy == RowSelectionStrategy.NearestRight ? "checked" : "") />
-                        <div>
+                        <div class="strategy-content">
                             <div class="fw-bold">Nejvyšší číslo řady</div>
                             <small class="d-block">
                                 Vždy bere řadu nejvíc vpravo.
@@ -97,6 +97,53 @@
         </div>
 
         <div class="settings-panel-body">
+
+            <!-- STATIONAREA (NÁZEV OBLASTI) -->
+            <div class="mb-3">
+                <form method="post" asp-page-handler="SetStationAreaName">
+                    @Html.AntiForgeryToken()
+
+                    <label class="form-label text-light medium mb-1">
+                        Název oblasti (Agilox stationarea)
+                    </label>
+
+                    <div class="d-flex gap-2">
+                        <input class="form-control bg-dark text-light border-secondary"
+                               style="height: 38px;"
+                               name="StationAreaName"
+                               value="@Model.StationAreaName"
+                               placeholder="Hotovo"
+                               list="stationareas" />
+
+                        <button type="submit"
+                                class="btn btn-warning text-dark fw-semibold"
+                                style="height: 38px; white-space: nowrap;">
+                            <i class="bi bi-save me-1"></i>
+                            Uložit oblast
+                        </button>
+                    </div>
+
+                    <datalist id="stationareas">
+                        @foreach (var a in Model.AvailableStationAreas)
+                        {
+                            <option value="@a"></option>
+                        }
+                    </datalist>
+
+                    <div class="text-light small">
+                        @if (Model.MaxStationsForArea.HasValue)
+                        {
+                            <span>pozice: @Model.CurrentPositionsCount / @Model.MaxStationsForArea</span>
+                        }
+                        else
+                        {
+                            <span>limit se nepodařilo načíst</span>
+                        }
+                    </div>
+                </form>
+            </div>
+
+
 
             <!-- SAVE ROWS form -->
             <form method="post" asp-page-handler="SaveRows" class="mb-0">
@@ -171,10 +218,19 @@
                 @Html.AntiForgeryToken()
 
                 <button type="submit"
-                        class="row-item w-100 btn-success d-flex align-items-center justify-content-center">
+                        class="row-item w-100 btn-success d-flex align-items-center justify-content-center"
+                        @(Model.CanAddRow ? "" : "disabled")
+                        title="@(Model.CanAddRow ? "Přidat řadu" : "Dosažen limit stanic pro zvolenou oblast")">
                     <i class="bi bi-plus-lg me-2"></i>
                     Přidat řadu
                 </button>
+
+                @if (!Model.CanAddRow && Model.MaxStationsForArea.HasValue)
+                {
+                    <div class="text-warning small mt-2">
+                        Limit dosažen: oblast '@Model.StationAreaNameCurrent' má v Agiloxu max @Model.MaxStationsForArea pozic.
+                    </div>
+                }
             </form>
 
         </div>

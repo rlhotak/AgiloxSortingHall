@@ -842,3 +842,48 @@ body.no-scroll {
     .btn-success i {
         color: #000 !important;
     }
+
+/* Skryj defaultní radio kolečko */
+.strategy-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Ať label funguje jako karta */
+.strategy-card {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+    /* Hover efekt */
+    .strategy-card:hover {
+        border-color: rgba(255,255,255,0.25);
+        background: rgba(255,255,255,0.03);
+    }
+
+/* Zvýraznění vybrané strategie */
+.strategy-radio:checked + .strategy-content {
+    /* content necháme, ale zvýraznění uděláme přes celý card */
+}
+
+.strategy-radio:checked ~ .strategy-content,
+.strategy-radio:checked + .strategy-content {
+    /* fallback, kdyby někdo měnil strukturu */
+}
+
+.strategy-radio:checked {
+    /* nic */
+}
+
+
+    /* Volitelně: tučnější popisek při výběru */
+    .strategy-card:has(.strategy-radio:checked) .fw-bold {
+        text-decoration: none;
+    }
