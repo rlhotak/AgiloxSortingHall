@@ -385,7 +385,7 @@ namespace AgiloxSortingHall.Pages
             if (call == null)
             {
                 // Není co rušit
-                return RedirectToPage(new { id });
+                return RedirectToPage("/Index", new { category = Category });
             }
 
             // Pokud už jsme na tento call poslali workflow na Agiloxe
@@ -427,7 +427,10 @@ namespace AgiloxSortingHall.Pages
 
             await _hub.Clients.All.SendAsync("HallUpdated");
 
-            return RedirectToPage(new { id });
+            if (Category == WorkTableCategory.Kontrola)
+                return RedirectToPage("/Index", new { category = Category });
+            else
+                return RedirectToPage(new { id });
         }
 
         /// <summary>
