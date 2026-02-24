@@ -20,6 +20,12 @@
         /// <summary>
         /// Nejblíž vpravo – tj. podle pořadí řad zprava.
         /// </summary>
-        NearestRight = 2
+        NearestRight = 2,
+
+        /// <summary>
+        /// Řada, kde je aktuálně k dispozici nejméně volných palet
+        /// (obsazené sloty mínus již odeslané call-y na Agilox).
+        /// </summary>
+        LeastFreePallets = 3
     }
 }

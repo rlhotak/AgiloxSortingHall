@@ -216,14 +216,26 @@ namespace AgiloxSortingHall.Pages
                 case RowSelectionStrategy.NearestRight:
                     return rowsForArticle.Last();
 
+                case RowSelectionStrategy.LeastFreePallets:
+                    {
+                        var availableDict = await GetAvailablePalletsForRowsAsync(rowsForArticle);
+
+                        return rowsForArticle
+                            .OrderBy(r => availableDict.TryGetValue(r.Id, out var v) ? v : 0)
+                            .ThenBy(r => r.Name)
+                            .First();
+                    }
+
                 case RowSelectionStrategy.MostFreePallets:
                 default:
-                    var availableDict = await GetAvailablePalletsForRowsAsync(rowsForArticle);
+                    {
+                        var availableDict = await GetAvailablePalletsForRowsAsync(rowsForArticle);
 
-                    return rowsForArticle
-                        .OrderByDescending(r => availableDict.TryGetValue(r.Id, out var v) ? v : 0)
-                        .ThenBy(r => r.Name)
-                        .First();
+                        return rowsForArticle
+                            .OrderByDescending(r => availableDict.TryGetValue(r.Id, out var v) ? v : 0)
+                            .ThenBy(r => r.Name)
+                            .First();
+                    }
             }
         }
 

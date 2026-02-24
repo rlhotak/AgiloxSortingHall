@@ -3,64 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\helpers\\worktablestations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\helpers\\worktablestations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\worktables.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\worktables.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\skladniksettings.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\skladniksettings.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\worktables.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\worktables.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\skladniksettings.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\skladniksettings.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\models\\worktable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\models\\worktable.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\helpers\\worktablecategoryextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\helpers\\worktablecategoryextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\dto\\stationareadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\dto\\stationareadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\index.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\models\\hallsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\models\\hallsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\dto\\agiloxcallbackdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\dto\\agiloxcallbackdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\stul.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\stul.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\stul.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\stul.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\shared\\_toastnotifications.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\shared\\_toastnotifications.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\skladnik.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\skladnik.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\models\\hallrow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\models\\hallrow.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\skladnik.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\skladnik.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\models\\palletslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\models\\palletslot.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -70,7 +38,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -78,193 +46,89 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "WorkTables.cshtml",
               "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\WorkTables.cshtml",
               "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\WorkTables.cshtml",
               "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\WorkTables.cshtml",
               "RelativeToolTip": "AgiloxSortingHall\\Pages\\WorkTables.cshtml",
-              "ViewState": "AgIAAJoAAAAAAAAAAAAwwK8AAAA4AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFMAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T10:05:57.661Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "HallSettings.cs",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Models\\HallSettings.cs",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Models\\HallSettings.cs",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Models\\HallSettings.cs",
-              "RelativeToolTip": "AgiloxSortingHall\\Models\\HallSettings.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAALAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T08:11:30.563Z",
+              "WhenOpened": "2026-01-27T10:12:17.091Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "SkladnikSettings.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml.cs",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml.cs",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml.cs",
-              "RelativeToolTip": "AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml.cs",
-              "ViewState": "AgIAAN0BAAAAAAAAAAAuwPIBAAAJAAAAAAAAAA==",
+              "Title": "WorkTables.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\WorkTables.cshtml.cs",
+              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\WorkTables.cshtml.cs",
+              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\WorkTables.cshtml.cs",
+              "RelativeToolTip": "AgiloxSortingHall\\Pages\\WorkTables.cshtml.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAwwC4AAABKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-26T13:02:23.177Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T10:11:55.884Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SkladnikSettings.cshtml",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml",
-              "RelativeToolTip": "AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml",
-              "ViewState": "AgIAANAAAAAAAAAAAAAwwOYAAAB/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-26T09:28:56.917Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AgiloxCallbackDto.cs",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Dto\\AgiloxCallbackDto.cs",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Dto\\AgiloxCallbackDto.cs",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Dto\\AgiloxCallbackDto.cs",
-              "RelativeToolTip": "AgiloxSortingHall\\Dto\\AgiloxCallbackDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAVAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "WorkTableStations.cs",
+              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Helpers\\WorkTableStations.cs",
+              "RelativeDocumentMoniker": "AgiloxSortingHall\\Helpers\\WorkTableStations.cs",
+              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Helpers\\WorkTableStations.cs",
+              "RelativeToolTip": "AgiloxSortingHall\\Helpers\\WorkTableStations.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAA6AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T08:54:25.686Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "Stul.cshtml",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Stul.cshtml",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Stul.cshtml",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Stul.cshtml",
-              "RelativeToolTip": "AgiloxSortingHall\\Pages\\Stul.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-27T07:50:37.369Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "Stul.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Stul.cshtml.cs",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Stul.cshtml.cs",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Stul.cshtml.cs",
-              "RelativeToolTip": "AgiloxSortingHall\\Pages\\Stul.cshtml.cs",
-              "ViewState": "AgIAAOQAAAAAAAAAAAAgwAMBAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T07:50:38.375Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "site.css",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\wwwroot\\css\\site.css",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\wwwroot\\css\\site.css",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\wwwroot\\css\\site.css",
-              "RelativeToolTip": "AgiloxSortingHall\\wwwroot\\css\\site.css",
-              "ViewState": "AgIAAFYDAAAAAAAAAAAswG4DAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-01-26T09:42:37.335Z",
+              "WhenOpened": "2026-01-27T10:11:17.068Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "StationAreaDto.cs",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Dto\\StationAreaDto.cs",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Dto\\StationAreaDto.cs",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Dto\\StationAreaDto.cs",
-              "RelativeToolTip": "AgiloxSortingHall\\Dto\\StationAreaDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Title": "WorkTableCategoryExtensions.cs",
+              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Helpers\\WorkTableCategoryExtensions.cs",
+              "RelativeDocumentMoniker": "AgiloxSortingHall\\Helpers\\WorkTableCategoryExtensions.cs",
+              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Helpers\\WorkTableCategoryExtensions.cs",
+              "RelativeToolTip": "AgiloxSortingHall\\Helpers\\WorkTableCategoryExtensions.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T08:57:05.189Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T10:11:00.189Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "_ToastNotifications.cshtml",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Shared\\_ToastNotifications.cshtml",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Shared\\_ToastNotifications.cshtml",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Shared\\_ToastNotifications.cshtml",
-              "RelativeToolTip": "AgiloxSortingHall\\Pages\\Shared\\_ToastNotifications.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-26T13:25:22.495Z"
+              "DocumentIndex": 3,
+              "Title": "WorkTable.cs",
+              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Models\\WorkTable.cs",
+              "RelativeDocumentMoniker": "AgiloxSortingHall\\Models\\WorkTable.cs",
+              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Models\\WorkTable.cs",
+              "RelativeToolTip": "AgiloxSortingHall\\Models\\WorkTable.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAPAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-01-27T10:10:24.855Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Program.cs",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Program.cs",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Program.cs",
-              "RelativeToolTip": "AgiloxSortingHall\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAG8AAAAAAAAAAAAAAA==",
+              "Title": "Index.cshtml.cs",
+              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Index.cshtml.cs",
+              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Index.cshtml.cs",
+              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Index.cshtml.cs",
+              "RelativeToolTip": "AgiloxSortingHall\\Pages\\Index.cshtml.cs",
+              "ViewState": "AgIAALUAAAAAAAAAAAAuwNYAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-27T09:05:54.854Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-27T10:09:58.455Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "PalletSlot.cs",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Models\\PalletSlot.cs",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Models\\PalletSlot.cs",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Models\\PalletSlot.cs",
-              "RelativeToolTip": "AgiloxSortingHall\\Models\\PalletSlot.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-26T09:23:33.136Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "HallRow.cs",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Models\\HallRow.cs",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Models\\HallRow.cs",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Models\\HallRow.cs",
-              "RelativeToolTip": "AgiloxSortingHall\\Models\\HallRow.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAqwCQAAAAxAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-26T09:23:20.705Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "Skladnik.cshtml.cs",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Skladnik.cshtml.cs",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Skladnik.cshtml.cs",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Skladnik.cshtml.cs",
-              "RelativeToolTip": "AgiloxSortingHall\\Pages\\Skladnik.cshtml.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAHsBAAArAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-26T09:22:16.565Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "Skladnik.cshtml",
-              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Skladnik.cshtml",
-              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Skladnik.cshtml",
-              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Skladnik.cshtml",
-              "RelativeToolTip": "AgiloxSortingHall\\Pages\\Skladnik.cshtml",
-              "ViewState": "AgIAABEAAAAAAAAAAAAwwCAAAABeAAAAAAAAAA==",
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Index.cshtml",
+              "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Index.cshtml",
+              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Index.cshtml",
+              "RelativeToolTip": "AgiloxSortingHall\\Pages\\Index.cshtml",
+              "ViewState": "AgIAANcAAAAAAAAAAAAuwPgAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-01-26T09:14:44.697Z"
+              "WhenOpened": "2026-01-27T10:08:49.569Z"
             }
           ]
         }

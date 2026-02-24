@@ -106,7 +106,7 @@ public class SkladnikSettingsModel : PageModel
 
     /// <summary>
     /// Maximální poèet pozic/stanic pro vybranou oblast dle Agiloxu (stationarea.count).
-    /// Pokud je null, nepodaøilo se Agilox naèíst a limit se neuplatní (fail-open).
+    /// Pokud je null, nepodaøilo se Agilox naèíst a limit se neuplatní.
     /// </summary>
     public int? MaxStationsForArea { get; set; }
 
@@ -178,10 +178,8 @@ public class SkladnikSettingsModel : PageModel
             ? "Hotovo"
             : settings.StationAreaName.Trim();
 
-        // Pøedvyplnìní editovatelného inputu ve formuláøi
         StationAreaName = StationAreaNameCurrent;
 
-        // Naètení limitu z Agiloxu
         MaxStationsForArea = await GetMaxStationsForAreaAsync(StationAreaNameCurrent);
     }
 
@@ -212,7 +210,6 @@ public class SkladnikSettingsModel : PageModel
         {
             var http = CreateAgiloxClient();
 
-            // díky BaseAddress staèí relativní cesta
             var json = await http.GetStringAsync("stationarea");
 
             using var doc = JsonDocument.Parse(json);
@@ -229,7 +226,7 @@ public class SkladnikSettingsModel : PageModel
                     continue;
 
                 // Pokus o deserializaci hodnoty na StationAreaDto
-                // (když by se nìkde objevilo nìco divného, radši to jen pøeskoèíme)
+                // (kdyby se nìkde objevilo nìco divného, radši to jen pøeskoèíme)
                 try
                 {
                     var dto = prop.Value.Deserialize<StationAreaDto>(_jsonOptions);
@@ -270,10 +267,10 @@ public class SkladnikSettingsModel : PageModel
         if (!dict.TryGetValue(areaName, out var area))
             return null;
 
-        // Limit podle "count" (poèet pozic v dané stationarea)
+        // limit podle "count" (poèet pozic v dané stationarea)
         return area.Count;
 
-        // Pokud bys chtìl zohlednit blokované pozice:
+        // pokud chceme zohlednit blokované pozice:
         // return Math.Max(0, area.Count - area.CountBlocked);
     }
 

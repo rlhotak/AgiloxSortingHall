@@ -54,6 +54,20 @@
                         <input class="strategy-radio"
                                type="radio"
                                name="strategy"
+                               value="LeastFreePallets"
+                        @(Model.CurrentStrategy == RowSelectionStrategy.LeastFreePallets ? "checked" : "") />
+                        <div class="strategy-content">
+                            <div class="fw-bold">Nejméně volných palet</div>
+                            <small class="d-block">
+                                Vybere řadu s daným artiklem, kde je nejméně volných palet.
+                            </small>
+                        </div>
+                    </label>
+
+                    <label class="strategy-item strategy-card">
+                        <input class="strategy-radio"
+                               type="radio"
+                               name="strategy"
                                value="NearestLeft"
                                @(Model.CurrentStrategy == RowSelectionStrategy.NearestLeft ? "checked" : "") />
                         <div class="strategy-content">
