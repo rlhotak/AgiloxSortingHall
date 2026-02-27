@@ -79,7 +79,10 @@
 
             <!-- Tlačítko pro zrušení požadavku -->
             <div class="d-flex flex-column gap-3 w-100" style="max-width: 400px;">
-                <form method="post" asp-page-handler="CancelCall">
+                <form method="post"
+                      asp-page-handler="CancelCall"
+                      asp-route-id="@Model.Table.Id"
+                      asp-route-category="@Model.Category">
                     <button type="submit"
                             class="btn btn-outline-danger btn-lg w-100 py-3">
                         ✖ Zrušit požadavek

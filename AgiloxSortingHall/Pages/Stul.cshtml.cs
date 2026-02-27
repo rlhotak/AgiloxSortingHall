@@ -111,7 +111,7 @@ namespace AgiloxSortingHall.Pages
         public async Task<IActionResult> OnPostCallRowAsync(int id, int rowId)
         {
             if (await HasPendingCallForTableAsync(id))
-                return RedirectToPage(new { id });
+                return RedirectToPage(new { id, category = Category });
 
             var table = await _db.WorkTables.FindAsync(id);
             var row = await _db.HallRows
@@ -119,12 +119,12 @@ namespace AgiloxSortingHall.Pages
                 .FirstOrDefaultAsync(r => r.Id == rowId);
 
             if (table == null || row == null)
-                return RedirectToPage(new { id });
+                return RedirectToPage(new { id, category = Category });
 
             await CreateCallAndDispatchAsync(table, row);
 
             await _hub.Clients.All.SendAsync("HallUpdated");
-            return RedirectToPage(new { id });
+            return RedirectToPage(new { id, category = Category });
         }
 
         /// <summary>
@@ -427,10 +427,7 @@ namespace AgiloxSortingHall.Pages
 
             await _hub.Clients.All.SendAsync("HallUpdated");
 
-            if (Category == WorkTableCategory.Kontrola)
-                return RedirectToPage("/Index", new { category = Category });
-            else
-                return RedirectToPage(new { id });
+            return RedirectToPage("/Index", new { category = Category });
         }
 
         /// <summary>
