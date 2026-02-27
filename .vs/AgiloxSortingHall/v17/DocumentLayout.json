@@ -3,6 +3,18 @@
   "WorkspaceRootPath": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\properties\\launchsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|c:\\users\\jprochazka\\source\\repos\\agiloxsortinghall\\agiloxsortinghall\\pages\\stul.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E57A5DE7-3AD5-428E-BA48-64FAB43FD16A}|AgiloxSortingHall\\AgiloxSortingHall.csproj|solutionrelative:agiloxsortinghall\\pages\\stul.cshtml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -34,7 +46,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,7 +54,46 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\appsettings.json",
+              "RelativeDocumentMoniker": "AgiloxSortingHall\\appsettings.json",
+              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\appsettings.json",
+              "RelativeToolTip": "AgiloxSortingHall\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFUAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-27T07:16:07.042Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Program.cs",
+              "RelativeDocumentMoniker": "AgiloxSortingHall\\Program.cs",
+              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Program.cs",
+              "RelativeToolTip": "AgiloxSortingHall\\Program.cs",
+              "ViewState": "AgIAAEwAAAAAAAAAAAAuwGAAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-27T07:13:43.749Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "launchSettings.json",
+              "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Properties\\launchSettings.json",
+              "RelativeDocumentMoniker": "AgiloxSortingHall\\Properties\\launchSettings.json",
+              "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Properties\\launchSettings.json",
+              "RelativeToolTip": "AgiloxSortingHall\\Properties\\launchSettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-27T07:13:31.438Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "AgiloxService.cs",
               "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Services\\AgiloxService.cs",
               "RelativeDocumentMoniker": "AgiloxSortingHall\\Services\\AgiloxService.cs",
@@ -55,7 +106,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 6,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Index.cshtml",
               "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Index.cshtml",
@@ -68,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 7,
               "Title": "Skladnik.cshtml",
               "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Skladnik.cshtml",
               "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Skladnik.cshtml",
@@ -81,7 +132,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 8,
               "Title": "SkladnikSettings.cshtml",
               "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml",
               "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\SkladnikSettings.cshtml",
@@ -93,7 +144,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 3,
               "Title": "Stul.cshtml.cs",
               "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Stul.cshtml.cs",
               "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Stul.cshtml.cs",
@@ -106,7 +157,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 4,
               "Title": "Stul.cshtml",
               "DocumentMoniker": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Pages\\Stul.cshtml",
               "RelativeDocumentMoniker": "AgiloxSortingHall\\Pages\\Stul.cshtml",
