@@ -8,3 +8,8 @@
 2026-02-27 08:09:32.188 +01:00 [INF] TryDispatchAgiloxForRowAsync: hallRowId == null -> žádná řada, nic se nespouští.
 2026-02-27 11:35:40.546 +01:00 [INF] Starting AgiloxSortingHall application...
 2026-02-27 11:36:25.902 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2026-02-27 11:43:46.719 +01:00 [INF] Starting AgiloxSortingHall application...
+2026-02-27 11:44:09.680 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2026-02-27 12:19:44.653 +01:00 [INF] OnPostCallArticleAsync HIT: id=2, article=test
+2026-02-27 12:19:44.838 +01:00 [INF] Řada Řada1 nemá volnou paletu – workflow se nespouští.
+2026-02-27 12:19:44.840 +01:00 [INF] OnPostCallArticleAsync finished OK, redirecting to Index
