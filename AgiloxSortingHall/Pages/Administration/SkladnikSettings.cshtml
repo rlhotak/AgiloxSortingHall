@@ -1,0 +1,302 @@
+﻿@page
+@using AgiloxSortingHall.Enums
+@using AgiloxSortingHall.Models
+@model AgiloxSortingHall.Pages.Administration.SkladnikSettingsModel
+
+@{
+    ViewData["Title"] = "Nastavení obrazovky skladníka";
+    Layout = "_AdminLayout";
+}
+
+@section AdminPageHeader {
+    <div class="admin-page-title">
+        <h1>Nastavení obrazovky skladníka</h1>
+        <div class="admin-page-subtitle">
+            Strategie prioritního výběru řady, řady, sloty a oblast stationarea
+        </div>
+    </div>
+}
+
+<div class="settings-panel">
+    <div class="settings-panel-header">
+        <div class="settings-panel-title">
+            <i class="bi bi-sliders"></i>
+            Strategie prioritního výběru řady
+        </div>
+    </div>
+
+    <div class="settings-panel-body">
+        <form method="post" asp-page-handler="SetRowSelectionStrategy" class="mb-0">
+            @Html.AntiForgeryToken()
+
+            <div class="strategy-list">
+                <label class="strategy-item strategy-card">
+                    <input class="strategy-radio"
+                           type="radio"
+                           name="strategy"
+                           value="MostFreePallets"
+                    @(Model.CurrentStrategy == RowSelectionStrategy.MostFreePallets ? "checked" : "") />
+                    <div class="strategy-content">
+                        <div class="fw-bold">Nejvíc volných palet</div>
+                        <small class="d-block">
+                            Vybere řadu s daným artiklem, kde je nejvíc volných palet.
+                        </small>
+                    </div>
+                </label>
+
+                <label class="strategy-item strategy-card">
+                    <input class="strategy-radio"
+                           type="radio"
+                           name="strategy"
+                           value="LeastFreePallets"
+                    @(Model.CurrentStrategy == RowSelectionStrategy.LeastFreePallets ? "checked" : "") />
+                    <div class="strategy-content">
+                        <div class="fw-bold">Nejméně volných palet</div>
+                        <small class="d-block">
+                            Vybere řadu s daným artiklem, kde je nejméně volných palet.
+                        </small>
+                    </div>
+                </label>
+
+                <label class="strategy-item strategy-card">
+                    <input class="strategy-radio"
+                           type="radio"
+                           name="strategy"
+                           value="NearestLeft"
+                    @(Model.CurrentStrategy == RowSelectionStrategy.NearestLeft ? "checked" : "") />
+                    <div class="strategy-content">
+                        <div class="fw-bold">Nejnižší číslo řady</div>
+                        <small class="d-block">
+                            Vždy bere řadu nejvíc vlevo.
+                        </small>
+                    </div>
+                </label>
+
+                <label class="strategy-item strategy-card">
+                    <input class="strategy-radio"
+                           type="radio"
+                           name="strategy"
+                           value="NearestRight"
+                    @(Model.CurrentStrategy == RowSelectionStrategy.NearestRight ? "checked" : "") />
+                    <div class="strategy-content">
+                        <div class="fw-bold">Nejvyšší číslo řady</div>
+                        <small class="d-block">
+                            Vždy bere řadu nejvíc vpravo.
+                        </small>
+                    </div>
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-soft mt-3">
+                <i class="bi bi-save me-1"></i>
+                Uložit strategii
+            </button>
+        </form>
+    </div>
+</div>
+
+<div class="settings-panel">
+    <div class="settings-panel-header">
+        <div class="settings-panel-title">
+            <i class="bi bi-columns-gap"></i>
+            Řady a sloty
+        </div>
+    </div>
+
+    <div class="settings-panel-body">
+
+        <div class="mb-3">
+            <form method="post" asp-page-handler="SetStationAreaName">
+                @Html.AntiForgeryToken()
+
+                <label class="form-label text-light medium mb-1">
+                    Název oblasti (Agilox stationarea)
+                </label>
+
+                <div class="d-flex gap-2">
+                    <input class="form-control bg-dark text-light border-secondary"
+                           style="height: 38px;"
+                           name="StationAreaName"
+                           value="@Model.StationAreaName"
+                           placeholder="Hotovo"
+                           list="stationareas" />
+
+                    <button type="submit"
+                            class="btn btn-warning text-dark fw-semibold"
+                            style="height: 38px; white-space: nowrap;">
+                        <i class="bi bi-save me-1"></i>
+                        Uložit oblast
+                    </button>
+                </div>
+
+                <datalist id="stationareas">
+                    @foreach (var a in Model.AvailableStationAreas)
+                    {
+                        <option value="@a"></option>
+                    }
+                </datalist>
+
+                <div class="text-light small">
+                    @if (Model.MaxStationsForArea.HasValue)
+                    {
+                        <span>pozice: @Model.CurrentPositionsCount / @Model.MaxStationsForArea</span>
+                    }
+                    else
+                    {
+                        <span>limit se nepodařilo načíst</span>
+                    }
+                </div>
+            </form>
+        </div>
+
+        <form method="post" asp-page-handler="SaveRows" class="mb-0">
+            @Html.AntiForgeryToken()
+
+            <div class="rows-list">
+                @foreach (var r in Model.Rows)
+                {
+                    <div class="row-item">
+
+                        <div class="row-id">@r.Id</div>
+
+                        <div class="row-name">
+                            <input class="form-control bg-dark text-light border-secondary"
+                                   name="RowName[@r.Id]"
+                                   value="@r.Name"
+                                   placeholder="Název řady" />
+                        </div>
+
+                        <div class="row-color d-flex align-items-center gap-2">
+                            <input class="form-control-color"
+                                   type="color"
+                                   name="RowColor[@r.Id]"
+                                   value="@r.ColorHex" />
+                            <small class="text-muted">@r.ColorHex</small>
+                        </div>
+
+                        <div class="row-cap">
+                            <input class="form-control bg-dark text-light border-secondary"
+                                   type="number"
+                                   min="0"
+                                   name="RowCapacity[@r.Id]"
+                                   value="@r.Capacity"
+                                   placeholder="Kapacita" />
+                        </div>
+
+                        <div class="row-actions">
+                            <button type="submit"
+                                    class="btn btn-primary btn-soft"
+                                    name="saveSingleRowId"
+                                    value="@r.Id"
+                                    title="Uložit tuto řadu">
+                                <i class="bi bi-save"></i>
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-danger-outline"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#confirmDeleteRowModal"
+                                    data-row-id="@r.Id"
+                                    data-row-name="@r.Name"
+                                    title="Smazat řadu">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-soft mt-3">
+                <i class="bi bi-save me-1"></i>
+                Uložit vše
+            </button>
+
+            <div class="text-muted small mt-3">
+                Pozn.: Snížení kapacity je blokované, pokud by tím vznikl “oříznutý” obsazený slot.
+            </div>
+        </form>
+
+        <form method="post" asp-page-handler="AddRow" class="m-0 mt-3">
+            @Html.AntiForgeryToken()
+
+            <button type="submit"
+                    class="row-item w-100 btn-success d-flex align-items-center justify-content-center"
+            @(Model.CanAddRow ? "" : "disabled")
+                    title="@(Model.CanAddRow ? "Přidat řadu" : "Dosažen limit stanic pro zvolenou oblast")">
+                <i class="bi bi-plus-lg me-2"></i>
+                Přidat řadu
+            </button>
+
+            @if (!Model.CanAddRow && Model.MaxStationsForArea.HasValue)
+            {
+                <div class="text-warning small mt-2">
+                    Limit dosažen: oblast '@Model.StationAreaNameCurrent' má v Agiloxu max @Model.MaxStationsForArea pozic.
+                </div>
+            }
+        </form>
+
+    </div>
+</div>
+
+
+<!-- MODAL: potvrzení smazání řady -->
+<div class="modal fade" id="confirmDeleteRowModal" tabindex="-1" aria-labelledby="confirmDeleteRowModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-light border-secondary">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title d-flex align-items-center" id="confirmDeleteRowModalLabel">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
+                    Smazat řadu
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p class="mb-2">
+                    Opravdu chceš smazat řadu <span class="fw-bold" id="deleteRowName"></span>?
+                </p>
+                <p class="text-muted small mb-0">
+                    Smazání je možné jen pokud řada nemá obsazené sloty a nemá pending požadavky.
+                </p>
+            </div>
+
+            <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zrušit</button>
+
+                <form method="post" asp-page-handler="DeleteRow" class="m-0">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="rowId" id="deleteRowId" value="" />
+                    <button type="submit" class="btn btn-danger">
+                        Smazat
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Modal: Delete row – naplnění hidden inputu a názvu
+            var deleteModal = document.getElementById('confirmDeleteRowModal');
+            var rowIdInput = document.getElementById('deleteRowId');
+            var rowNameSpan = document.getElementById('deleteRowName');
+
+            if (deleteModal) {
+                deleteModal.addEventListener('show.bs.modal', function (event) {
+                    var button = event.relatedTarget;
+                    if (!button) return;
+
+                    var rowId = button.getAttribute('data-row-id');
+                    var rowName = button.getAttribute('data-row-name') || '';
+
+                    if (rowIdInput && rowId) rowIdInput.value = rowId;
+                    if (rowNameSpan) rowNameSpan.textContent = rowName;
+                });
+            }
+        });
+    </script>
+}

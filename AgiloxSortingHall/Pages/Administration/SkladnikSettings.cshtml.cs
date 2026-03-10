@@ -3,11 +3,12 @@ using AgiloxSortingHall.Data;
 using AgiloxSortingHall.Dto;
 using AgiloxSortingHall.Enums;
 using AgiloxSortingHall.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace AgiloxSortingHall.Pages;
+namespace AgiloxSortingHall.Pages.Administration;
 
 /// <summary>
 /// Stránka nastavení pro skladníka.
@@ -17,6 +18,7 @@ namespace AgiloxSortingHall.Pages;
 /// - nastavit "název oblasti" (Agilox stationarea), která urèuje limit poètu stanic/øad
 ///   dle reálného poètu pozic vrácených z Agilox endpointu /stationarea.
 /// </summary>
+[Authorize]
 public class SkladnikSettingsModel : PageModel
 {
     private readonly AppDbContext _db;

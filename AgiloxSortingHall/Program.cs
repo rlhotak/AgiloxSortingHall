@@ -1,6 +1,7 @@
 using AgiloxSortingHall.Data;
 using AgiloxSortingHall.Hubs;
 using AgiloxSortingHall.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -29,6 +30,7 @@ try
 
     builder.Services.Configure<HallConfig>(
         builder.Configuration.GetSection("HallConfig"));
+
     builder.Services.AddTransient<DataSeeder>();
 
     var agiloxBaseUrl = builder.Configuration["Agilox:BaseUrl"]
@@ -38,13 +40,30 @@ try
     {
         client.BaseAddress = new Uri(agiloxBaseUrl);
         client.DefaultRequestHeaders.Add("Accept", "application/json");
-
         client.Timeout = TimeSpan.FromSeconds(2);
     });
 
     builder.Services.AddScoped<AgiloxService>();
 
-    builder.Services.AddRazorPages();
+    // Authentication + Authorization
+    builder.Services
+        .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.LoginPath = "/Account/Login";
+            options.AccessDeniedPath = "/Account/AccessDenied";
+            options.Cookie.Name = "AgiloxSortingHall.Auth";
+            options.SlidingExpiration = true;
+        });
+
+    builder.Services.AddAuthorization();
+
+    builder.Services.AddRazorPages(options =>
+    {
+        options.Conventions.AuthorizeFolder("/Administration");
+        options.Conventions.AllowAnonymousToPage("/Account/Login");
+    });
+
     builder.Services.AddSignalR();
     builder.Services.AddControllers();
 
@@ -86,14 +105,17 @@ try
         app.UseHsts();
     }
 
-    //app.UseHttpsRedirection();
+    // app.UseHttpsRedirection();
 
     app.UseRouting();
+
+    app.UseAuthentication();
     app.UseAuthorization();
 
     app.MapControllers();
 
     app.MapStaticAssets();
+
     app.MapRazorPages()
        .WithStaticAssets();
 

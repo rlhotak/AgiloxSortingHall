@@ -2,24 +2,25 @@
 @using AgiloxSortingHall.Models
 @using AgiloxSortingHall.Enums
 @using AgiloxSortingHall.Helpers
-@model AgiloxSortingHall.Pages.WorkTablesModel
+@model AgiloxSortingHall.Pages.Administration.WorkTablesModel
 
 @{
-    ViewData["Title"] = "Správa stolů";
+    ViewData["Title"] = "Nastavení pracovišť";
+    Layout = "_AdminLayout";
 }
 
-<div class="container py-4 text-light">
-
-    <!-- Hlavička -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="fw-bold m-0">Správa stolů</h1>
-            <div class="text-secondary fs-6">Přidání, úprava a mazání stolů</div>
+@section AdminPageHeader {
+    <div class="admin-page-title-row">
+        <div class="admin-page-title">
+            <h1>Správa stolů</h1>
+            <div class="admin-page-subtitle">
+                Přidání, úprava a mazání stolů
+            </div>
         </div>
 
         <div class="d-flex gap-2 align-items-center">
             <button type="button"
-                    class="btn btn-outline-info btn-lg d-flex align-items-center px-4 py-2"
+                    class="btn btn-success btn-lg d-flex align-items-center px-4 py-2"
                     data-bs-toggle="offcanvas"
                     data-bs-target="#wtEditor"
                     aria-controls="wtEditor"
@@ -29,82 +30,81 @@
             </button>
         </div>
     </div>
+}
 
-    @if (TempData["Flash"] is string flash && !string.IsNullOrWhiteSpace(flash))
-    {
-        <div class="alert alert-info border-0 shadow-sm">@flash</div>
-    }
+@if (TempData["Flash"] is string flash && !string.IsNullOrWhiteSpace(flash))
+{
+    <div class="alert alert-info border-0 shadow-sm">@flash</div>
+}
 
-    @if (!Model.Tables.Any())
-    {
-        <div class="alert alert-info border-0 shadow-sm">
-            Zatím nemáš žádné stoly.
-        </div>
-    }
-    else
-    {
-        <div class="row g-3">
-            @foreach (var t in Model.Tables)
-            {
-                <div class="col-12 col-md-6 col-lg-4 d-flex">
-                    <div class="bg-dark text-light border border-secondary rounded-3 flex-fill p-4 shadow-sm">
+@if (!Model.Tables.Any())
+{
+    <div class="alert alert-info border-0 shadow-sm">
+        Zatím nemáš žádné stoly.
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var t in Model.Tables)
+        {
+            <div class="col-12 col-md-6 col-lg-4 d-flex">
+                <div class="bg-dark text-light border border-secondary rounded-3 flex-fill p-4 shadow-sm">
 
-                        <div class="d-flex justify-content-between align-items-start mb-3">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-table fs-2 me-3 text-info"></i>
-                                <div>
-                                    <div class="fs-3 fw-semibold">@(!string.IsNullOrWhiteSpace(t.DisplayName) ? t.DisplayName : $"Stůl #{t.Id}")</div>
-                                    <div class="text-secondary small">
-                                        <i class="bi bi-tag me-1"></i>@t.Category.ToUiText()
-                                    </div>
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-table fs-2 me-3 text-info"></i>
+                            <div>
+                                <div class="fs-4 fw-semibold">@(!string.IsNullOrWhiteSpace(t.DisplayName) ? t.DisplayName : $"Stůl #{t.Id}")</div>
+                                <div class="text-secondary small">
+                                    @t.Category.ToUiText()
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="d-flex gap-2">
-                                <button type="button"
-                                        class="btn btn-outline-info btn-sm d-flex align-items-center js-edit"
-                                        data-bs-toggle="offcanvas"
-                                        data-bs-target="#wtEditor"
-                                        aria-controls="wtEditor"
-                                        data-id="@t.Id"
-                                        data-displayname="@t.DisplayName"
-                                        data-input="@t.InputStationName"
-                                        data-output="@t.OutputStationName"
-                                        data-category="@( (int)t.Category )">
-                                    <i class="bi bi-pencil-square me-1"></i>
-                                    Upravit
+                        <div class="d-flex gap-2 mt-2">
+                            <button type="button"
+                                    class="btn btn-info btn-sm d-flex align-items-center js-edit"
+                                    data-bs-toggle="offcanvas"
+                                    data-bs-target="#wtEditor"
+                                    aria-controls="wtEditor"
+                                    data-id="@t.Id"
+                                    data-displayname="@t.DisplayName"
+                                    data-input="@t.InputStationName"
+                                    data-output="@t.OutputStationName"
+                                    data-category="@((int)t.Category)">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+
+                            <form method="post" asp-page-handler="Delete" class="m-0"
+                                    onsubmit="return confirm('Opravdu smazat tento stůl?');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@t.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center">
+                                    <i class="bi bi-trash"></i>
                                 </button>
-
-                                <form method="post" asp-page-handler="Delete" class="m-0"
-                                      onsubmit="return confirm('Opravdu smazat tento stůl?');">
-                                    <input type="hidden" name="id" value="@t.Id" />
-                                    <button type="submit" class="btn btn-outline-danger btn-sm d-flex align-items-center">
-                                        <i class="bi bi-trash me-1"></i>
-                                        Smazat
-                                    </button>
-                                </form>
-                            </div>
+                            </form>
                         </div>
-
-                        <div class="small opacity-75">
-                            <div class="mb-1">
-                                <i class="bi bi-box-arrow-in-right me-1"></i>
-                                <span class="text-secondary">Input:</span>
-                                <span class="text-light">@t.InputStationName</span>
-                            </div>
-                            <div>
-                                <i class="bi bi-box-arrow-left me-1"></i>
-                                <span class="text-secondary">Output:</span>
-                                <span class="text-light">@t.OutputStationName</span>
-                            </div>
-                        </div>
-
                     </div>
+
+                    <div class="small opacity-75">
+                        <div class="mb-1">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>
+                            <span class="text-secondary">Input:</span>
+                            <span class="text-light">@t.InputStationName</span>
+                        </div>
+                        <div>
+                            <i class="bi bi-box-arrow-left me-1"></i>
+                            <span class="text-secondary">Output:</span>
+                            <span class="text-light">@t.OutputStationName</span>
+                        </div>
+                    </div>
+
                 </div>
-            }
-        </div>
-    }
-</div>
+            </div>
+        }
+    </div>
+}
 
 <!-- Offcanvas editor (Create/Update) -->
 <div class="offcanvas offcanvas-end text-bg-dark"
@@ -127,8 +127,8 @@
     <div class="offcanvas-body">
         <div asp-validation-summary="ModelOnly" class="alert alert-warning border-0" role="alert"></div>
 
-        <!-- Jediný form: handler přepínáme JS na Create/Update -->
         <form method="post" id="editorForm">
+            @Html.AntiForgeryToken()
             <input type="hidden" name="Edit.Id" id="Edit_Id" />
 
             <div class="mb-3">
@@ -188,7 +188,6 @@
             Poznámka: Názvy vstupních a výstupních stanic jsou v systému vyhodnocovány bez ohledu na velikost písmen.
             Rozhodující je přesný název stanice dle konfigurace systému Agilox.
         </div>
-
     </div>
 </div>
 
@@ -211,7 +210,6 @@
             const btnAddNew = document.getElementById('btnAddNew');
 
             function setHandler(handlerName) {
-                // Razor Pages: /WorkTables?handler=Create nebo Update
                 form.setAttribute('action', `?handler=${handlerName}`);
             }
 
@@ -255,14 +253,12 @@
                 });
             });
 
-            // Kdyby uživatel otevřel offcanvas jinak, default je Create.
             setCreateMode();
         })();
     </script>
 }
 
 <style>
-    /* lehký doplněk stylu do tmavého vzhledu */
     .form-control, .form-select {
         background-color: #1b1b1d;
         border-color: #2c2c2e;

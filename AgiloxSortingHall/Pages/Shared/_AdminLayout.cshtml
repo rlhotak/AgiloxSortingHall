@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<div class="admin-shell">
+    <div class="admin-container">
+        <partial name="_AdminHeader" />
+
+        @if (IsSectionDefined("AdminPageHeader"))
+        {
+            <div class="admin-page-header">
+                @RenderSection("AdminPageHeader", required: false)
+            </div>
+        }
+
+        <div class="admin-content">
+            @RenderBody()
+        </div>
+    </div>
+</div>
+
+@await RenderSectionAsync("Scripts", required: false)
+@await RenderSectionAsync("Styles", required: false)

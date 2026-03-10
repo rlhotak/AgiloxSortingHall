@@ -1,0 +1,64 @@
+﻿@page
+@model AgiloxSortingHall.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Přihlášení";
+}
+
+<div class="auth-shell">
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <div class="auth-icon">
+                <i class="bi bi-shield-lock"></i>
+            </div>
+
+            <div>
+                <h1 class="auth-title">Přihlášení</h1>
+                <div class="auth-subtitle">
+                    Administrace vizualizace pro Karla
+                </div>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger border-0 shadow-sm mb-4">
+                @Model.ErrorMessage
+            </div>
+        }
+
+        <form method="post" class="auth-form">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label asp-for="Username" class="form-label auth-label">Uživatelské jméno</label>
+                <input asp-for="Username"
+                       class="form-control auth-input"
+                       autocomplete="username"
+                       placeholder="Zadej uživatelské jméno" />
+            </div>
+
+            <div class="mb-4">
+                <label asp-for="Password" class="form-label auth-label">Heslo</label>
+                <input asp-for="Password"
+                       type="password"
+                       class="form-control auth-input"
+                       autocomplete="current-password"
+                       placeholder="Zadej heslo" />
+            </div>
+
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                    Přihlásit se
+                </button>
+
+                <a asp-page="/Index" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-arrow-left me-2"></i>
+                    Zpět na hlavní stránku
+                </a>
+            </div>
+        </form>
+
+    </div>
+</div>

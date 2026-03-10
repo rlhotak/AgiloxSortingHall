@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
 
-namespace AgiloxSortingHall.Pages;
+namespace AgiloxSortingHall.Pages.Administration;
 
 public class WorkTablesModel : PageModel
 {
