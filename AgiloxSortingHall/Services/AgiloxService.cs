@@ -55,10 +55,7 @@ namespace AgiloxSortingHall.Services
                 .Include(c => c.HallRow)
                     .ThenInclude(r => r.Slots)
                 .Include(c => c.WorkTable)
-                .Where(c =>
-                    c.Status == RowCallStatus.Pending &&
-                    c.OrderId == dto.OrderId)
-                .FirstOrDefaultAsync();
+                .FirstOrDefaultAsync(c => c.OrderId == dto.OrderId);
 
             if (call == null)
             {

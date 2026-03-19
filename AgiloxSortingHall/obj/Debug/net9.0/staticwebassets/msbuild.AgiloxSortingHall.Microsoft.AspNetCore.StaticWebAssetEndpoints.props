@@ -16,13 +16,13 @@
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"integrity","Value":"sha256-ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE="}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"26164"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Mar 2026 10:42:47 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"no-cache"},{"Name":"Content-Length","Value":"26164"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Mar 2026 10:55:42 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/AgiloxSortingHall/css/site.jitkhczb3s.css">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\css\site.css'))</AssetFile>
       <Selectors><![CDATA[[]]]></Selectors>
       <EndpointProperties><![CDATA[[{"Name":"fingerprint","Value":"jitkhczb3s"},{"Name":"integrity","Value":"sha256-ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE="},{"Name":"label","Value":"_content/AgiloxSortingHall/css/site.css"}]]]></EndpointProperties>
-      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"26164"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Mar 2026 10:42:47 GMT"}]]]></ResponseHeaders>
+      <ResponseHeaders><![CDATA[[{"Name":"Accept-Ranges","Value":"bytes"},{"Name":"Cache-Control","Value":"max-age=31536000, immutable"},{"Name":"Content-Length","Value":"26164"},{"Name":"Content-Type","Value":"text/css"},{"Name":"ETag","Value":"\u0022ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE=\u0022"},{"Name":"Last-Modified","Value":"Tue, 10 Mar 2026 10:55:42 GMT"}]]]></ResponseHeaders>
     </StaticWebAssetEndpoint>
     <StaticWebAssetEndpoint Include="_content/AgiloxSortingHall/favicon.61n19gt1b8.ico">
       <AssetFile>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.ico'))</AssetFile>

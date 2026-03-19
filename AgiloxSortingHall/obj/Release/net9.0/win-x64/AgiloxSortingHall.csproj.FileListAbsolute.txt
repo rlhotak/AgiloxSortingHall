@@ -461,7 +461,6 @@ C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Release
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Release\net9.0\win-x64\Serilog.Sinks.Debug.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Release\net9.0\win-x64\Serilog.Sinks.File.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Release\net9.0\win-x64\mscordaccore_amd64_amd64_9.0.425.16305.dll
-C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\t5y08vqmib-97z88jdn93.gz
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\1wzxilyv5k-61n19gt1b8.gz
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\yhdwgz9w23-xtxxf3hu2r.gz
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\11xn1m0vad-bqjiyaj88i.gz
@@ -531,3 +530,4 @@ C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\staticwebassets\msbuild.buildMultiTargeting.AgiloxSortingHall.props
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\staticwebassets\msbuild.buildTransitive.AgiloxSortingHall.props
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\staticwebassets.pack.json
+C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\t5y08vqmib-jitkhczb3s.gz

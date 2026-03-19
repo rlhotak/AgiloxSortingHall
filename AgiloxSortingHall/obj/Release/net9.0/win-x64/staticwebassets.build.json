@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "RUjJ21MasKj68VfXsw4QPjO3GaTJM4rxjSqSvtAnG6c=",
+  "Hash": "JEdNzW/9fVBTeIw6oJ+mLsw73J80U/t809LSn1tywR4=",
   "Source": "AgiloxSortingHall",
   "BasePath": "_content/AgiloxSortingHall",
   "Mode": "Default",
@@ -1088,12 +1088,12 @@
       "OriginalItemSpec": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\wwwroot\\lib\\jquery\\dist\\jquery.slim.js"
     },
     {
-      "Identity": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-97z88jdn93.gz",
+      "Identity": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-jitkhczb3s.gz",
       "SourceId": "AgiloxSortingHall",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\",
       "BasePath": "_content/AgiloxSortingHall",
-      "RelativePath": "css/site#[.{fingerprint=97z88jdn93}]?.css.gz",
+      "RelativePath": "css/site#[.{fingerprint=jitkhczb3s}]?.css.gz",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Alternative",
@@ -1102,8 +1102,8 @@
       "RelatedAsset": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\wwwroot\\css\\site.css",
       "AssetTraitName": "Content-Encoding",
       "AssetTraitValue": "gzip",
-      "Fingerprint": "7vn4ca8we5",
-      "Integrity": "08VTblRUPkIog7oYqo/eW+X54SAVNg4r0fe3DoySGig=",
+      "Fingerprint": "1b6jonrmk4",
+      "Integrity": "U1XC/jcsOovPrQBketZRQoUE2jb9cdX+E0FTcOPjq+0=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\wwwroot\\css\\site.css"
@@ -1417,8 +1417,8 @@
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
-      "Fingerprint": "97z88jdn93",
-      "Integrity": "NSiua9XgmiFP8qXggvn+aKs9uIAmXr/6Xdf6QrtFukY=",
+      "Fingerprint": "jitkhczb3s",
+      "Integrity": "ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE=",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
@@ -3324,13 +3324,13 @@
       ]
     },
     {
-      "Route": "css/site.97z88jdn93.css",
-      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-97z88jdn93.gz",
+      "Route": "css/site.css",
+      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-jitkhczb3s.gz",
       "Selectors": [
         {
           "Name": "Content-Encoding",
           "Value": "gzip",
-          "Quality": "0.000158931977"
+          "Quality": "0.000145878920"
         }
       ],
       "ResponseHeaders": [
@@ -3340,19 +3340,19 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6291"
+          "Value": "6854"
         },
         {
           "Name": "ETag",
-          "Value": "\"08VTblRUPkIog7oYqo/eW+X54SAVNg4r0fe3DoySGig=\""
+          "Value": "\"U1XC/jcsOovPrQBketZRQoUE2jb9cdX+E0FTcOPjq+0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 27 Jan 2026 09:27:19 GMT"
+          "Value": "Tue, 10 Mar 2026 10:55:42 GMT"
         },
         {
           "Name": "Cache-Control",
-          "Value": "max-age=31536000, immutable"
+          "Value": "no-cache"
         },
         {
           "Name": "Content-Encoding",
@@ -3368,26 +3368,18 @@
         },
         {
           "Name": "ETag",
-          "Value": "W/\"NSiua9XgmiFP8qXggvn+aKs9uIAmXr/6Xdf6QrtFukY=\""
+          "Value": "W/\"ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE=\""
         }
       ],
       "EndpointProperties": [
         {
-          "Name": "fingerprint",
-          "Value": "97z88jdn93"
-        },
-        {
-          "Name": "label",
-          "Value": "css/site.css"
-        },
-        {
           "Name": "integrity",
-          "Value": "sha256-NSiua9XgmiFP8qXggvn+aKs9uIAmXr/6Xdf6QrtFukY="
+          "Value": "sha256-ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE="
         }
       ]
     },
     {
-      "Route": "css/site.97z88jdn93.css",
+      "Route": "css/site.css",
       "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\wwwroot\\css\\site.css",
       "Selectors": [],
       "ResponseHeaders": [
@@ -3397,7 +3389,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "22815"
+          "Value": "26164"
         },
         {
           "Name": "Content-Type",
@@ -3405,11 +3397,156 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"NSiua9XgmiFP8qXggvn+aKs9uIAmXr/6Xdf6QrtFukY=\""
+          "Value": "\"ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 27 Jan 2026 09:27:19 GMT"
+          "Value": "Tue, 10 Mar 2026 10:55:42 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.css.gz",
+      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-jitkhczb3s.gz",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6854"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"U1XC/jcsOovPrQBketZRQoUE2jb9cdX+E0FTcOPjq+0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Mar 2026 10:55:42 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-U1XC/jcsOovPrQBketZRQoUE2jb9cdX+E0FTcOPjq+0="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.jitkhczb3s.css",
+      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-jitkhczb3s.gz",
+      "Selectors": [
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip",
+          "Quality": "0.000145878920"
+        }
+      ],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "6854"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"U1XC/jcsOovPrQBketZRQoUE2jb9cdX+E0FTcOPjq+0=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Mar 2026 10:55:42 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Encoding",
+          "Value": "gzip"
+        },
+        {
+          "Name": "Vary",
+          "Value": "Content-Encoding"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "W/\"ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE=\""
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "jitkhczb3s"
+        },
+        {
+          "Name": "label",
+          "Value": "css/site.css"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE="
+        }
+      ]
+    },
+    {
+      "Route": "css/site.jitkhczb3s.css",
+      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\wwwroot\\css\\site.css",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "26164"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/css"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Tue, 10 Mar 2026 10:55:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3419,7 +3556,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "97z88jdn93"
+          "Value": "jitkhczb3s"
         },
         {
           "Name": "label",
@@ -3427,13 +3564,13 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-NSiua9XgmiFP8qXggvn+aKs9uIAmXr/6Xdf6QrtFukY="
+          "Value": "sha256-ldze/zqs8kSQPpXL2R/2YtEvue4xmzA96t1hLHPsYlE="
         }
       ]
     },
     {
-      "Route": "css/site.97z88jdn93.css.gz",
-      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-97z88jdn93.gz",
+      "Route": "css/site.jitkhczb3s.css.gz",
+      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-jitkhczb3s.gz",
       "Selectors": [],
       "ResponseHeaders": [
         {
@@ -3442,7 +3579,7 @@
         },
         {
           "Name": "Content-Length",
-          "Value": "6291"
+          "Value": "6854"
         },
         {
           "Name": "Content-Type",
@@ -3450,11 +3587,11 @@
         },
         {
           "Name": "ETag",
-          "Value": "\"08VTblRUPkIog7oYqo/eW+X54SAVNg4r0fe3DoySGig=\""
+          "Value": "\"U1XC/jcsOovPrQBketZRQoUE2jb9cdX+E0FTcOPjq+0=\""
         },
         {
           "Name": "Last-Modified",
-          "Value": "Tue, 27 Jan 2026 09:27:19 GMT"
+          "Value": "Tue, 10 Mar 2026 10:55:42 GMT"
         },
         {
           "Name": "Cache-Control",
@@ -3472,7 +3609,7 @@
       "EndpointProperties": [
         {
           "Name": "fingerprint",
-          "Value": "97z88jdn93"
+          "Value": "jitkhczb3s"
         },
         {
           "Name": "label",
@@ -3480,144 +3617,7 @@
         },
         {
           "Name": "integrity",
-          "Value": "sha256-08VTblRUPkIog7oYqo/eW+X54SAVNg4r0fe3DoySGig="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.css",
-      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-97z88jdn93.gz",
-      "Selectors": [
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip",
-          "Quality": "0.000158931977"
-        }
-      ],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "6291"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"08VTblRUPkIog7oYqo/eW+X54SAVNg4r0fe3DoySGig=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 27 Jan 2026 09:27:19 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "W/\"NSiua9XgmiFP8qXggvn+aKs9uIAmXr/6Xdf6QrtFukY=\""
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-NSiua9XgmiFP8qXggvn+aKs9uIAmXr/6Xdf6QrtFukY="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.css",
-      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\wwwroot\\css\\site.css",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "22815"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"NSiua9XgmiFP8qXggvn+aKs9uIAmXr/6Xdf6QrtFukY=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 27 Jan 2026 09:27:19 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-NSiua9XgmiFP8qXggvn+aKs9uIAmXr/6Xdf6QrtFukY="
-        }
-      ]
-    },
-    {
-      "Route": "css/site.css.gz",
-      "AssetFile": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\obj\\Release\\net9.0\\win-x64\\compressed\\t5y08vqmib-97z88jdn93.gz",
-      "Selectors": [],
-      "ResponseHeaders": [
-        {
-          "Name": "Accept-Ranges",
-          "Value": "bytes"
-        },
-        {
-          "Name": "Content-Length",
-          "Value": "6291"
-        },
-        {
-          "Name": "Content-Type",
-          "Value": "text/css"
-        },
-        {
-          "Name": "ETag",
-          "Value": "\"08VTblRUPkIog7oYqo/eW+X54SAVNg4r0fe3DoySGig=\""
-        },
-        {
-          "Name": "Last-Modified",
-          "Value": "Tue, 27 Jan 2026 09:27:19 GMT"
-        },
-        {
-          "Name": "Cache-Control",
-          "Value": "no-cache"
-        },
-        {
-          "Name": "Content-Encoding",
-          "Value": "gzip"
-        },
-        {
-          "Name": "Vary",
-          "Value": "Content-Encoding"
-        }
-      ],
-      "EndpointProperties": [
-        {
-          "Name": "integrity",
-          "Value": "sha256-08VTblRUPkIog7oYqo/eW+X54SAVNg4r0fe3DoySGig="
+          "Value": "sha256-U1XC/jcsOovPrQBketZRQoUE2jb9cdX+E0FTcOPjq+0="
         }
       ]
     },

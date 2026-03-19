@@ -82,19 +82,24 @@
     var cls = "slot empty";
     string? label = null;
 
-    if (slot != null && slot.State == PalletState.Occupied)
+    if (slot != null)
     {
-        // defaultně obsazená paleta
-        cls = "slot occupied";
-
-        // pokud je tahle paleta přiřazená běžícímu orderu, zobrazíme ji jako "in-transit"
-        if (inTransitSlotIds.Contains(slot.Id))
+        switch (slot.State)
         {
-            cls = "slot in-transit";
-        }
+            case PalletState.Empty:
+                cls = "slot empty";
+                break;
 
-        // popisek stolu, pokud je namapovaný
-        labelBySlotId.TryGetValue(slot.Id, out label);
+            case PalletState.Occupied:
+                cls = "slot occupied";
+                labelBySlotId.TryGetValue(slot.Id, out label);
+                break;
+
+            case PalletState.InTransit:
+                cls = "slot in-transit";
+                labelBySlotId.TryGetValue(slot.Id, out label);
+                break;
+        }
     }
 
     <div class="slot-wrapper mb-1">

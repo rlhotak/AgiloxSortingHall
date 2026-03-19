@@ -7,6 +7,7 @@ html {
     font-size: 16px;
     position: relative;
     min-height: 100%;
+    scrollbar-gutter: stable;
 }
 
 /* Žádný sticky footer, čisté pozadí */
@@ -651,7 +652,7 @@ body.no-scroll {
     gap: 10px;
     font-size: 2rem;
     font-weight: 500;
-    color: var(--header-text);
+    color: var(--bs-primary);
 }
 
 /* Panel (card) ve stylu hall-column */
@@ -887,3 +888,171 @@ body.no-scroll {
     .strategy-card:has(.strategy-radio:checked) .fw-bold {
         text-decoration: none;
     }
+
+
+/* =========================
+   ADMIN LAYOUT
+   ========================= */
+
+.admin-shell {
+    padding: 16px 32px 24px;
+}
+
+.admin-container {
+    width: 100%;
+}
+
+.admin-page-header {
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+.admin-page-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.admin-page-title h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--header-text);
+}
+
+.admin-page-subtitle {
+    margin-top: 4px;
+    color: var(--queue-text-color);
+    font-size: 1rem;
+}
+
+.admin-content {
+    min-width: 0;
+}
+
+    /* sjednocení karet/panelů i pro bootstrap cards v adminu */
+    .admin-card,
+    .admin-content .card,
+    .admin-content .settings-panel {
+        background: var(--column-bg);
+        border: 1px solid var(--column-border);
+        border-radius: 14px;
+        box-shadow: 0 1px 6px rgba(15, 23, 42, 0.08);
+    }
+
+    /* bootstrap card v adminu ať barevně sedí */
+    .admin-content .card {
+        color: var(--header-text);
+    }
+
+        .admin-content .card .card-body {
+            background: transparent;
+        }
+
+    .admin-content .text-muted,
+    .admin-content .text-secondary {
+        color: var(--queue-text-color) !important;
+    }
+
+@media (max-width: 992px) {
+    .admin-shell {
+        padding: 16px 16px 24px;
+    }
+
+    .admin-page-title h1 {
+        font-size: 1.6rem;
+    }
+}
+
+/* =========================
+   LOGIN / AUTH PAGE
+   ========================= */
+
+.auth-shell {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+    background: var(--column-bg);
+    border: 1px solid var(--column-border);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+    padding: 28px 24px;
+}
+
+.auth-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.auth-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-primary-soft);
+    color: var(--accent-primary);
+    font-size: 1.4rem;
+    flex: 0 0 auto;
+}
+
+.auth-title {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--header-text);
+}
+
+.auth-subtitle {
+    margin-top: 4px;
+    color: var(--queue-text-color);
+    font-size: 0.98rem;
+}
+
+.auth-label {
+    color: var(--header-text);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.auth-input {
+    background-color: #1b1b1d;
+    border-color: #2c2c2e;
+    color: #f3f2ef;
+    min-height: 48px;
+    border-radius: 12px;
+}
+
+    .auth-input:focus {
+        background-color: #1b1b1d;
+        border-color: rgba(255, 214, 16, 0.7);
+        box-shadow: 0 0 0 0.2rem rgba(255, 214, 16, 0.15);
+        color: #f3f2ef;
+    }
+
+    .auth-input::placeholder {
+        color: #8e8c89;
+    }
+
+@media (max-width: 576px) {
+    .auth-card {
+        padding: 22px 18px;
+        border-radius: 16px;
+    }
+
+    .auth-title {
+        font-size: 1.6rem;
+    }
+}
