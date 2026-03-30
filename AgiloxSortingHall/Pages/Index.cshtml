@@ -253,6 +253,19 @@
                     }
                 });
             });
+
+            // errorModal
+            var errorMessage = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ErrorMessage ?? ""));
+            if (errorMessage.trim().length > 0) {
+                var errorModalEl = document.getElementById('errorModal');
+                if (errorModalEl) {
+                    var errorModal = new bootstrap.Modal(errorModalEl, {
+                        backdrop: true,
+                        keyboard: true
+                    });
+                    errorModal.show();
+                }
+            }
         });
     </script>
 }

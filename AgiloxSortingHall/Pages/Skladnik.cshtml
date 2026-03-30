@@ -24,7 +24,6 @@
                 </h1>
 
                 <div class="d-flex gap-2">
-                    <!-- Tlačítko zpět -->
                     <a asp-page="/Index" class="btn btn-outline-secondary btn-lg d-flex align-items-center px-3 py-2">
                         <i class="bi bi-arrow-left me-2 fs-4"></i>
                         <span class="fs-5">Zpět</span>
@@ -39,12 +38,10 @@
     <div class="hall-columns-container">
         @foreach (var row in Model.Rows)
         {
-            // najdeme případný pending call pro danou řadu (např. occupied)
             var rowCalls = Model.PendingCalls.Where(c => c.HallRowId == row.Id).ToList();
             AgiloxActivityViewModel? rowActivity = null;
             if (rowCalls.Any())
             {
-                // vezmeme ten nejnovější
                 var lastCall = rowCalls.OrderByDescending(c => c.RequestedAt).First();
                 rowActivity = AgiloxActivityDescriptionHelper.GetActivityUi(lastCall);
             }
@@ -126,7 +123,6 @@
             <div class="modal-footer border-secondary">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zrušit</button>
 
-                @* VLASTNÍ FORM PRO REMOVE PALLET *@
                 <form method="post" asp-page-handler="RemovePallet" id="removePalletForm" class="m-0">
                     <input type="hidden" name="rowId" id="removePalletRowId" value="" />
                     <button type="submit" class="btn btn-danger" id="confirmRemoveBtn">
@@ -143,7 +139,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            // --- tvůj existující kód pro confirmRemoveModal ---
+            // confirmRemoveModal
             var confirmModal = document.getElementById('confirmRemoveModal');
             var rowIdInput = document.getElementById('removePalletRowId');
 
@@ -156,14 +152,14 @@
                 }
             });
 
-            // --- AUTO-OPEN error modal (klik mimo zavře) ---
+            // errorModal
             var errorMessage = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ErrorMessage ?? ""));
             if (errorMessage.trim().length > 0) {
                 var errorModalEl = document.getElementById('errorModal');
                 if (errorModalEl) {
                     var errorModal = new bootstrap.Modal(errorModalEl, {
-                        backdrop: true,  // klik mimo zavře
-                        keyboard: true   // ESC zavře
+                        backdrop: true,
+                        keyboard: true
                     });
                     errorModal.show();
                 }

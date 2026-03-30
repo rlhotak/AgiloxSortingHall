@@ -49,6 +49,9 @@ namespace AgiloxSortingHall.Pages
             Enum.GetValues<WorkTableCategory>()
                 .Where(x => x != WorkTableCategory.Unknown);
 
+        [TempData]
+        public string? ErrorMessage { get; set; }
+
         public async Task OnGetAsync()
         {
             var tablesQuery = _db.WorkTables.AsQueryable();
@@ -126,7 +129,8 @@ namespace AgiloxSortingHall.Pages
             if (table == null)
             {
                 _logger.LogWarning("OnPostDoneAsync: stůl {TableId} nebyl nalezen.", tableId);
-                return RedirectToPage();
+                ErrorMessage = "Stůl nebyl nalezen.";
+                return RedirectToPage(new { category = Category });
             }
 
             // vytvoříme RowCall bez řady – reprezentuje "odvoz od stolu"
@@ -143,10 +147,7 @@ namespace AgiloxSortingHall.Pages
 
             var client = _httpClientFactory.CreateClient("Agilox");
 
-            // pro Agilox bereme OUTPUT station z helperu
             var station = WorkTableStations.GetOutputStation(table);
-
-            // ze stolu na kontrolu, z kontroly na hotovo
             var destination = WorkTableStations.GetDestination(table);
 
             var payload = new Dictionary<string, string>
@@ -164,17 +165,45 @@ namespace AgiloxSortingHall.Pages
                 station,
                 json);
 
-            var response = await client.PostAsync("workflow/502", content);
-            var responseBody = await response.Content.ReadAsStringAsync();
+            string responseBody;
 
-            _logger.LogInformation(
-                "OnPostDoneAsync: Agilox odpověď pro stůl {Table}: {Body}",
-                table.DisplayName,
-                responseBody);
+            try
+            {
+                var response = await client.PostAsync("workflow/502", content);
+                responseBody = await response.Content.ReadAsStringAsync();
 
-            response.EnsureSuccessStatusCode();
+                _logger.LogInformation(
+                    "OnPostDoneAsync: Agilox odpověď pro stůl {Table}: {Body}",
+                    table.DisplayName,
+                    responseBody);
 
-            // zkus vytáhnout ID z odpovědi Agiloxu a uložit do RowCall.OrderId
+                response.EnsureSuccessStatusCode();
+            }
+            catch (TaskCanceledException ex)
+            {
+                _logger.LogError(ex,
+                    "OnPostDoneAsync: timeout při volání Agiloxu pro stůl {Table}.",
+                    table.DisplayName);
+
+                _db.RowCalls.Remove(call);
+                await _db.SaveChangesAsync();
+
+                ErrorMessage = "Nepodařilo se navázat spojení s Karlem.";
+                return RedirectToPage(new { category = Category });
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex,
+                    "OnPostDoneAsync: HTTP chyba při volání Agiloxu pro stůl {Table}.",
+                    table.DisplayName);
+
+                _db.RowCalls.Remove(call);
+                await _db.SaveChangesAsync();
+
+                ErrorMessage = "Nepodařilo se navázat spojení s Karlem.";
+                return RedirectToPage(new { category = Category });
+            }
+
             try
             {
                 using var doc = JsonDocument.Parse(responseBody);
