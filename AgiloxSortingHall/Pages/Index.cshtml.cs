@@ -159,7 +159,6 @@ namespace AgiloxSortingHall.Pages
                 return RedirectToPage(new { category = Category });
             }
 
-            HallRow? selectedRow = null;
             object destination;
 
             // Z Kontroly se vozí do "Hotovo" -> pošleme stationareas seřazené pole řad.
@@ -175,7 +174,6 @@ namespace AgiloxSortingHall.Pages
                     return RedirectToPage(new { category = Category });
                 }
 
-                selectedRow = selectedRows.First();
                 destination = selectedRows.Select(r => r.Name).ToList();
             }
             else
