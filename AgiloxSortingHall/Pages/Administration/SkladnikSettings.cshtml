@@ -21,7 +21,7 @@
     <div class="settings-panel-header">
         <div class="settings-panel-title">
             <i class="bi bi-sliders"></i>
-            Strategie prioritního výběru řady
+            Strategie prioritního výběru řady pro nabírání palet
         </div>
     </div>
 
@@ -78,6 +78,55 @@
                            name="strategy"
                            value="NearestRight"
                     @(Model.CurrentStrategy == RowSelectionStrategy.NearestRight ? "checked" : "") />
+                    <div class="strategy-content">
+                        <div class="fw-bold">Nejvyšší číslo řady</div>
+                        <small class="d-block">
+                            Vždy bere řadu nejvíc vpravo.
+                        </small>
+                    </div>
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-soft mt-3">
+                <i class="bi bi-save me-1"></i>
+                Uložit strategii
+            </button>
+        </form>
+    </div>
+
+    <div class="settings-panel-header">
+        <div class="settings-panel-title">
+            <i class="bi bi-sliders"></i>
+            Strategie prioritního výběru řady pro pokládání palet
+        </div>
+    </div>
+
+    <div class="settings-panel-body">
+        <form method="post" asp-page-handler="SetPutRowSelectionStrategy" class="mb-0">
+            @Html.AntiForgeryToken()
+
+            <div class="strategy-list">
+
+                <label class="strategy-item strategy-card">
+                    <input class="strategy-radio"
+                           type="radio"
+                           name="strategy"
+                           value="NearestLeft"
+                    @(Model.CurrentDropStrategy == DropRowSelectionStrategy.NearestLeft ? "checked" : "") />
+                    <div class="strategy-content">
+                        <div class="fw-bold">Nejnižší číslo řady</div>
+                        <small class="d-block">
+                            Vždy bere řadu nejvíc vlevo.
+                        </small>
+                    </div>
+                </label>
+
+                <label class="strategy-item strategy-card">
+                    <input class="strategy-radio"
+                           type="radio"
+                           name="strategy"
+                           value="NearestRight"
+                    @(Model.CurrentDropStrategy == DropRowSelectionStrategy.NearestRight ? "checked" : "") />
                     <div class="strategy-content">
                         <div class="fw-bold">Nejvyšší číslo řady</div>
                         <small class="d-block">

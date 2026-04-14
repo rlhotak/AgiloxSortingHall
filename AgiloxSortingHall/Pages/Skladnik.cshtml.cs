@@ -366,31 +366,5 @@ namespace AgiloxSortingHall.Pages
 
             return RedirectToPage();
         }
-
-        /// <summary>
-        /// Skladník zmìní strategii výbìru øady (radio buttony na UI).
-        /// Tuto strategii pak používají stoly pøi volání artiklu.
-        /// </summary>
-        public async Task<IActionResult> OnPostSetRowSelectionStrategyAsync(RowSelectionStrategy strategy)
-        {
-            var settings = await _db.HallSettings.FirstOrDefaultAsync();
-
-            if (settings == null)
-            {
-                settings = new HallSettings
-                {
-                    Id = 1
-                };
-                _db.HallSettings.Add(settings);
-            }
-
-            settings.RowSelectionStrategy = strategy;
-
-            await _db.SaveChangesAsync();
-
-            _logger.LogInformation("Skladník – zmìnìna RowSelectionStrategy na {Strategy}", strategy);
-
-            return RedirectToPage();
-        }
     }
 }

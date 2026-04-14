@@ -1,13 +1,16 @@
 ﻿using AgiloxSortingHall.Data;
+using AgiloxSortingHall.Dto;
 using AgiloxSortingHall.Enums;
 using AgiloxSortingHall.Helpers;
 using AgiloxSortingHall.Models;
 using AgiloxSortingHall.ViewModels;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace AgiloxSortingHall.Pages
 {
@@ -51,6 +54,21 @@ namespace AgiloxSortingHall.Pages
 
         [TempData]
         public string? ErrorMessage { get; set; }
+
+        /// <summary>
+        /// JSON options pro deserializaci odpovědí z Agiloxu.
+        /// </summary>
+        private static readonly JsonSerializerOptions _jsonOptions = new(JsonSerializerDefaults.Web);
+
+        /// <summary>
+        /// Vytvoří pojmenovaného HTTP klienta pro Agilox API.
+        /// 
+        /// Poznámka:
+        /// - "Agilox" klient je registrován v Program.cs přes AddHttpClient("Agilox", ...).
+        /// - BaseAddress se bere z appsettings.json (Agilox:BaseUrl).
+        /// </summary>
+        private HttpClient CreateAgiloxClient()
+            => _httpClientFactory.CreateClient("Agilox");
 
         public async Task OnGetAsync()
         {
@@ -121,10 +139,18 @@ namespace AgiloxSortingHall.Pages
 
         /// <summary>
         /// Handler pro tlačítko "Odvézt" na indexu.
-        /// Pošle na Agilox workflow 502 s OUTPUT stanicí stolu.
+        /// Pošle na Agilox workflow 502 s parametry, kde má paletu vyzvednout a položit.
+        /// 
+        /// Logika:
+        /// - pokud je stůl v kategorii Kontrola, cílem je konkrétní řada - 
+        ///   stationarea vybraná podle DropRowSelectionStrategy
+        /// - jinak je cílem stationarea "Kontrola"
         /// </summary>
         public async Task<IActionResult> OnPostDoneAsync(int tableId)
         {
+            if (await HasPendingCallForTableAsync(tableId))
+                return RedirectToPage(new { category = Category });
+
             var table = await _db.WorkTables.FindAsync(tableId);
             if (table == null)
             {
@@ -133,11 +159,33 @@ namespace AgiloxSortingHall.Pages
                 return RedirectToPage(new { category = Category });
             }
 
-            // vytvoříme RowCall bez řady – reprezentuje "odvoz od stolu"
+            HallRow? selectedRow = null;
+            string destination;
+
+            // Pokud se posílá od pracoviště, destinace bude "Kontrola".
+            // Pokud se posílá od Kontroly, destinace bude konkrétní řada.
+            if (table.Category == WorkTableCategory.Kontrola)
+            {
+                selectedRow = await SelectRowForDropAsync();
+
+                if (selectedRow == null)
+                {
+                    _logger.LogWarning("OnPostDoneAsync: nepodařilo se vybrat cílovou řadu pro pokládání.");
+                    ErrorMessage = "Nepodařilo se určit cílovou řadu pro pokládání.";
+                    return RedirectToPage(new { category = Category });
+                }
+
+                destination = selectedRow.Name;
+            }
+            else
+            {
+                destination = "Kontrola";
+            }
+
             var call = new RowCall
             {
                 WorkTableId = table.Id,
-                HallRowId = null,
+                HallRowId = selectedRow?.Id,
                 Status = RowCallStatus.Pending,
                 RequestedAt = DateTime.UtcNow
             };
@@ -148,7 +196,6 @@ namespace AgiloxSortingHall.Pages
             var client = _httpClientFactory.CreateClient("Agilox");
 
             var station = WorkTableStations.GetOutputStation(table);
-            var destination = WorkTableStations.GetDestination(table);
 
             var payload = new Dictionary<string, string>
             {
@@ -160,9 +207,10 @@ namespace AgiloxSortingHall.Pages
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             _logger.LogInformation(
-                "OnPostDoneAsync: posílám workflow 502 pro stůl {Table}. Station={Station}. Payload={Payload}",
+                "OnPostDoneAsync: posílám workflow 502 pro stůl {Table}. Station={Station}, Destination={Destination}. Payload={Payload}",
                 table.DisplayName,
                 station,
+                destination,
                 json);
 
             string responseBody;
@@ -229,8 +277,8 @@ namespace AgiloxSortingHall.Pages
                         await _db.SaveChangesAsync();
 
                         _logger.LogInformation(
-                            "OnPostDoneAsync: RowCall {RowCallId} pro stůl {Table} má OrderId={OrderId}",
-                            call.Id, table.DisplayName, call.OrderId);
+                            "OnPostDoneAsync: RowCall {RowCallId} pro stůl {Table} má OrderId={OrderId}, Destination={Destination}",
+                            call.Id, table.DisplayName, call.OrderId, destination);
                     }
                     else
                     {
@@ -248,6 +296,129 @@ namespace AgiloxSortingHall.Pages
             }
 
             return RedirectToPage(new { category = Category });
+        }
+
+        /// <summary>
+        /// Vrátí true, pokud daný stůl už má nějaký pending RowCall.
+        /// </summary>
+        private Task<bool> HasPendingCallForTableAsync(int tableId)
+        {
+            return _db.RowCalls
+                .AnyAsync(c => c.WorkTableId == tableId &&
+                               c.Status == RowCallStatus.Pending);
+        }
+
+        private async Task<HallRow?> SelectRowForDropAsync()
+        {
+            var orderedRowNames = await GetDropRowNamesOrderedAsync();
+            if (!orderedRowNames.Any())
+                return null;
+
+            var dbRows = await _db.HallRows
+                .Include(r => r.Slots)
+                .ToListAsync();
+
+            var rowByName = dbRows.ToDictionary(r => r.Name, StringComparer.OrdinalIgnoreCase);
+
+            var orderedRows = orderedRowNames
+                .Where(name => rowByName.ContainsKey(name))
+                .Select(name => rowByName[name])
+                .ToList();
+
+            if (!orderedRows.Any())
+                return null;
+
+            var settings = await _db.HallSettings.FirstOrDefaultAsync();
+            var strategy = settings?.DropRowSelectionStrategy ?? DropRowSelectionStrategy.NearestLeft;
+
+            switch (strategy)
+            {
+                case DropRowSelectionStrategy.NearestRight:
+                    return orderedRows.Last();
+
+                case DropRowSelectionStrategy.NearestLeft:
+                default:
+                    return orderedRows.First();
+            }
+        }
+
+        private async Task<List<string>> GetDropRowNamesOrderedAsync()
+        {
+            var stations = await FetchStationsAsync();
+            if (stations == null || stations.Count == 0)
+                return new List<string>();
+
+            var settings = await _db.HallSettings.FirstOrDefaultAsync();
+            var targetArea = settings?.StationAreaName ?? "Hotovo";
+
+            var rowNames = stations.Values
+                .Where(s =>
+                    string.Equals(s.Type, "station", StringComparison.OrdinalIgnoreCase) &&
+                    s.StationArea != null &&
+                    s.StationArea.Any(a => string.Equals(a, targetArea, StringComparison.OrdinalIgnoreCase)))
+                .SelectMany(s => s.StationArea!)
+                .Where(a => !string.Equals(a, targetArea, StringComparison.OrdinalIgnoreCase))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(a => ExtractRowNumber(a))
+                .ThenBy(a => a, StringComparer.OrdinalIgnoreCase)
+                .ToList();
+
+            return rowNames;
+        }
+
+        private async Task<Dictionary<string, StationDto>?> FetchStationsAsync()
+        {
+            try
+            {
+                var http = CreateAgiloxClient();
+
+                var json = await http.GetStringAsync("station");
+
+                using var doc = JsonDocument.Parse(json);
+
+                if (doc.RootElement.ValueKind != JsonValueKind.Object)
+                    return null;
+
+                var result = new Dictionary<string, StationDto>(StringComparer.Ordinal);
+
+                foreach (var prop in doc.RootElement.EnumerateObject())
+                {
+                    if (prop.Value.ValueKind != JsonValueKind.Object)
+                        continue;
+
+                    try
+                    {
+                        var dto = prop.Value.Deserialize<StationDto>(_jsonOptions);
+                        if (dto != null)
+                            result[prop.Name] = dto;
+                    }
+                    catch (JsonException)
+                    {
+                        continue;
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "Nepodařilo se načíst station z Agiloxu (GET /station).");
+                return null;
+            }
+        }
+
+        private static int ExtractRowNumber(string rowName)
+        {
+            if (string.IsNullOrWhiteSpace(rowName))
+                return int.MaxValue;
+
+            var match = Regex.Match(rowName, @"(\d+)$");
+            if (!match.Success)
+                return int.MaxValue;
+
+            return int.TryParse(match.Groups[1].Value, out var number)
+                ? number
+                : int.MaxValue;
         }
     }
 }

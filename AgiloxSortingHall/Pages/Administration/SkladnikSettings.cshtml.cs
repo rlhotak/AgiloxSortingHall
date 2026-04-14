@@ -52,9 +52,14 @@ public class SkladnikSettingsModel : PageModel
     public List<HallRow> Rows { get; set; } = new();
 
     /// <summary>
-    /// Aktuálnì zvolená strategie výbìru øady.
+    /// Aktuálnì zvolená strategie výbìru øady pro nabírání palet.
     /// </summary>
     public RowSelectionStrategy CurrentStrategy { get; set; } = RowSelectionStrategy.MostFreePallets;
+
+    /// <summary>
+    /// Aktuálnì zvolená strategie výbìru øady pro pokládání hotových palet.
+    /// </summary>
+    public DropRowSelectionStrategy CurrentDropStrategy { get; set; } = DropRowSelectionStrategy.NearestRight;
 
     /// <summary>
     /// Bindnuté názvy øad z formuláøe: RowName[RowId] = "Název".
@@ -168,13 +173,15 @@ public class SkladnikSettingsModel : PageModel
             {
                 Id = 1,
                 RowSelectionStrategy = RowSelectionStrategy.MostFreePallets,
-                StationAreaName = "Hotovo"
+                DropRowSelectionStrategy = DropRowSelectionStrategy.NearestRight,
+                StationAreaName = "Buffer",
             };
             _db.HallSettings.Add(settings);
             await _db.SaveChangesAsync();
         }
 
         CurrentStrategy = settings.RowSelectionStrategy;
+        CurrentDropStrategy = settings.DropRowSelectionStrategy;
 
         StationAreaNameCurrent = string.IsNullOrWhiteSpace(settings.StationAreaName)
             ? "Hotovo"
@@ -281,21 +288,40 @@ public class SkladnikSettingsModel : PageModel
     // ---------------------------
 
     /// <summary>
-    /// Uloží vybranou strategii výbìru øady do globálního nastavení haly.
+    /// Uloží vybranou strategii výbìru øady pro nabírání palet do globálního nastavení haly.
     /// </summary>
     public async Task<IActionResult> OnPostSetRowSelectionStrategyAsync(RowSelectionStrategy strategy)
     {
         var settings = await _db.HallSettings.FirstOrDefaultAsync();
         if (settings == null)
         {
-            settings = new HallSettings { Id = 1, StationAreaName = "Hotovo" };
+            settings = new HallSettings { Id = 1, StationAreaName = "Buffer" };
             _db.HallSettings.Add(settings);
         }
 
         settings.RowSelectionStrategy = strategy;
         await _db.SaveChangesAsync();
 
-        SuccessMessage = "Strategie byla uložena.";
+        SuccessMessage = "Strategie pro nabírání palet byla uložena.";
+        return RedirectToPage();
+    }
+
+    /// <summary>
+    /// Uloží vybranou strategii výbìru øady pro pokládání palet do globálního nastavení haly.
+    /// </summary>
+    public async Task<IActionResult> OnPostSetDropRowSelectionStrategyAsync(DropRowSelectionStrategy strategy)
+    {
+        var settings = await _db.HallSettings.FirstOrDefaultAsync();
+        if (settings == null)
+        {
+            settings = new HallSettings { Id = 1, StationAreaName = "Buffer" };
+            _db.HallSettings.Add(settings);
+        }
+
+        settings.DropRowSelectionStrategy = strategy;
+        await _db.SaveChangesAsync();
+
+        SuccessMessage = "Strategie pro pokládání palet byla uložena.";
         return RedirectToPage();
     }
 
@@ -318,7 +344,7 @@ public class SkladnikSettingsModel : PageModel
 
         var newName = (StationAreaName ?? "").Trim();
         if (string.IsNullOrWhiteSpace(newName))
-            newName = "Hotovo";
+            newName = "Buffer";
 
         var dict = await FetchStationAreasAsync();
         if (dict == null)
@@ -356,10 +382,10 @@ public class SkladnikSettingsModel : PageModel
     /// </summary>
     public async Task<IActionResult> OnPostAddRowAsync()
     {
-        // Naèteme aktuálnì nastavenou oblast z DB (fallback "Hotovo")
+        // Naèteme aktuálnì nastavenou oblast z DB (fallback "Buffer")
         var settings = await _db.HallSettings.FirstOrDefaultAsync();
         var areaName = settings?.StationAreaName?.Trim();
-        if (string.IsNullOrWhiteSpace(areaName)) areaName = "Hotovo";
+        if (string.IsNullOrWhiteSpace(areaName)) areaName = "Buffer";
 
         // Natáhneme existující øady (staèí Capacity)
         var existing = await _db.HallRows.AsNoTracking().ToListAsync();

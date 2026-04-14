@@ -20,6 +20,13 @@ namespace AgiloxSortingHall.Models
             = RowSelectionStrategy.MostFreePallets;
 
         /// <summary>
+        /// Zvolená strategie pro výběr řady při pokládání hotových palet.
+        /// </summary>
+        public DropRowSelectionStrategy DropRowSelectionStrategy { get; set; }
+            = DropRowSelectionStrategy.NearestRight;
+
+
+        /// <summary>
         /// Název oblasti (stationarea) v systému Agilox, která určuje:
         /// - maximální počet reálných pozic/stanic v Agiloxu (limit přidání řad)
         /// - "kontext" pro skladníka (na jakou oblast se nastavení vztahuje)
