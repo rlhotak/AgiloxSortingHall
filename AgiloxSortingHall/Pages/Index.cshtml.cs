@@ -142,8 +142,8 @@ namespace AgiloxSortingHall.Pages
         /// Pošle na Agilox workflow 502 s parametry, kde má paletu vyzvednout a položit.
         /// 
         /// Logika:
-        /// - pokud je stůl v kategorii Kontrola, cílem je konkrétní řada - 
-        ///   stationarea vybraná podle DropRowSelectionStrategy
+        /// - pokud je stůl v kategorii Kontrola, cílem je pole řad z
+        ///   stationsarea "Hotovo" seřazené podle DropRowSelectionStrategy
         /// - jinak je cílem stationarea "Kontrola"
         /// </summary>
         public async Task<IActionResult> OnPostDoneAsync(int tableId)
@@ -160,22 +160,23 @@ namespace AgiloxSortingHall.Pages
             }
 
             HallRow? selectedRow = null;
-            string destination;
+            object destination;
 
-            // Pokud se posílá od pracoviště, destinace bude "Kontrola".
-            // Pokud se posílá od Kontroly, destinace bude konkrétní řada.
+            // Z Kontroly se vozí do "Hotovo" -> pošleme stationareas seřazené pole řad.
+            // Z ostatních pracovišť se vozí na Kontrolu -> pošleme stationarea "Kontrola".
             if (table.Category == WorkTableCategory.Kontrola)
             {
-                selectedRow = await SelectRowForDropAsync();
+                var selectedRows = await SelectRowsForDropAsync();
 
-                if (selectedRow == null)
+                if (!selectedRows.Any())
                 {
-                    _logger.LogWarning("OnPostDoneAsync: nepodařilo se vybrat cílovou řadu pro pokládání.");
-                    ErrorMessage = "Nepodařilo se určit cílovou řadu pro pokládání.";
+                    _logger.LogWarning("OnPostDoneAsync: nepodařilo se vybrat žádnou cílovou řadu pro pokládání.");
+                    ErrorMessage = "Nepodařilo se určit cílové řady pro pokládání.";
                     return RedirectToPage(new { category = Category });
                 }
 
-                destination = selectedRow.Name;
+                selectedRow = selectedRows.First();
+                destination = selectedRows.Select(r => r.Name).ToList();
             }
             else
             {
@@ -185,7 +186,7 @@ namespace AgiloxSortingHall.Pages
             var call = new RowCall
             {
                 WorkTableId = table.Id,
-                HallRowId = selectedRow?.Id,
+                HallRowId = null, // u "odvézt" callů nevyplňujeme řadu, protože se může měnit podle aktuální situace v hale
                 Status = RowCallStatus.Pending,
                 RequestedAt = DateTime.UtcNow
             };
@@ -194,10 +195,9 @@ namespace AgiloxSortingHall.Pages
             await _db.SaveChangesAsync();
 
             var client = _httpClientFactory.CreateClient("Agilox");
-
             var station = WorkTableStations.GetOutputStation(table);
 
-            var payload = new Dictionary<string, string>
+            var payload = new Dictionary<string, object>
             {
                 ["@TABLE"] = station,
                 ["@DESTINATION"] = destination
@@ -207,10 +207,9 @@ namespace AgiloxSortingHall.Pages
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             _logger.LogInformation(
-                "OnPostDoneAsync: posílám workflow 502 pro stůl {Table}. Station={Station}, Destination={Destination}. Payload={Payload}",
+                "OnPostDoneAsync: posílám workflow 502 pro stůl {Table}. Station={Station}, Payload={Payload}",
                 table.DisplayName,
                 station,
-                destination,
                 json);
 
             string responseBody;
@@ -277,8 +276,8 @@ namespace AgiloxSortingHall.Pages
                         await _db.SaveChangesAsync();
 
                         _logger.LogInformation(
-                            "OnPostDoneAsync: RowCall {RowCallId} pro stůl {Table} má OrderId={OrderId}, Destination={Destination}",
-                            call.Id, table.DisplayName, call.OrderId, destination);
+                            "OnPostDoneAsync: RowCall {RowCallId} pro stůl {Table} má OrderId={OrderId}",
+                            call.Id, table.DisplayName, call.OrderId);
                     }
                     else
                     {
@@ -308,16 +307,13 @@ namespace AgiloxSortingHall.Pages
                                c.Status == RowCallStatus.Pending);
         }
 
-        private async Task<HallRow?> SelectRowForDropAsync()
+        private async Task<List<HallRow>> SelectRowsForDropAsync()
         {
             var orderedRowNames = await GetDropRowNamesOrderedAsync();
             if (!orderedRowNames.Any())
-                return null;
+                return new List<HallRow>();
 
-            var dbRows = await _db.HallRows
-                .Include(r => r.Slots)
-                .ToListAsync();
-
+            var dbRows = await _db.HallRows.ToListAsync();
             var rowByName = dbRows.ToDictionary(r => r.Name, StringComparer.OrdinalIgnoreCase);
 
             var orderedRows = orderedRowNames
@@ -326,20 +322,17 @@ namespace AgiloxSortingHall.Pages
                 .ToList();
 
             if (!orderedRows.Any())
-                return null;
+                return new List<HallRow>();
 
             var settings = await _db.HallSettings.FirstOrDefaultAsync();
             var strategy = settings?.DropRowSelectionStrategy ?? DropRowSelectionStrategy.NearestLeft;
 
-            switch (strategy)
+            return strategy switch
             {
-                case DropRowSelectionStrategy.NearestRight:
-                    return orderedRows.Last();
-
-                case DropRowSelectionStrategy.NearestLeft:
-                default:
-                    return orderedRows.First();
-            }
+                DropRowSelectionStrategy.NearestRight => orderedRows.OrderByDescending(r => ExtractRowNumber(r.Name)).ToList(),
+                DropRowSelectionStrategy.NearestLeft => orderedRows.OrderBy(r => ExtractRowNumber(r.Name)).ToList(),
+                _ => orderedRows.OrderBy(r => ExtractRowNumber(r.Name)).ToList()
+            };
         }
 
         private async Task<List<string>> GetDropRowNamesOrderedAsync()
