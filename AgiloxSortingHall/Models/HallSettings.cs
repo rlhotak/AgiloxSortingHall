@@ -27,12 +27,20 @@ namespace AgiloxSortingHall.Models
 
 
         /// <summary>
-        /// Název oblasti (stationarea) v systému Agilox, která určuje:
+        /// Název oblasti (stationarea) v systému Agilox, díky které můžeme určit:
         /// - maximální počet reálných pozic/stanic v Agiloxu (limit přidání řad)
         /// - "kontext" pro skladníka (na jakou oblast se nastavení vztahuje)
         ///
-        /// Default: "Hotovo" (dřívější fixní stav).
+        /// Default: "Buffer"
         /// </summary>
-        public string StationAreaName { get; set; } = "Hotovo";
+        public string PickupStationAreaName { get; set; } = "Buffer";
+
+        /// <summary>
+        /// Název oblasti (stationarea) v systému Agilox, díky které můžeme určit:
+        /// - kam může Agilox posílat palety od stanice kontroly
+        ///
+        /// Default: "Hotovo"
+        /// </summary>
+        public string DropStationAreaName { get; set; } = "Hotovo";
     }
 }

@@ -161,20 +161,18 @@ namespace AgiloxSortingHall.Pages
 
             object destination;
 
-            // Z Kontroly se vozí do "Hotovo" -> pošleme stationareas seřazené pole řad.
-            // Z ostatních pracovišť se vozí na Kontrolu -> pošleme stationarea "Kontrola".
             if (table.Category == WorkTableCategory.Kontrola)
             {
-                var selectedRows = await SelectRowsForDropAsync();
+                var selectedRowNames = await SelectRowNamesForDropAsync();
 
-                if (!selectedRows.Any())
+                if (!selectedRowNames.Any())
                 {
-                    _logger.LogWarning("OnPostDoneAsync: nepodařilo se vybrat žádnou cílovou řadu pro pokládání.");
+                    _logger.LogWarning("OnPostDoneAsync: nepodařilo se vybrat žádné cílové řady pro pokládání.");
                     ErrorMessage = "Nepodařilo se určit cílové řady pro pokládání.";
                     return RedirectToPage(new { category = Category });
                 }
 
-                destination = selectedRows.Select(r => r.Name).ToList();
+                destination = selectedRowNames;
             }
             else
             {
@@ -184,7 +182,7 @@ namespace AgiloxSortingHall.Pages
             var call = new RowCall
             {
                 WorkTableId = table.Id,
-                HallRowId = null, // u "odvézt" callů nevyplňujeme řadu, protože se může měnit podle aktuální situace v hale
+                HallRowId = null,
                 Status = RowCallStatus.Pending,
                 RequestedAt = DateTime.UtcNow
             };
@@ -305,32 +303,35 @@ namespace AgiloxSortingHall.Pages
                                c.Status == RowCallStatus.Pending);
         }
 
-        private async Task<List<HallRow>> SelectRowsForDropAsync()
+        private async Task<List<string>> SelectRowNamesForDropAsync()
         {
             var orderedRowNames = await GetDropRowNamesOrderedAsync();
             if (!orderedRowNames.Any())
-                return new List<HallRow>();
-
-            var dbRows = await _db.HallRows.ToListAsync();
-            var rowByName = dbRows.ToDictionary(r => r.Name, StringComparer.OrdinalIgnoreCase);
-
-            var orderedRows = orderedRowNames
-                .Where(name => rowByName.ContainsKey(name))
-                .Select(name => rowByName[name])
-                .ToList();
-
-            if (!orderedRows.Any())
-                return new List<HallRow>();
+            {
+                _logger.LogWarning("SelectRowNamesForDropAsync: orderedRowNames is empty.");
+                return new List<string>();
+            }
 
             var settings = await _db.HallSettings.FirstOrDefaultAsync();
             var strategy = settings?.DropRowSelectionStrategy ?? DropRowSelectionStrategy.NearestLeft;
 
-            return strategy switch
+            _logger.LogInformation(
+                "SelectRowNamesForDropAsync: strategy = {Strategy}, orderedRowNames = [{Rows}]",
+                strategy,
+                string.Join(", ", orderedRowNames));
+
+            var result = strategy switch
             {
-                DropRowSelectionStrategy.NearestRight => orderedRows.OrderByDescending(r => ExtractRowNumber(r.Name)).ToList(),
-                DropRowSelectionStrategy.NearestLeft => orderedRows.OrderBy(r => ExtractRowNumber(r.Name)).ToList(),
-                _ => orderedRows.OrderBy(r => ExtractRowNumber(r.Name)).ToList()
+                DropRowSelectionStrategy.NearestRight => orderedRowNames.AsEnumerable().Reverse().ToList(),
+                DropRowSelectionStrategy.NearestLeft => orderedRowNames.ToList(),
+                _ => orderedRowNames.ToList()
             };
+
+            _logger.LogInformation(
+                "SelectRowNamesForDropAsync: result = [{Rows}]",
+                string.Join(", ", result));
+
+            return result;
         }
 
         private async Task<List<string>> GetDropRowNamesOrderedAsync()
@@ -340,7 +341,7 @@ namespace AgiloxSortingHall.Pages
                 return new List<string>();
 
             var settings = await _db.HallSettings.FirstOrDefaultAsync();
-            var targetArea = settings?.StationAreaName ?? "Hotovo";
+            var targetArea = settings?.DropStationAreaName ?? "Hotovo";
 
             var rowNames = stations.Values
                 .Where(s =>
@@ -348,11 +349,18 @@ namespace AgiloxSortingHall.Pages
                     s.StationArea != null &&
                     s.StationArea.Any(a => string.Equals(a, targetArea, StringComparison.OrdinalIgnoreCase)))
                 .SelectMany(s => s.StationArea!)
-                .Where(a => !string.Equals(a, targetArea, StringComparison.OrdinalIgnoreCase))
+                .Where(a =>
+                    !string.Equals(a, targetArea, StringComparison.OrdinalIgnoreCase) &&
+                    a.StartsWith("Řada", StringComparison.OrdinalIgnoreCase))
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .OrderBy(a => ExtractRowNumber(a))
                 .ThenBy(a => a, StringComparer.OrdinalIgnoreCase)
                 .ToList();
+
+            _logger.LogInformation(
+                "GetDropRowNamesOrderedAsync: targetArea = {TargetArea}, resulting rowNames = [{Rows}]",
+                targetArea,
+                string.Join(", ", rowNames));
 
             return rowNames;
         }

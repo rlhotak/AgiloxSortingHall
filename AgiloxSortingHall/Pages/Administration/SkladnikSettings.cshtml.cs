@@ -174,7 +174,7 @@ public class SkladnikSettingsModel : PageModel
                 Id = 1,
                 RowSelectionStrategy = RowSelectionStrategy.MostFreePallets,
                 DropRowSelectionStrategy = DropRowSelectionStrategy.NearestRight,
-                StationAreaName = "Buffer",
+                PickupStationAreaName = "Buffer",
             };
             _db.HallSettings.Add(settings);
             await _db.SaveChangesAsync();
@@ -183,9 +183,9 @@ public class SkladnikSettingsModel : PageModel
         CurrentStrategy = settings.RowSelectionStrategy;
         CurrentDropStrategy = settings.DropRowSelectionStrategy;
 
-        StationAreaNameCurrent = string.IsNullOrWhiteSpace(settings.StationAreaName)
+        StationAreaNameCurrent = string.IsNullOrWhiteSpace(settings.PickupStationAreaName)
             ? "Hotovo"
-            : settings.StationAreaName.Trim();
+            : settings.PickupStationAreaName.Trim();
 
         StationAreaName = StationAreaNameCurrent;
 
@@ -295,7 +295,7 @@ public class SkladnikSettingsModel : PageModel
         var settings = await _db.HallSettings.FirstOrDefaultAsync();
         if (settings == null)
         {
-            settings = new HallSettings { Id = 1, StationAreaName = "Buffer" };
+            settings = new HallSettings { Id = 1, PickupStationAreaName = "Buffer" };
             _db.HallSettings.Add(settings);
         }
 
@@ -314,7 +314,7 @@ public class SkladnikSettingsModel : PageModel
         var settings = await _db.HallSettings.FirstOrDefaultAsync();
         if (settings == null)
         {
-            settings = new HallSettings { Id = 1, StationAreaName = "Buffer" };
+            settings = new HallSettings { Id = 1, PickupStationAreaName = "Buffer" };
             _db.HallSettings.Add(settings);
         }
 
@@ -350,7 +350,7 @@ public class SkladnikSettingsModel : PageModel
         if (dict == null)
         {
             // Fail-open: Agilox nedostupný, uložíme bez ovìøení.
-            settings.StationAreaName = newName;
+            settings.PickupStationAreaName = newName;
             await _db.SaveChangesAsync();
 
             SuccessMessage = "Název oblasti byl uložen (Agilox nebyl dostupný pro ovìøení).";
@@ -363,7 +363,7 @@ public class SkladnikSettingsModel : PageModel
             return RedirectToPage();
         }
 
-        settings.StationAreaName = newName;
+        settings.PickupStationAreaName = newName;
         await _db.SaveChangesAsync();
 
         SuccessMessage = $"Oblast byla nastavena na '{newName}'.";
@@ -384,7 +384,7 @@ public class SkladnikSettingsModel : PageModel
     {
         // Naèteme aktuálnì nastavenou oblast z DB (fallback "Buffer")
         var settings = await _db.HallSettings.FirstOrDefaultAsync();
-        var areaName = settings?.StationAreaName?.Trim();
+        var areaName = settings?.PickupStationAreaName?.Trim();
         if (string.IsNullOrWhiteSpace(areaName)) areaName = "Buffer";
 
         // Natáhneme existující øady (staèí Capacity)
@@ -489,7 +489,7 @@ public class SkladnikSettingsModel : PageModel
             .OrderBy(s => s.Id)
             .FirstOrDefaultAsync();
 
-        var areaName = settings?.StationAreaName?.Trim();
+        var areaName = settings?.PickupStationAreaName?.Trim();
         if (string.IsNullOrWhiteSpace(areaName))
             areaName = "Hotovo";
 
