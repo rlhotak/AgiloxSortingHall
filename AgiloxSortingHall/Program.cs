@@ -5,28 +5,71 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Serilog.Events;
+
+var basePath = AppContext.BaseDirectory;
+
+var logsDirectory = Path.Combine(basePath, "Logs");
+var logsPath = Path.Combine(logsDirectory, "log-.txt");
+
+Directory.CreateDirectory(logsDirectory);
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(basePath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
 
 Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(new ConfigurationBuilder()
-        .AddJsonFile("appsettings.json")
-        .AddEnvironmentVariables()
-        .Build()
+    .ReadFrom.Configuration(configuration)
+    .WriteTo.Console()
+    .WriteTo.File(
+        logsPath,
+        rollingInterval: RollingInterval.Day,
+        retainedFileTimeLimit: TimeSpan.FromDays(14),
+        restrictedToMinimumLevel: LogEventLevel.Information
     )
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .Enrich.WithThreadId()
     .CreateLogger();
 
 try
 {
     Log.Information("Starting AgiloxSortingHall application...");
+    Log.Information("Base path: {BasePath}", basePath);
+    Log.Information("Logs path: {LogsPath}", logsPath);
 
     var builder = WebApplication.CreateBuilder(args);
+
+    builder.Configuration
+        .SetBasePath(basePath)
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddEnvironmentVariables();
 
     builder.Host.UseSerilog();
 
     builder.WebHost.UseUrls("http://0.0.0.0:5000");
 
-    // DbContext s SQLite
+    // DbContext s SQLite - databáze vždy relativnì vùèi složce aplikace/publish složce
+    var rawConnectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+        ?? throw new Exception("Missing DefaultConnection");
+
+    var sqliteBuilder = new SqliteConnectionStringBuilder(rawConnectionString);
+
+    if (!Path.IsPathRooted(sqliteBuilder.DataSource))
+    {
+        sqliteBuilder.DataSource = Path.GetFullPath(
+            Path.Combine(basePath, sqliteBuilder.DataSource)
+        );
+    }
+
+    var connectionString = sqliteBuilder.ToString();
+
+    Log.Information("SQLite database path: {DatabasePath}", sqliteBuilder.DataSource);
+
     builder.Services.AddDbContext<AppDbContext>(options =>
-        options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+        options.UseSqlite(connectionString));
 
     builder.Services.Configure<HallConfig>(
         builder.Configuration.GetSection("HallConfig"));
@@ -34,7 +77,7 @@ try
     builder.Services.AddTransient<DataSeeder>();
 
     var agiloxBaseUrl = builder.Configuration["Agilox:BaseUrl"]
-                         ?? throw new Exception("Missing Agilox BaseUrl in configuration");
+        ?? throw new Exception("Missing Agilox BaseUrl in configuration");
 
     builder.Services.AddHttpClient("Agilox", client =>
     {
@@ -74,26 +117,36 @@ try
     {
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        var cs = builder.Configuration.GetConnectionString("DefaultConnection")
-                 ?? throw new Exception("Missing DefaultConnection");
+        var dbPath = sqliteBuilder.DataSource;
+        var dbDirectory = Path.GetDirectoryName(dbPath);
 
-        var csb = new SqliteConnectionStringBuilder(cs);
-        var dataSource = csb.DataSource;
-
-        var dbPath = Path.IsPathRooted(dataSource)
-            ? dataSource
-            : Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, dataSource));
+        if (!string.IsNullOrWhiteSpace(dbDirectory))
+        {
+            Directory.CreateDirectory(dbDirectory);
+        }
 
         var dbFileExistsBeforeMigrate = File.Exists(dbPath);
+
+        Log.Information("Database exists before migration: {DatabaseExists}", dbFileExistsBeforeMigrate);
 
         db.Database.Migrate();
 
         if (!dbFileExistsBeforeMigrate)
         {
+            Log.Information("Database did not exist before migration. Checking whether seed is needed...");
+
             if (!db.HallRows.Any() && !db.WorkTables.Any())
             {
+                Log.Information("Seeding initial data...");
+
                 var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
                 await seeder.SeedAsync();
+
+                Log.Information("Initial data seeded successfully.");
+            }
+            else
+            {
+                Log.Information("Seed skipped because database already contains data.");
             }
         }
     }
@@ -120,6 +173,8 @@ try
        .WithStaticAssets();
 
     app.MapHub<HallHub>("/hallHub");
+
+    Log.Information("AgiloxSortingHall application started.");
 
     app.Run();
 }
