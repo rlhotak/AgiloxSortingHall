@@ -227,23 +227,27 @@
                                         </button>
                                     </form>
 
-                                    <form method="post"
-                                          asp-page-handler="EmptyPalette"
-                                          class="m-0 table-card-empty-form">
-                                        <input type="hidden" name="tableId" value="@table.Id" />
+                                    <!-- Tlačítko odvézt prázdnou paletu -->
+                                    @if (table.Category != WorkTableCategory.Kontrola)
+                                    {
+                                        <form method="post"
+                                              asp-page-handler="EmptyPalette"
+                                              class="m-0 table-card-empty-form">
+                                            <input type="hidden" name="tableId" value="@table.Id" />
 
-                                        @if (Model.Category.HasValue)
-                                        {
-                                            <input type="hidden" name="category" value="@Model.Category.Value" />
-                                        }
+                                            @if (Model.Category.HasValue)
+                                            {
+                                                <input type="hidden" name="category" value="@Model.Category.Value" />
+                                            }
 
-                                        <button type="submit"
-                                                class="btn btn-empty-palette table-card-action-button table-card-empty-button d-flex align-items-center justify-content-center px-3"
-                                                title="Odvézt prázdnou paletu od stolu do řady">
-                                            <i class="bi bi-box-seam fs-4 me-2"></i>
-                                            Prázdná paleta
-                                        </button>
-                                    </form>
+                                            <button type="submit"
+                                                    class="btn btn-empty-palette table-card-action-button table-card-empty-button d-flex align-items-center justify-content-center px-3"
+                                                    title="Odvézt prázdnou paletu od stolu do bufferu">
+                                                <i class="bi bi-box-seam fs-4 me-2"></i>
+                                                Prázdná paleta
+                                            </button>
+                                        </form>
+                                    }
 
                                 </div>
                             }

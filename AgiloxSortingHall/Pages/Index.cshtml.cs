@@ -137,16 +137,26 @@ namespace AgiloxSortingHall.Pages
         public string GetActivityDescription(RowCall call)
             => AgiloxActivityDescriptionHelper.GetActivityDescription(call);
 
-        /// <summary>
-        /// Handler pro tlačítko "Odvézt" na indexu.
-        /// Pošle na Agilox workflow 502 s parametry, kde má paletu vyzvednout a položit.
-        /// 
-        /// Logika:
-        /// - pokud je stůl v kategorii Kontrola, cílem je pole řad z
-        ///   stationsarea "Hotovo" seřazené podle DropRowSelectionStrategy
-        /// - jinak je cílem stationarea "Kontrola"
-        /// </summary>
-        public async Task<IActionResult> OnPostDoneAsync(int tableId)
+        public Task<IActionResult> OnPostDoneAsync(int tableId)
+        {
+            return SendTableWorkflowAsync(
+                tableId: tableId,
+                forceDestinationToBuffer: false,
+                actionName: "OnPostDoneAsync");
+        }
+
+        public Task<IActionResult> OnPostEmptyPaletteAsync(int tableId)
+        {
+            return SendTableWorkflowAsync(
+                tableId: tableId,
+                forceDestinationToBuffer: true,
+                actionName: "OnPostEmptyPaletteAsync");
+        }
+
+        private async Task<IActionResult> SendTableWorkflowAsync(
+    int tableId,
+    bool forceDestinationToBuffer,
+    string actionName)
         {
             if (await HasPendingCallForTableAsync(tableId))
                 return RedirectToPage(new { category = Category });
@@ -154,20 +164,23 @@ namespace AgiloxSortingHall.Pages
             var table = await _db.WorkTables.FindAsync(tableId);
             if (table == null)
             {
-                _logger.LogWarning("OnPostDoneAsync: stůl {TableId} nebyl nalezen.", tableId);
+                _logger.LogWarning("{Action}: stůl {TableId} nebyl nalezen.", actionName, tableId);
                 ErrorMessage = "Stůl nebyl nalezen.";
                 return RedirectToPage(new { category = Category });
             }
 
             object destination;
 
-            if (table.Category == WorkTableCategory.Kontrola)
+            if (forceDestinationToBuffer || table.Category == WorkTableCategory.Kontrola)
             {
                 var selectedRowNames = await SelectRowNamesForDropAsync();
 
                 if (!selectedRowNames.Any())
                 {
-                    _logger.LogWarning("OnPostDoneAsync: nepodařilo se vybrat žádné cílové řady pro pokládání.");
+                    _logger.LogWarning(
+                        "{Action}: nepodařilo se vybrat žádné cílové řady pro pokládání.",
+                        actionName);
+
                     ErrorMessage = "Nepodařilo se určit cílové řady pro pokládání.";
                     return RedirectToPage(new { category = Category });
                 }
@@ -203,9 +216,11 @@ namespace AgiloxSortingHall.Pages
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             _logger.LogInformation(
-                "OnPostDoneAsync: posílám workflow 502 pro stůl {Table}. Station={Station}, Payload={Payload}",
+                "{Action}: posílám workflow 502 pro stůl {Table}. Station={Station}, Destination={Destination}, Payload={Payload}",
+                actionName,
                 table.DisplayName,
                 station,
+                JsonSerializer.Serialize(destination),
                 json);
 
             string responseBody;
@@ -216,7 +231,8 @@ namespace AgiloxSortingHall.Pages
                 responseBody = await response.Content.ReadAsStringAsync();
 
                 _logger.LogInformation(
-                    "OnPostDoneAsync: Agilox odpověď pro stůl {Table}: {Body}",
+                    "{Action}: Agilox odpověď pro stůl {Table}: {Body}",
+                    actionName,
                     table.DisplayName,
                     responseBody);
 
@@ -224,8 +240,10 @@ namespace AgiloxSortingHall.Pages
             }
             catch (TaskCanceledException ex)
             {
-                _logger.LogError(ex,
-                    "OnPostDoneAsync: timeout při volání Agiloxu pro stůl {Table}.",
+                _logger.LogError(
+                    ex,
+                    "{Action}: timeout při volání Agiloxu pro stůl {Table}.",
+                    actionName,
                     table.DisplayName);
 
                 _db.RowCalls.Remove(call);
@@ -236,8 +254,10 @@ namespace AgiloxSortingHall.Pages
             }
             catch (HttpRequestException ex)
             {
-                _logger.LogError(ex,
-                    "OnPostDoneAsync: HTTP chyba při volání Agiloxu pro stůl {Table}.",
+                _logger.LogError(
+                    ex,
+                    "{Action}: HTTP chyba při volání Agiloxu pro stůl {Table}.",
+                    actionName,
                     table.DisplayName);
 
                 _db.RowCalls.Remove(call);
@@ -272,21 +292,27 @@ namespace AgiloxSortingHall.Pages
                         await _db.SaveChangesAsync();
 
                         _logger.LogInformation(
-                            "OnPostDoneAsync: RowCall {RowCallId} pro stůl {Table} má OrderId={OrderId}",
-                            call.Id, table.DisplayName, call.OrderId);
+                            "{Action}: RowCall {RowCallId} pro stůl {Table} má OrderId={OrderId}",
+                            actionName,
+                            call.Id,
+                            table.DisplayName,
+                            call.OrderId);
                     }
                     else
                     {
                         _logger.LogWarning(
-                            "OnPostDoneAsync: odpověď Agiloxu neobsahuje použitelné 'id'. Body={Body}",
+                            "{Action}: odpověď Agiloxu neobsahuje použitelné 'id'. Body={Body}",
+                            actionName,
                             responseBody);
                     }
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex,
-                    "OnPostDoneAsync: chyba při parsování odpovědi Agiloxu: {Body}",
+                _logger.LogError(
+                    ex,
+                    "{Action}: chyba při parsování odpovědi Agiloxu: {Body}",
+                    actionName,
                     responseBody);
             }
 
