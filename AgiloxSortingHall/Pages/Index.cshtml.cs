@@ -142,6 +142,7 @@ namespace AgiloxSortingHall.Pages
             return SendTableWorkflowAsync(
                 tableId: tableId,
                 forceDestinationToBuffer: false,
+                useInputStation: false,
                 actionName: "OnPostDoneAsync");
         }
 
@@ -150,12 +151,14 @@ namespace AgiloxSortingHall.Pages
             return SendTableWorkflowAsync(
                 tableId: tableId,
                 forceDestinationToBuffer: true,
+                useInputStation: true,
                 actionName: "OnPostEmptyPaletteAsync");
         }
 
         private async Task<IActionResult> SendTableWorkflowAsync(
     int tableId,
     bool forceDestinationToBuffer,
+    bool useInputStation,
     string actionName)
         {
             if (await HasPendingCallForTableAsync(tableId))
@@ -204,7 +207,9 @@ namespace AgiloxSortingHall.Pages
             await _db.SaveChangesAsync();
 
             var client = _httpClientFactory.CreateClient("Agilox");
-            var station = WorkTableStations.GetOutputStation(table);
+            var station = useInputStation
+     ? WorkTableStations.GetInputStation(table)
+     : WorkTableStations.GetOutputStation(table);
 
             var payload = new Dictionary<string, object>
             {
