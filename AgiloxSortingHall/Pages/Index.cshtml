@@ -63,7 +63,6 @@
             </div>
 
         </div>
-
     </div>
 
     @if (!Model.Tables.Any())
@@ -106,123 +105,149 @@
 
                 var detailUrl = Url.Page("/Stul", new { id = table.Id, category = Model.Category });
 
-
                 <div class="col-12 col-md-6 col-lg-4 d-flex">
                     <div class="bg-dark text-light border border-secondary rounded-3
-                 flex-fill p-4 text-start d-flex flex-column justify-content-between shadow-sm
-                 js-table-card"
+                                        flex-fill p-4 text-start d-flex flex-column shadow-sm
+                                        js-table-card"
                          data-url="@(
                          table.Category != WorkTableCategory.Kontrola
                          || hasPending
                              ? detailUrl
                              : null
-                          )">
+                                                  )">
 
+                <div class="table-card-layout">
 
+                            <!-- Levá část karty -->
+                            <div class="table-card-left">
 
-                        <!-- Horní řádek: ikonka + název + Odvézt -->
-                        <div class="d-flex align-items-center justify-content-between mb-3">
+                                <!-- Ikona + název stolu -->
+                                <div class="d-flex align-items-center mb-4">
 
-                            <div class="d-flex align-items-center">
-                                @* Ikonka stavu *@
-                                @if (hasPending && activityVm != null)
-                                {
-                                    if (activityVm.Severity == AgiloxSeverity.Error)
+                            @if (hasPending && activityVm != null)
                                     {
-                                        <i class="bi bi-exclamation-octagon-fill text-danger fs-2 me-3"></i>
-                                    }
-                                    else if (activityVm.Severity == AgiloxSeverity.Warning)
-                                    {
-                                        <i class="bi bi-exclamation-triangle-fill text-warning fs-2 me-3"></i>
-                                    }
-                                    else if (isWaitingForWarehouse)
-                                    {
-                                        <i class="bi bi-box-seam text-warning fs-2 me-3"></i>
+                                        if (activityVm.Severity == AgiloxSeverity.Error)
+                                        {
+                                            <i class="bi bi-exclamation-octagon-fill text-danger fs-2 me-3"></i>
+                                        }
+                                        else if (activityVm.Severity == AgiloxSeverity.Warning)
+                                        {
+                                            <i class="bi bi-exclamation-triangle-fill text-warning fs-2 me-3"></i>
+                                        }
+                                        else if (isWaitingForWarehouse)
+                                        {
+                                            <i class="bi bi-box-seam text-warning fs-2 me-3"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi @activityVm.IconCss @activityVm.TextCss fs-2 me-3"></i>
+                                        }
                                     }
                                     else
                                     {
-                                        <i class="bi @activityVm.IconCss @activityVm.TextCss fs-2 me-3"></i>
+                                        <i class="bi bi-check-circle-fill text-success fs-2 me-3"></i>
                                     }
-                                }
-                                else
-                                {
-                                    <i class="bi bi-check-circle-fill text-success fs-2 me-3"></i>
-                                }
 
-                                @* Název stolu (friendly) *@
-                                <span class="fs-2 fw-semibold text-light">
-                                    @table.DisplayName
-                                </span>
+                                    <span class="fs-2 fw-semibold text-light">
+                                        @table.DisplayName
+                                    </span>
+                                </div>
+
+                                <!-- Stav + 3 fixní řádky pro zarovnání -->
+                                <div class="mt-auto">
+
+                                    @* 1. řádek – hlavní stav, vždy *@
+                                    <div class="fw-semibold fs-5 @(hasPending && activityVm != null ? activityVm.TextCss : "text-success")">
+                                        @if (hasPending && activityVm != null)
+                                        {
+                                            @activityVm.Text
+                                        }
+                                        else
+                                        {
+                                            @:Připraveno
+                                        }
+                                    </div>
+
+                                    @* 2. řádek – artikl a řada nebo prázdná linka *@
+                                    <div class="text-light small opacity-75 mt-1">
+                                        @if (hasArticleOrRow)
+                                        {
+                                            <i class="bi bi-box-seam me-1"></i>
+                                            @($"{article} - {rowName}")
+                                        }
+                                        else
+                                        {
+                                            @:&nbsp;
+                                        }
+                                    </div>
+
+                                    @* 3. řádek – poslední stav / žádný požadavek / prázdno u pending *@
+                                    <div class="small mt-1 @(hasLastError && !hasPending && activityVm != null ? activityVm.TextCss : "text-secondary")">
+                                        @if (!hasPending)
+                                        {
+                                            if (hasLastError && activityVm != null)
+                                            {
+                                                <i class="bi @activityVm.IconCss me-1"></i>
+                                                @activityVm.Text
+                                            }
+                                            else
+                                            {
+                                                @:Žádný čekající požadavek.
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @:&nbsp;
+                                        }
+                                    </div>
+                                </div>
+
                             </div>
 
-                            @* Tlačítko Odvézt – pouze pokud není pending *@
+                            <!-- Pravá část karty: akční tlačítka -->
                             @if (!hasPending)
                             {
-                                <form method="post" asp-page-handler="Done" class="m-0 js-stop-click">
-                                    <input type="hidden" name="tableId" value="@table.Id" />
-                                    @* ať se po postu zachová filtr *@
-                                    @if (Model.Category.HasValue)
-                                    {
-                                        <input type="hidden" name="category" value="@Model.Category.Value" />
-                                    }
+                                <div class="table-card-actions js-stop-click">
 
-                                    <button type="submit"
-                                            class="btn btn-done btn-lg d-flex align-items-center px-3 py-2"
-                                            title="Označit jako odvézt – odvézt paletu od stolu do řady">
-                                        <i class="bi bi-check2-circle fs-4 me-1"></i>
-                                        Odvézt
-                                    </button>
-                                </form>
+                                    <form method="post"
+                                          asp-page-handler="Done"
+                                          class="m-0">
+                                        <input type="hidden" name="tableId" value="@table.Id" />
+
+                                        @if (Model.Category.HasValue)
+                                        {
+                                            <input type="hidden" name="category" value="@Model.Category.Value" />
+                                        }
+
+                                        <button type="submit"
+                                                class="btn btn-done btn-lg table-card-action-button d-flex align-items-center justify-content-center px-3 py-2"
+                                                title="Odvézt paletu od stolu do řady">
+                                            <i class="bi bi-check2-circle fs-4 me-1"></i>
+                                            Hotovo
+                                        </button>
+                                    </form>
+
+                                    <form method="post"
+                                          asp-page-handler="EmptyPalette"
+                                          class="m-0 table-card-empty-form">
+                                        <input type="hidden" name="tableId" value="@table.Id" />
+
+                                        @if (Model.Category.HasValue)
+                                        {
+                                            <input type="hidden" name="category" value="@Model.Category.Value" />
+                                        }
+
+                                        <button type="submit"
+                                                class="btn btn-empty-palette table-card-action-button table-card-empty-button d-flex align-items-center justify-content-center px-3"
+                                                title="Odvézt prázdnou paletu od stolu do řady">
+                                            <i class="bi bi-box-seam fs-4 me-2"></i>
+                                            Prázdná paleta
+                                        </button>
+                                    </form>
+
+                                </div>
                             }
-                        </div>
 
-                        <!-- Stav + 3 fixní řádky pro zarovnání -->
-                        <div class="mt-1">
-
-                            @* 1. řádek – hlavní stav, vždy *@
-                            <div class="fw-semibold fs-5 @(hasPending && activityVm != null ? activityVm.TextCss : "text-success")">
-                                @if (hasPending && activityVm != null)
-                                {
-                                    @activityVm.Text
-                                }
-                                else
-                                {
-                                    @:Připraveno
-                                }
-                            </div>
-
-                            @* 2. řádek – artikl a řada (nebo prázdná linka kvůli zarovnání) *@
-                            <div class="text-light small opacity-75 mt-1">
-                                @if (hasArticleOrRow)
-                                {
-                                    <i class="bi bi-box-seam me-1"></i>
-                                    @($"{article} - {rowName}")
-                                }
-                                else
-                                {
-                                    @:&nbsp;
-                                }
-                            </div>
-
-                            @* 3. řádek – poslední stav / "žádný požadavek" / prázdno u pending *@
-                            <div class="small mt-1 @(hasLastError && !hasPending && activityVm != null ? activityVm.TextCss : "text-secondary")">
-                                @if (!hasPending)
-                                {
-                                    @if (hasLastError && activityVm != null)
-                                    {
-                                        <i class="bi @activityVm.IconCss me-1"></i>
-                                        @activityVm.Text
-                                    }
-                                    else
-                                    {
-                                        @:Žádný čekající požadavek.
-                                    }
-                                }
-                                else
-                                {
-                                    @:&nbsp;
-                                }
-                            </div>
                         </div>
 
                     </div>
