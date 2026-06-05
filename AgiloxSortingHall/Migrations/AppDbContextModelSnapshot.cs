@@ -119,6 +119,9 @@ namespace AgiloxSortingHall.Migrations
                     b.Property<long?>("OrderId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("PickedSlotId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("TEXT");
 
@@ -131,6 +134,8 @@ namespace AgiloxSortingHall.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("HallRowId");
+
+                    b.HasIndex("PickedSlotId");
 
                     b.HasIndex("WorkTableId");
 
@@ -179,6 +184,11 @@ namespace AgiloxSortingHall.Migrations
                         .WithMany()
                         .HasForeignKey("HallRowId");
 
+                    b.HasOne("AgiloxSortingHall.Models.PalletSlot", "PickedSlot")
+                        .WithMany()
+                        .HasForeignKey("PickedSlotId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("AgiloxSortingHall.Models.WorkTable", "WorkTable")
                         .WithMany()
                         .HasForeignKey("WorkTableId")
@@ -186,6 +196,8 @@ namespace AgiloxSortingHall.Migrations
                         .IsRequired();
 
                     b.Navigation("HallRow");
+
+                    b.Navigation("PickedSlot");
 
                     b.Navigation("WorkTable");
                 });

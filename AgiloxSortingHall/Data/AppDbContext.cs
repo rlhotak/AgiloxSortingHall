@@ -25,6 +25,12 @@ namespace AgiloxSortingHall.Data
                 .HasIndex(p => new { p.HallRowId, p.PositionIndex })
                 .IsUnique();
 
+            modelBuilder.Entity<RowCall>()
+                .HasOne(c => c.PickedSlot)
+                .WithMany()
+                .HasForeignKey(c => c.PickedSlotId)
+                .OnDelete(DeleteBehavior.SetNull);
+
             modelBuilder.Entity<HallSettings>().HasData(
                new HallSettings
                {

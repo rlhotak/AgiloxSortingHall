@@ -69,6 +69,18 @@ namespace AgiloxSortingHall.Services
             call.LastAgiloxAction = dto.Action;
             call.LastAgiloxStatus = dto.Status;
 
+            if (call.Status == RowCallStatus.Delivered ||
+                (call.Status == RowCallStatus.Cancelled && status != AgiloxStatus.OrderCanceled))
+            {
+                _logger.LogInformation(
+                    "Ignoring late Agilox callback for RowCall {RowCallId} (OrderId={OrderId}) because call status is already {RowCallStatus}. Action={Action}, Status={Status}.",
+                    call.Id, dto.OrderId, call.Status, action, status);
+
+                await _db.SaveChangesAsync();
+                await _hub.Clients.All.SendAsync("HallUpdated");
+                return;
+            }
+
             // sanity check na jméno řady / stanice – neblokuje zpracování, jen loguje.
             if (call.HallRow != null)
             {
@@ -161,12 +173,40 @@ namespace AgiloxSortingHall.Services
             {
                 case AgiloxStatus.Ok:
                     {
+                        if (call.PickedSlotId != null)
+                        {
+                            var pickedSlot = call.HallRow.Slots.FirstOrDefault(s => s.Id == call.PickedSlotId.Value);
+
+                            if (pickedSlot == null)
+                            {
+                                _logger.LogWarning(
+                                    "Repeated pickup OK for RowCall {RowCallId}, but tracked slot {SlotId} was not found in row {RowName}.",
+                                    call.Id, call.PickedSlotId, call.HallRow.Name);
+                            }
+                            else if (pickedSlot.State != PalletState.InTransit)
+                            {
+                                _logger.LogWarning(
+                                    "Repeated pickup OK for RowCall {RowCallId} ignored. Tracked slot {SlotId} in row {RowName} is currently {SlotState}.",
+                                    call.Id, pickedSlot.Id, call.HallRow.Name, pickedSlot.State);
+                            }
+                            else
+                            {
+                                _logger.LogInformation(
+                                    "Repeated pickup OK for RowCall {RowCallId} ignored. Slot {SlotId} in row {RowName} is already InTransit.",
+                                    call.Id, pickedSlot.Id, call.HallRow.Name);
+                            }
+
+                            call.Status = RowCallStatus.Pending;
+                            break;
+                        }
+
                         // Paleta byla fyzicky odebrána – nejnižší obsazený slot označíme jako InTransit.
                         var slot = GetBottomSlot(call.HallRow, PalletState.Occupied);
 
                         if (slot != null)
                         {
                             slot.State = PalletState.InTransit;
+                            call.PickedSlotId = slot.Id;
 
                             // RowCall stále čeká na drop, necháváme jej tedy Pending.
                             call.Status = RowCallStatus.Pending;
@@ -221,10 +261,17 @@ namespace AgiloxSortingHall.Services
                 case AgiloxStatus.Ok:
                     {
                         // Paleta byla úspěšně vyložena na stůl:
-                        // - v řadě označíme nejnižší paletu v tranzitu (preferovaně) jako prázdnou.
-                        //   Pokud žádná InTransit slot není, fallback na Occupied.
-                        var slot = GetBottomSlot(call.HallRow, PalletState.InTransit)
+                        // - v řadě uvolníme přesně slot svázaný s tímto RowCallem.
+                        //   Pro starší RowCally bez PickedSlotId držíme původní fallback.
+                        var slot = call.PickedSlotId == null
+                            ? null
+                            : call.HallRow.Slots.FirstOrDefault(s => s.Id == call.PickedSlotId.Value);
+
+                        if (slot == null)
+                        {
+                            slot = GetBottomSlot(call.HallRow, PalletState.InTransit)
                                    ?? GetBottomSlot(call.HallRow, PalletState.Occupied);
+                        }
 
                         if (slot != null)
                         {
@@ -285,8 +332,22 @@ namespace AgiloxSortingHall.Services
         /// </summary>
         private void HandleOrderCanceled(RowCall call, AgiloxCallbackDto dto)
         {
+            if (call.HallRow != null && call.PickedSlotId != null)
+            {
+                var slot = call.HallRow.Slots.FirstOrDefault(s => s.Id == call.PickedSlotId.Value);
+
+                if (slot?.State == PalletState.InTransit)
+                {
+                    slot.State = PalletState.Empty;
+
+                    _logger.LogInformation(
+                        "Order canceled for RowCall {RowCallId}. Tracked slot {SlotId} in row {RowName} changed from InTransit to Empty.",
+                        call.Id, slot.Id, call.HallRow.Name);
+                }
+            }
+
             // V tuto chvíli nevíme přesně, kde fyzicky paleta skončila (řeší WF500 v Agiloxu),
-            // proto neměníme stavy slotů a pouze označíme RowCall jako zrušený.
+            // proto požadavek označíme jako zrušený a případný pickup už nevedeme jako InTransit.
             call.Status = RowCallStatus.Cancelled;
 
             _logger.LogInformation(

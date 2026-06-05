@@ -56,6 +56,17 @@ namespace AgiloxSortingHall.Models
         public long? OrderId { get; set; }
 
         /// <summary>
+        /// Slot, který byl při prvním úspěšném pickup callbacku označen jako InTransit.
+        /// Díky tomu jsou opakované callbacky od Agiloxu idempotentní.
+        /// </summary>
+        public int? PickedSlotId { get; set; }
+
+        /// <summary>
+        /// Navigace na slot, který patří k tomuto převozu.
+        /// </summary>
+        public PalletSlot? PickedSlot { get; set; }
+
+        /// <summary>
         /// Poslední status, který Agilox poslal v callbacku (AgiloxStatus).
         /// </summary>
         public string? LastAgiloxStatus { get; set; }
