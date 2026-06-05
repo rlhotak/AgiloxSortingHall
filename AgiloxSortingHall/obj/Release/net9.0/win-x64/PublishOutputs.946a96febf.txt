@@ -262,6 +262,8 @@ C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.AspNetCore.WebSockets.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.AspNetCore.WebUtilities.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.AspNetCore.dll
+C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Caching.Abstractions.dll
+C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Caching.Memory.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Configuration.CommandLine.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Configuration.EnvironmentVariables.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Configuration.FileExtensions.dll
@@ -312,7 +314,7 @@ C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\hostfxr.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\hostpolicy.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\mscordaccore.dll
-C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\mscordaccore_amd64_amd64_9.0.425.16305.dll
+C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\mscordaccore_amd64_amd64_9.0.1626.22923.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\mscordbi.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\mscorrc.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\msquic.dll
@@ -322,8 +324,6 @@ C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.EntityFrameworkCore.Abstractions.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.EntityFrameworkCore.Sqlite.dll
-C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Caching.Abstractions.dll
-C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Caching.Memory.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Configuration.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Configuration.Abstractions.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Configuration.Binder.dll
@@ -339,6 +339,8 @@ C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Microsoft.Extensions.Primitives.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Serilog.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Serilog.AspNetCore.dll
+C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Serilog.Enrichers.Environment.dll
+C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Serilog.Enrichers.Thread.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Serilog.Extensions.Hosting.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Serilog.Extensions.Logging.dll
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\PubTmp\Out\Serilog.Formatting.Compact.dll
