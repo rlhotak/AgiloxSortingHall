@@ -8,6 +8,7 @@
     ViewData["Title"] = "Výběr stolu";
 }
 
+
 <div class="container py-4 text-light">
 
     <!-- Hlavička stránky -->
@@ -228,7 +229,7 @@
                                     </form>
 
                                     <!-- Tlačítko odvézt prázdnou paletu -->
-                                    @if (table.Category != WorkTableCategory.Kontrola)
+                                  @*   @if (table.Category != WorkTableCategory.Kontrola)
                                     {
                                         <form method="post"
                                               asp-page-handler="EmptyPalette"
@@ -247,7 +248,7 @@
                                                 Prázdná paleta
                                             </button>
                                         </form>
-                                    }
+                                    } *@
 
                                 </div>
                             }
