@@ -104,9 +104,8 @@ namespace AgiloxSortingHall.Pages
 
         /// <summary>
         /// Stůl si "zavolá" konkrétní řadu.
-        /// Vždy vytvoříme RowCall (aby byl vidět ve frontě),
-        /// ale workflow na Agilox se spouští jen pokud je v řadě
-        /// volná paleta (Occupied) nad rámec už odeslaných požadavků.
+        /// RowCall vytvoříme jen pokud má řada dostupnou paletu.
+        /// Dostupná paleta = Occupied slot nad rámec pending požadavků pro danou řadu.
         /// </summary>
         public async Task<IActionResult> OnPostCallRowAsync(int id, int rowId)
         {
@@ -120,6 +119,15 @@ namespace AgiloxSortingHall.Pages
 
             if (table == null || row == null)
                 return RedirectToPage(new { id, category = Category });
+
+            if (!await HasAvailablePalletForNewCallAsync(row))
+            {
+                _logger.LogInformation(
+                    "Řada {Row} nemá dostupnou paletu pro nový požadavek – RowCall se nevytváří.",
+                    row.Name);
+
+                return RedirectToPage(new { id, category = Category });
+            }
 
             await CreateCallAndDispatchAsync(table, row);
 
@@ -146,7 +154,10 @@ namespace AgiloxSortingHall.Pages
             var selectedRow = await SelectRowForArticleAsync(article);
             if (selectedRow == null)
             {
-                // žádná řada s tímto artiklem
+                _logger.LogInformation(
+                    "Artikl {Article} nemá žádnou řadu s dostupnou paletou – RowCall se nevytváří.",
+                    article);
+
                 return RedirectToPage("/Index", new { category = Category });
             }
 
@@ -192,7 +203,7 @@ namespace AgiloxSortingHall.Pages
 
         /// <summary>
         /// Vybere vhodnou řadu pro daný artikl podle aktuální strategie.
-        /// Vrátí null, pokud žádná řada s tímto artiklem neexistuje.
+        /// Vrátí null, pokud žádná řada s tímto artiklem nemá dostupnou paletu.
         /// </summary>
         private async Task<HallRow?> SelectRowForArticleAsync(string article)
         {
@@ -205,37 +216,37 @@ namespace AgiloxSortingHall.Pages
             if (!rowsForArticle.Any())
                 return null;
 
+            var availableDict = await GetAvailablePalletsForRowsAsync(rowsForArticle);
+            var availableRows = rowsForArticle
+                .Where(r => availableDict.TryGetValue(r.Id, out var available) && available > 0)
+                .ToList();
+
+            if (!availableRows.Any())
+                return null;
+
             var settings = await _db.HallSettings.FirstOrDefaultAsync();
             var strategy = settings?.RowSelectionStrategy ?? RowSelectionStrategy.MostFreePallets;
 
             switch (strategy)
             {
                 case RowSelectionStrategy.NearestLeft:
-                    return rowsForArticle.First();
+                    return availableRows.First();
 
                 case RowSelectionStrategy.NearestRight:
-                    return rowsForArticle.Last();
+                    return availableRows.Last();
 
                 case RowSelectionStrategy.LeastFreePallets:
-                    {
-                        var availableDict = await GetAvailablePalletsForRowsAsync(rowsForArticle);
-
-                        return rowsForArticle
-                            .OrderBy(r => availableDict.TryGetValue(r.Id, out var v) ? v : 0)
-                            .ThenBy(r => r.Name)
-                            .First();
-                    }
+                    return availableRows
+                        .OrderBy(r => availableDict[r.Id])
+                        .ThenBy(r => r.Name)
+                        .First();
 
                 case RowSelectionStrategy.MostFreePallets:
                 default:
-                    {
-                        var availableDict = await GetAvailablePalletsForRowsAsync(rowsForArticle);
-
-                        return rowsForArticle
-                            .OrderByDescending(r => availableDict.TryGetValue(r.Id, out var v) ? v : 0)
-                            .ThenBy(r => r.Name)
-                            .First();
-                    }
+                    return availableRows
+                        .OrderByDescending(r => availableDict[r.Id])
+                        .ThenBy(r => r.Name)
+                        .First();
             }
         }
 
@@ -431,9 +442,17 @@ namespace AgiloxSortingHall.Pages
         }
 
         /// <summary>
-        /// Vrátí počet "volných" palet v dané řadě – tj.
-        /// počet fyzicky obsazených slotů mínus počet callů pro tuto řadu,
-        /// které už mají přiřazené OrderId (Agilox).
+        /// Vrátí true, pokud má řada dostupnou paletu pro nový RowCall.
+        /// </summary>
+        private async Task<bool> HasAvailablePalletForNewCallAsync(HallRow row)
+        {
+            var availableDict = await GetAvailablePalletsForRowsAsync(new[] { row });
+            return availableDict.TryGetValue(row.Id, out var available) && available > 0;
+        }
+
+        /// <summary>
+        /// Vrátí počet dostupných palet v dané řadě – tj.
+        /// počet fyzicky obsazených slotů mínus počet pending callů pro tuto řadu.
         /// </summary>
         private async Task<Dictionary<int, int>> GetAvailablePalletsForRowsAsync(IEnumerable<HallRow> rows)
         {
@@ -443,8 +462,7 @@ namespace AgiloxSortingHall.Pages
                 .Where(c =>
                     c.HallRowId != null &&
                     rowIds.Contains(c.HallRowId.Value) &&
-                    c.Status == RowCallStatus.Pending &&
-                    c.OrderId != null)
+                    c.Status == RowCallStatus.Pending)
                 .GroupBy(c => c.HallRowId!.Value)
                 .Select(g => new
                 {
