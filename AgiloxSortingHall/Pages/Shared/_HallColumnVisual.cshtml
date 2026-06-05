@@ -31,6 +31,16 @@
     // sloty, které jsou "v převozu" = mají na sobě běžící order na Agiloxu
     var inTransitSlotIds = new HashSet<int>();
 
+    string GetTableLabel(RowCall call)
+    {
+        if (!string.IsNullOrWhiteSpace(call.WorkTable?.InputStationName))
+        {
+            return call.WorkTable.InputStationName;
+        }
+
+        return call.WorkTable?.DisplayName ?? $"Stůl {call.WorkTableId}";
+    }
+
     // mapujeme jen tolik slotů, kolik máme jak obsazených slotů, tak dispatched callů
     var mapCount = Math.Min(occupiedSlots.Count, dispatchedCalls.Count);
 
@@ -39,7 +49,7 @@
         var slot = occupiedSlots[i];
         var call = dispatchedCalls[i];
 
-        var tableName = call.WorkTable?.DisplayName ?? $"Stůl {call.WorkTableId}";
+        var tableName = GetTableLabel(call);
 
         // zvýraznění aktuálního stolu (na stránce konkrétního stolu)
         if (Model.CurrentTableId.HasValue && call.WorkTableId == Model.CurrentTableId.Value)
@@ -57,7 +67,7 @@
     // text pro tooltip – seznam stolů, které ještě čekají
     string? remainingQueueTooltip = remainingQueue.Any()
         ? string.Join(", ",
-            remainingQueue.Select(c => c.WorkTable?.DisplayName ?? $"Stůl {c.WorkTableId}"))
+            remainingQueue.Select(GetTableLabel))
         : null;
 }
 
