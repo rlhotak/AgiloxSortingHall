@@ -88,7 +88,7 @@
               "RelativeDocumentMoniker": "AgiloxSortingHall\\Helpers\\WorkTableCategoryExtensions.cs",
               "ToolTip": "C:\\Users\\jprochazka\\source\\repos\\AgiloxSortingHall\\AgiloxSortingHall\\Helpers\\WorkTableCategoryExtensions.cs",
               "RelativeToolTip": "AgiloxSortingHall\\Helpers\\WorkTableCategoryExtensions.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA8AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-06-10T13:27:27.168Z",
               "EditorCaption": ""
@@ -103,8 +103,7 @@
               "RelativeToolTip": "AgiloxSortingHall\\Enums\\WorkTableCategory.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAYAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-10T13:25:53.807Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-10T13:25:53.807Z"
             },
             {
               "$type": "Document",
@@ -188,8 +187,7 @@
               "RelativeToolTip": "AgiloxSortingHall\\Pages\\Index.cshtml.cs",
               "ViewState": "AgIAAFYAAAAAAAAAAAAswHIAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-06-03T09:39:48.538Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-06-03T09:39:48.538Z"
             },
             {
               "$type": "Document",

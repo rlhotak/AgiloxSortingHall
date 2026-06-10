@@ -60,3 +60,10 @@ Microsoft.Extensions.Hosting.HostAbortedException: The host was aborted.
 2026-06-10 12:53:51.470 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db
 2026-06-10 12:53:51.931 +02:00 [INF] Database exists before migration: true
 2026-06-10 12:53:53.150 +02:00 [INF] AgiloxSortingHall application started.
+2026-06-10 15:43:46.828 +02:00 [INF] Starting AgiloxSortingHall application...
+2026-06-10 15:43:46.850 +02:00 [INF] Base path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\
+2026-06-10 15:43:46.852 +02:00 [INF] Logs path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\Logs\log-.txt
+2026-06-10 15:43:46.957 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db
+2026-06-10 15:43:47.069 +02:00 [INF] Database exists before migration: true
+2026-06-10 15:43:47.862 +02:00 [INF] AgiloxSortingHall application started.
+2026-06-10 16:13:13.662 +02:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.

@@ -9,7 +9,7 @@
 }
 
 
-<div class="container py-4 text-light">
+<div class="container py-4 text-light table-selection-page">
 
     <!-- Hlavička stránky -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -18,7 +18,7 @@
             <div class="text-secondary fs-6">Vyber stůl pro obsluhu</div>
         </div>
 
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center gap-2 table-selection-toolbar">
 
             <!-- Odkaz na skladníka -->
             <a asp-page="/Skladnik"
@@ -75,7 +75,7 @@
     else
     {
         <!-- Grid dlaždic stolů -->
-        <div class="row g-3">
+        <div class="table-selection-grid">
 
             @foreach (var item in Model.Tables)
             {
@@ -106,10 +106,9 @@
 
                 var detailUrl = Url.Page("/Stul", new { id = table.Id, category = Model.Category });
 
-                <div class="col-12 col-md-6 col-lg-4 d-flex">
-                    <div class="bg-dark text-light border border-secondary rounded-3
-                                        flex-fill p-4 text-start d-flex flex-column shadow-sm
-                                        js-table-card"
+                <div class="bg-dark text-light border border-secondary rounded-3
+                                    table-selection-card text-start d-flex flex-column shadow-sm
+                                    js-table-card"
                          data-url="@(
                          table.Category != WorkTableCategory.Kontrola
                          || hasPending
@@ -117,7 +116,7 @@
                              : null
                                                   )">
 
-                <div class="table-card-layout">
+                    <div class="table-card-layout">
 
                             <!-- Levá část karty -->
                             <div class="table-card-left">
@@ -255,7 +254,6 @@
 
                         </div>
 
-                    </div>
                 </div>
             }
 
