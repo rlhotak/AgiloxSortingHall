@@ -7,7 +7,7 @@
         //Pracoviste1 = 2,
         Pracoviste2 = 3,
         Pracoviste3 = 4,
-        //Pracoviste4 = 5,
+        Pracoviste4 = 5,
         //Pracoviste5 = 6,
         Pracoviste6 = 7,
         Pracoviste7 = 8,

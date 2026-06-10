@@ -11,7 +11,7 @@ namespace AgiloxSortingHall.Helpers
             //WorkTableCategory.Pracoviste1 => "Pracoviště 1",
             WorkTableCategory.Pracoviste2 => "Pracoviště 2",
             WorkTableCategory.Pracoviste3 => "Pracoviště 3",
-            //WorkTableCategory.Pracoviste4 => "Pracoviště 4",
+            WorkTableCategory.Pracoviste4 => "Pracoviště 4",
             //WorkTableCategory.Pracoviste5 => "Pracoviště 5",
             WorkTableCategory.Pracoviste6 => "Pracoviště 6",
             WorkTableCategory.Pracoviste7 => "Pracoviště 7",
