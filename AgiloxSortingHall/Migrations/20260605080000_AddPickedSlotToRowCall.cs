@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AgiloxSortingHall.Migrations
 {
     /// <inheritdoc />
+    [Migration("20260605080000_AddPickedSlotToRowCall")]
     public partial class AddPickedSlotToRowCall : Migration
     {
         /// <inheritdoc />

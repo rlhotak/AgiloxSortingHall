@@ -1,0 +1,237 @@
+2026-06-10 11:54:49.304 +02:00 [INF] Starting AgiloxSortingHall application...
+2026-06-10 11:54:49.968 +02:00 [INF] Base path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\
+2026-06-10 11:54:49.973 +02:00 [INF] Logs path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\Logs\log-.txt
+2026-06-10 11:54:50.815 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db
+2026-06-10 11:54:51.790 +02:00 [INF] Database exists before migration: true
+2026-06-10 11:54:54.379 +02:00 [INF] AgiloxSortingHall application started.
+2026-06-10 11:54:56.717 +02:00 [ERR] Failed executing DbCommand (15ms) [Parameters=[@__tableIds_0='?' (Size = 9)], CommandType='"Text"', CommandTimeout='30']
+SELECT "r"."Id", "r"."HallRowId", "r"."LastAgiloxAction", "r"."LastAgiloxStatus", "r"."OrderId", "r"."PickedSlotId", "r"."RequestedAt", "r"."Status", "r"."WorkTableId", "h"."Id", "h"."Article", "h"."Capacity", "h"."ColorHex", "h"."Name"
+FROM "RowCalls" AS "r"
+LEFT JOIN "HallRows" AS "h" ON "r"."HallRowId" = "h"."Id"
+WHERE "r"."WorkTableId" IN (
+    SELECT "t"."value"
+    FROM json_each(@__tableIds_0) AS "t"
+) AND "r"."Status" = 0
+2026-06-10 11:54:56.767 +02:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AgiloxSortingHall.Data.AppDbContext'.
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+2026-06-10 12:08:53.981 +02:00 [INF] Starting AgiloxSortingHall application...
+2026-06-10 12:08:54.310 +02:00 [INF] Base path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\
+2026-06-10 12:08:54.318 +02:00 [INF] Logs path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\Logs\log-.txt
+2026-06-10 12:08:54.964 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db
+2026-06-10 12:08:55.525 +02:00 [INF] Database exists before migration: false
+2026-06-10 12:08:57.480 +02:00 [INF] Database did not exist before migration. Checking whether seed is needed...
+2026-06-10 12:08:57.797 +02:00 [INF] Seeding initial data...
+2026-06-10 12:08:58.417 +02:00 [INF] Initial data seeded successfully.
+2026-06-10 12:08:58.893 +02:00 [INF] AgiloxSortingHall application started.
+2026-06-10 12:09:13.050 +02:00 [ERR] Failed executing DbCommand (3ms) [Parameters=[@__tableIds_0='?' (Size = 9)], CommandType='"Text"', CommandTimeout='30']
+SELECT "r"."Id", "r"."HallRowId", "r"."LastAgiloxAction", "r"."LastAgiloxStatus", "r"."OrderId", "r"."PickedSlotId", "r"."RequestedAt", "r"."Status", "r"."WorkTableId", "h"."Id", "h"."Article", "h"."Capacity", "h"."ColorHex", "h"."Name"
+FROM "RowCalls" AS "r"
+LEFT JOIN "HallRows" AS "h" ON "r"."HallRowId" = "h"."Id"
+WHERE "r"."WorkTableId" IN (
+    SELECT "t"."value"
+    FROM json_each(@__tableIds_0) AS "t"
+) AND "r"."Status" = 0
+2026-06-10 12:09:13.104 +02:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AgiloxSortingHall.Data.AppDbContext'.
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+2026-06-10 12:09:36.522 +02:00 [INF] Starting AgiloxSortingHall application...
+2026-06-10 12:09:36.761 +02:00 [INF] Base path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\
+2026-06-10 12:09:36.766 +02:00 [INF] Logs path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\Logs\log-.txt
+2026-06-10 12:09:37.135 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db
+2026-06-10 12:09:37.521 +02:00 [INF] Database exists before migration: true
+2026-06-10 12:09:39.486 +02:00 [INF] AgiloxSortingHall application started.
+2026-06-10 12:09:51.507 +02:00 [ERR] Failed executing DbCommand (7ms) [Parameters=[@__tableIds_0='?' (Size = 9)], CommandType='"Text"', CommandTimeout='30']
+SELECT "r"."Id", "r"."HallRowId", "r"."LastAgiloxAction", "r"."LastAgiloxStatus", "r"."OrderId", "r"."PickedSlotId", "r"."RequestedAt", "r"."Status", "r"."WorkTableId", "h"."Id", "h"."Article", "h"."Capacity", "h"."ColorHex", "h"."Name"
+FROM "RowCalls" AS "r"
+LEFT JOIN "HallRows" AS "h" ON "r"."HallRowId" = "h"."Id"
+WHERE "r"."WorkTableId" IN (
+    SELECT "t"."value"
+    FROM json_each(@__tableIds_0) AS "t"
+) AND "r"."Status" = 0
+2026-06-10 12:09:51.548 +02:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AgiloxSortingHall.Data.AppDbContext'.
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+2026-06-10 12:13:10.521 +02:00 [INF] Starting AgiloxSortingHall application...
+2026-06-10 12:13:10.552 +02:00 [INF] Base path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\
+2026-06-10 12:13:10.553 +02:00 [INF] Logs path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\Logs\log-.txt
+2026-06-10 12:13:10.620 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db
+2026-06-10 12:13:10.764 +02:00 [INF] Database exists before migration: true
+2026-06-10 12:13:11.473 +02:00 [WRN] The WebRootPath was not found: C:\Users\jprochazka\source\repos\AgiloxSortingHall\wwwroot. Static files may be unavailable.
+2026-06-10 12:13:11.489 +02:00 [INF] AgiloxSortingHall application started.
+2026-06-10 12:21:09.440 +02:00 [INF] Starting AgiloxSortingHall application...
+2026-06-10 12:21:09.707 +02:00 [INF] Base path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\
+2026-06-10 12:21:09.717 +02:00 [INF] Logs path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\Logs\log-.txt
+2026-06-10 12:21:10.119 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db
+2026-06-10 12:21:10.585 +02:00 [INF] Database exists before migration: true
+2026-06-10 12:21:12.852 +02:00 [INF] AgiloxSortingHall application started.
+2026-06-10 12:21:14.845 +02:00 [ERR] Failed executing DbCommand (5ms) [Parameters=[@__tableIds_0='?' (Size = 9)], CommandType='"Text"', CommandTimeout='30']
+SELECT "r"."Id", "r"."HallRowId", "r"."LastAgiloxAction", "r"."LastAgiloxStatus", "r"."OrderId", "r"."PickedSlotId", "r"."RequestedAt", "r"."Status", "r"."WorkTableId", "h"."Id", "h"."Article", "h"."Capacity", "h"."ColorHex", "h"."Name"
+FROM "RowCalls" AS "r"
+LEFT JOIN "HallRows" AS "h" ON "r"."HallRowId" = "h"."Id"
+WHERE "r"."WorkTableId" IN (
+    SELECT "t"."value"
+    FROM json_each(@__tableIds_0) AS "t"
+) AND "r"."Status" = 0
+2026-06-10 12:21:14.879 +02:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AgiloxSortingHall.Data.AppDbContext'.
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+2026-06-10 12:21:52.580 +02:00 [INF] Starting AgiloxSortingHall application...
+2026-06-10 12:21:52.620 +02:00 [INF] Base path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\
+2026-06-10 12:21:52.621 +02:00 [INF] Logs path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\Logs\log-.txt
+2026-06-10 12:21:52.786 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db
+2026-06-10 12:21:52.964 +02:00 [INF] Database exists before migration: true
+2026-06-10 12:21:53.826 +02:00 [INF] AgiloxSortingHall application started.
+2026-06-10 12:22:03.997 +02:00 [ERR] Failed executing DbCommand (4ms) [Parameters=[@__tableIds_0='?' (Size = 9)], CommandType='"Text"', CommandTimeout='30']
+SELECT "r"."Id", "r"."HallRowId", "r"."LastAgiloxAction", "r"."LastAgiloxStatus", "r"."OrderId", "r"."PickedSlotId", "r"."RequestedAt", "r"."Status", "r"."WorkTableId", "h"."Id", "h"."Article", "h"."Capacity", "h"."ColorHex", "h"."Name"
+FROM "RowCalls" AS "r"
+LEFT JOIN "HallRows" AS "h" ON "r"."HallRowId" = "h"."Id"
+WHERE "r"."WorkTableId" IN (
+    SELECT "t"."value"
+    FROM json_each(@__tableIds_0) AS "t"
+) AND "r"."Status" = 0
+2026-06-10 12:22:04.020 +02:00 [ERR] An exception occurred while iterating over the results of a query for context type 'AgiloxSortingHall.Data.AppDbContext'.
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+2026-06-10 12:22:04.027 +02:00 [ERR] An unhandled exception has occurred while executing the request.
+Microsoft.Data.Sqlite.SqliteException (0x80004005): SQLite Error 1: 'no such column: r.PickedSlotId'.
+   at Microsoft.Data.Sqlite.SqliteException.ThrowExceptionForRC(Int32 rc, sqlite3 db)
+   at Microsoft.Data.Sqlite.SqliteCommand.PrepareAndEnumerateStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteCommand.GetStatements()+MoveNext()
+   at Microsoft.Data.Sqlite.SqliteDataReader.NextResult()
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.Data.Sqlite.SqliteCommand.ExecuteDbDataReaderAsync(CommandBehavior behavior, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReaderAsync(RelationalCommandParameterObject parameterObject, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.InitializeReaderAsync(AsyncEnumerator enumerator, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.AsyncEnumerator.MoveNextAsync()
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.EntityFrameworkQueryableExtensions.ToListAsync[TSource](IQueryable`1 source, CancellationToken cancellationToken)
+   at AgiloxSortingHall.Pages.IndexModel.OnGetAsync() in C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\Pages\Index.cshtml.cs:line 92
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.ExecutorFactory.NonGenericTaskHandlerMethod.Execute(Object receiver, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.InvokeHandlerMethodAsync()
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.InvokeNextPageFilterAsync()
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.Rethrow(PageHandlerExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure.PageActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextResourceFilter>g__Awaited|25_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Rethrow(ResourceExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.InvokeFilterPipelineAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeAsync>g__Awaited|17_0(ResourceInvoker invoker, Task task, IDisposable scope)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Diagnostics.DeveloperExceptionPageMiddlewareImpl.Invoke(HttpContext context)
