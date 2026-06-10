@@ -1,3 +1,6 @@
+using AgiloxSortingHall.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -5,6 +8,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AgiloxSortingHall.Migrations
 {
     /// <inheritdoc />
+    [DbContext(typeof(AppDbContext))]
+    [Migration("20260605080000_AddPickedSlotToRowCall")]
     public partial class AddPickedSlotToRowCall : Migration
     {
         /// <inheritdoc />
@@ -20,23 +25,11 @@ namespace AgiloxSortingHall.Migrations
                 name: "IX_RowCalls_PickedSlotId",
                 table: "RowCalls",
                 column: "PickedSlotId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_RowCalls_PalletSlots_PickedSlotId",
-                table: "RowCalls",
-                column: "PickedSlotId",
-                principalTable: "PalletSlots",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.SetNull);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_RowCalls_PalletSlots_PickedSlotId",
-                table: "RowCalls");
-
             migrationBuilder.DropIndex(
                 name: "IX_RowCalls_PickedSlotId",
                 table: "RowCalls");

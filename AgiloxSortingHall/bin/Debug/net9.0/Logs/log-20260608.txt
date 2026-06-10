@@ -1,0 +1,4 @@
+2026-06-08 10:23:39.147 +02:00 [INF] Starting AgiloxSortingHall application...
+2026-06-08 10:23:39.403 +02:00 [INF] Base path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\
+2026-06-08 10:23:39.406 +02:00 [INF] Logs path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\Logs\log-.txt
+2026-06-08 10:23:39.903 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db

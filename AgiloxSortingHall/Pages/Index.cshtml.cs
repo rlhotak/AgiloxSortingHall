@@ -148,11 +148,125 @@ namespace AgiloxSortingHall.Pages
 
         public Task<IActionResult> OnPostEmptyPaletteAsync(int tableId)
         {
-            return SendTableWorkflowAsync(
-                tableId: tableId,
-                forceDestinationToBuffer: true,
-                useInputStation: true,
-                actionName: "OnPostEmptyPaletteAsync");
+            return SendEmptyPaletteWorkflowAsync(tableId);
+        }
+
+        private async Task<IActionResult> SendEmptyPaletteWorkflowAsync(int tableId)
+        {
+            const string actionName = "OnPostEmptyPaletteAsync";
+
+            if (await HasPendingCallForTableAsync(tableId))
+                return RedirectToPage(new { category = Category });
+
+            var table = await _db.WorkTables.FindAsync(tableId);
+            if (table == null)
+            {
+                _logger.LogWarning("{Action}: stůl {TableId} nebyl nalezen.", actionName, tableId);
+                ErrorMessage = "Stůl nebyl nalezen.";
+                return RedirectToPage(new { category = Category });
+            }
+
+            var sourceStation = WorkTableStations.GetInputStation(table);
+            var destinationStation = WorkTableStations.GetOutputStation(table);
+
+            var call = new RowCall
+            {
+                WorkTableId = table.Id,
+                HallRowId = null,
+                Status = RowCallStatus.Pending,
+                RequestedAt = DateTime.UtcNow
+            };
+
+            _db.RowCalls.Add(call);
+            await _db.SaveChangesAsync();
+
+            var client = _httpClientFactory.CreateClient("Agilox");
+
+            var payload = new Dictionary<string, object>
+            {
+                ["@TABLE"] = sourceStation,
+                ["@DESTINATION"] = destinationStation
+            };
+
+            var json = JsonSerializer.Serialize(payload);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            _logger.LogInformation(
+                "{Action}: posílám workflow 502 pro prázdnou paletu. Stůl={Table}, Source={Source}, Destination={Destination}, Payload={Payload}",
+                actionName,
+                table.DisplayName,
+                sourceStation,
+                destinationStation,
+                json);
+
+            string responseBody;
+
+            try
+            {
+                var response = await client.PostAsync("workflow/502", content);
+                responseBody = await response.Content.ReadAsStringAsync();
+
+                _logger.LogInformation(
+                    "{Action}: Agilox odpověď pro stůl {Table}: {Body}",
+                    actionName,
+                    table.DisplayName,
+                    responseBody);
+
+                response.EnsureSuccessStatusCode();
+            }
+            catch (TaskCanceledException ex)
+            {
+                _logger.LogError(ex, "{Action}: timeout při volání Agiloxu pro stůl {Table}.", actionName, table.DisplayName);
+
+                _db.RowCalls.Remove(call);
+                await _db.SaveChangesAsync();
+
+                ErrorMessage = "Nepodařilo se navázat spojení s Karlem.";
+                return RedirectToPage(new { category = Category });
+            }
+            catch (HttpRequestException ex)
+            {
+                _logger.LogError(ex, "{Action}: HTTP chyba při volání Agiloxu pro stůl {Table}.", actionName, table.DisplayName);
+
+                _db.RowCalls.Remove(call);
+                await _db.SaveChangesAsync();
+
+                ErrorMessage = "Nepodařilo se navázat spojení s Karlem.";
+                return RedirectToPage(new { category = Category });
+            }
+
+            try
+            {
+                using var doc = JsonDocument.Parse(responseBody);
+
+                if (doc.RootElement.TryGetProperty("id", out var idProp))
+                {
+                    long? agiloxId = null;
+
+                    if (idProp.ValueKind == JsonValueKind.Number &&
+                        idProp.TryGetInt64(out var numericId))
+                    {
+                        agiloxId = numericId;
+                    }
+                    else if (idProp.ValueKind == JsonValueKind.String &&
+                             long.TryParse(idProp.GetString(), out var stringId))
+                    {
+                        agiloxId = stringId;
+                    }
+
+                    if (agiloxId.HasValue)
+                    {
+                        call.OrderId = agiloxId.Value;
+                        await _db.SaveChangesAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Action}: chyba při parsování odpovědi Agiloxu: {Body}", actionName, responseBody);
+            }
+
+            return RedirectToPage(new { category = Category });
         }
 
         private async Task<IActionResult> SendTableWorkflowAsync(
