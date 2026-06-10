@@ -28,8 +28,8 @@
     // slotId -> popisek stolu (STŮL X)
     var labelBySlotId = new Dictionary<int, string>();
 
-    // RowCally, které už jsme ve vizualizaci přiřadili ke konkrétnímu slotu.
-    var mappedCallIds = new HashSet<int>();
+    // sloty, které jsou "v převozu" = mají na sobě běžící order na Agiloxu
+    var inTransitSlotIds = new HashSet<int>();
 
     string GetTableLabel(RowCall call)
     {
@@ -41,8 +41,14 @@
         return call.WorkTable?.DisplayName ?? $"Stůl {call.WorkTableId}";
     }
 
-    string GetVisualLabel(RowCall call)
+    // mapujeme jen tolik slotů, kolik máme jak obsazených slotů, tak dispatched callů
+    var mapCount = Math.Min(occupiedSlots.Count, dispatchedCalls.Count);
+
+    for (int i = 0; i < mapCount; i++)
     {
+        var slot = occupiedSlots[i];
+        var call = dispatchedCalls[i];
+
         var tableName = GetTableLabel(call);
 
         // zvýraznění aktuálního stolu (na stránce konkrétního stolu)
@@ -51,48 +57,12 @@
             tableName = $"▶ {tableName}";
         }
 
-        return tableName;
-    }
-
-    // Pokud Agilox už paletu nabral, RowCall má přesné PickedSlotId.-
-    // Popisek proto držíme na tomto slotu, aby se při st avu InTransit neposunul na další paletu nad ním.
-    foreach (var call in dispatchedCalls.Where(c => c.PickedSlotId.HasValue))
-    {
-        var slot = row.Slots.FirstOrDefault(s => s.Id == call.PickedSlotId!.Value);
-        if (slot == null)
-        {
-            continue;
-        }
-
-        labelBySlotId[slot.Id] = GetVisualLabel(call);
-        mappedCallIds.Add(call.Id);
-    }
-
-    // Zbylé dispatched call-y ještě nemají potvrzený pickup, takže je párujeme
-    // odspoda na obsazené sloty, které už nejsou svázané s PickedSlotId.
-    var unmappedOccupiedSlots = occupiedSlots
-        .Where(s => !labelBySlotId.ContainsKey(s.Id))
-        .ToList();
-
-    var unmappedDispatchedCalls = dispatchedCalls
-        .Where(c => !mappedCallIds.Contains(c.Id))
-        .ToList();
-
-    var mapCount = Math.Min(unmappedOccupiedSlots.Count, unmappedDispatchedCalls.Count);
-
-    for (int i = 0; i < mapCount; i++)
-    {
-        var slot = unmappedOccupiedSlots[i];
-        var call = unmappedDispatchedCalls[i];
-
-        labelBySlotId[slot.Id] = GetVisualLabel(call);
-        mappedCallIds.Add(call.Id);
+        labelBySlotId[slot.Id] = tableName;
+        inTransitSlotIds.Add(slot.Id);
     }
 
     // zbytek fronty = pending cally, které zatím nemají přidělenou paletu
-    var remainingQueue = rowQueue
-        .Where(c => !mappedCallIds.Contains(c.Id))
-        .ToList();
+    var remainingQueue = rowQueue.Skip(mapCount).ToList();
 
     // text pro tooltip – seznam stolů, které ještě čekají
     string? remainingQueueTooltip = remainingQueue.Any()

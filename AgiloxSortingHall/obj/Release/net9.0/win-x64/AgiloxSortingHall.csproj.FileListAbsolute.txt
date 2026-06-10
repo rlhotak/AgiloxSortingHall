@@ -500,6 +500,7 @@ C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\rjimswa.dswa.cache.json
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\rjsmrazor.dswa.cache.json
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\rjsmcshtml.dswa.cache.json
+C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\t5y08vqmib-4fkhiz0igf.gz
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\11xn1m0vad-t1cqhe9u97.gz
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\r1dmggnqpo-sejl45xvog.gz
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\wlst8mpvjg-xvp3kq03qx.gz
@@ -531,4 +532,3 @@ C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\s8klaqxcre-jjsuc0puko.gz
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\9a6db9sxzo-9vr69e8ynj.gz
 C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\staticwebassets.build.json.cache
-C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\obj\Release\net9.0\win-x64\compressed\t5y08vqmib-tk4sj8iy4s.gz

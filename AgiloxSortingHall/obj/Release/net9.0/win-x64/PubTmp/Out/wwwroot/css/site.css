@@ -499,44 +499,6 @@ html.dark-mode .btn-outline-primary {
     min-height: 0;
 }
 
-/* TEMP single-action table card layout.
-   Remove/comment this block when the empty-palette button is enabled again. */
-.table-card-layout {
-    gap: 18px;
-}
-
-.table-card-actions {
-    width: 154px;
-    flex: 0 0 154px;
-    justify-content: center;
-}
-
-.table-card-actions form {
-    flex: 0 0 76px;
-    min-height: 76px;
-    display: flex;
-}
-
-.table-card-action-button {
-    min-height: 76px;
-    height: auto;
-    font-size: 1rem;
-    padding-inline: 12px !important;
-}
-
-.js-table-card {
-    padding: 18px 20px !important;
-}
-
-.js-table-card .fs-2 {
-    font-size: 1.55rem !important;
-    line-height: 1.12;
-}
-
-.js-table-card .d-flex.align-items-center.mb-4 {
-    margin-bottom: 1rem !important;
-}
-
 /* Žluté tlačítko */
 .btn-empty-palette {
     background-color: #ffd610;
