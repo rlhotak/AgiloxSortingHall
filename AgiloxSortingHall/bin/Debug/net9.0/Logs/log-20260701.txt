@@ -1,0 +1,6 @@
+2026-07-01 15:14:52.891 +02:00 [INF] Starting AgiloxSortingHall application...
+2026-07-01 15:14:53.175 +02:00 [INF] Base path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\
+2026-07-01 15:14:53.177 +02:00 [INF] Logs path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\Logs\log-.txt
+2026-07-01 15:14:53.545 +02:00 [INF] SQLite database path: C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\bin\Debug\net9.0\agilox.db
+2026-07-01 15:14:53.906 +02:00 [INF] Database exists before migration: true
+2026-07-01 15:14:54.876 +02:00 [INF] AgiloxSortingHall application started.
