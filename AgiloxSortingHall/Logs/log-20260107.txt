@@ -1,0 +1,60 @@
+2026-01-07 08:24:03.714 +01:00 [INF] Starting AgiloxSortingHall application...
+2026-01-07 08:24:12.839 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2026-01-07 08:46:30.844 +01:00 [INF] OnPostCallArticleAsync HIT: id=1, article=test
+2026-01-07 08:50:14.014 +01:00 [INF] Starting AgiloxSortingHall application...
+2026-01-07 08:50:16.997 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2026-01-07 08:51:06.926 +01:00 [INF] OnPostCallArticleAsync HIT: id=1, article=test
+2026-01-07 08:51:28.155 +01:00 [ERR] Chyba při odesílání workflow na Agilox pro řadu Řada1
+System.Net.Http.HttpRequestException: Pokus o připojení selhal, protože připojená strana v časovém intervalu řádně neodpověděla, nebo vytvořené připojení selhalo, protože neodpověděl připojený hostitel. (192.168.31.170:8100)
+ ---> System.Net.Sockets.SocketException (10060): Pokus o připojení selhal, protože připojená strana v časovém intervalu řádně neodpověděla, nebo vytvořené připojení selhalo, protože neodpověděl připojený hostitel.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionWaiter`1.WaitForConnectionWithTelemetryAsync(HttpRequestMessage request, HttpConnectionPool pool, Boolean async, CancellationToken requestCancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at AgiloxSortingHall.Pages.StulModel.TryDispatchAgiloxForRowAsync(Nullable`1 hallRowId) in C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\Pages\Stul.cshtml.cs:line 288
+2026-01-07 08:51:28.186 +01:00 [INF] Stůl – odeslán workflow 501 pro řadu Řada1 a stůl Stůl 1 (stanice {}), OrderId=null
+2026-01-07 08:51:28.190 +01:00 [INF] OnPostCallArticleAsync finished OK, redirecting to Index
+2026-01-07 09:02:24.111 +01:00 [INF] Starting AgiloxSortingHall application...
+2026-01-07 09:02:32.178 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2026-01-07 09:56:47.102 +01:00 [INF] Starting AgiloxSortingHall application...
+2026-01-07 10:06:24.580 +01:00 [INF] Starting AgiloxSortingHall application...
+2026-01-07 10:06:47.612 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2026-01-07 14:46:34.926 +01:00 [INF] Starting AgiloxSortingHall application...
+2026-01-07 14:46:48.642 +01:00 [INF] OnPostCallArticleAsync HIT: id=1, article=test
+2026-01-07 14:46:48.681 +01:00 [WRN] The query uses the 'First'/'FirstOrDefault' operator without 'OrderBy' and filter operators. This may lead to unpredictable results.
+2026-01-07 14:47:09.934 +01:00 [ERR] Chyba při odesílání workflow na Agilox pro řadu Řada1
+System.Net.Http.HttpRequestException: Pokus o připojení selhal, protože připojená strana v časovém intervalu řádně neodpověděla, nebo vytvořené připojení selhalo, protože neodpověděl připojený hostitel. (192.168.31.170:8100)
+ ---> System.Net.Sockets.SocketException (10060): Pokus o připojení selhal, protože připojená strana v časovém intervalu řádně neodpověděla, nebo vytvořené připojení selhalo, protože neodpověděl připojený hostitel.
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.ThrowException(SocketError error, CancellationToken cancellationToken)
+   at System.Net.Sockets.Socket.AwaitableSocketAsyncEventArgs.System.Threading.Tasks.Sources.IValueTaskSource.GetResult(Int16 token)
+   at System.Net.Sockets.Socket.<ConnectAsync>g__WaitForConnectWithCancellation|285_0(AwaitableSocketAsyncEventArgs saea, ValueTask connectTask, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   --- End of inner exception stack trace ---
+   at System.Net.Http.HttpConnectionPool.ConnectToTcpHostAsync(String host, Int32 port, HttpRequestMessage initialRequest, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.ConnectAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.CreateHttp11ConnectionAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionPool.InjectNewHttp11ConnectionAsync(QueueItem queueItem)
+   at System.Threading.Tasks.TaskCompletionSourceWithCancellation`1.WaitWithCancellationAsync(CancellationToken cancellationToken)
+   at System.Net.Http.HttpConnectionWaiter`1.WaitForConnectionWithTelemetryAsync(HttpRequestMessage request, HttpConnectionPool pool, Boolean async, CancellationToken requestCancellationToken)
+   at System.Net.Http.HttpConnectionPool.SendWithVersionDetectionAndRetryAsync(HttpRequestMessage request, Boolean async, Boolean doRequestAuth, CancellationToken cancellationToken)
+   at System.Net.Http.DiagnosticsHandler.SendAsyncCore(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at System.Net.Http.RedirectHandler.SendAsync(HttpRequestMessage request, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler.<SendCoreAsync>g__Core|4_0(HttpRequestMessage request, Boolean useAsync, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at AgiloxSortingHall.Pages.StulModel.TryDispatchAgiloxForRowAsync(Nullable`1 hallRowId) in C:\Users\jprochazka\source\repos\AgiloxSortingHall\AgiloxSortingHall\Pages\Stul.cshtml.cs:line 295
+2026-01-07 14:47:09.958 +01:00 [INF] Stůl – odeslán workflow 501 pro řadu Řada1 a stůl Stůl 1 (stanice {}), OrderId=null
+2026-01-07 14:47:09.960 +01:00 [INF] OnPostCallArticleAsync finished OK, redirecting to Index

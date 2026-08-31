@@ -43,6 +43,41 @@ namespace AgiloxSortingHall.Migrations
                     b.ToTable("HallRows");
                 });
 
+            modelBuilder.Entity("AgiloxSortingHall.Models.HallSettings", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DropRowSelectionStrategy")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DropStationAreaName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PickupStationAreaName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RowSelectionStrategy")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HallSettings");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DropRowSelectionStrategy = 1,
+                            DropStationAreaName = "Hotovo",
+                            PickupStationAreaName = "Buffer",
+                            RowSelectionStrategy = 0
+                        });
+                });
+
             modelBuilder.Entity("AgiloxSortingHall.Models.PalletSlot", b =>
                 {
                     b.Property<int>("Id")
@@ -72,11 +107,20 @@ namespace AgiloxSortingHall.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("HallRowId")
+                    b.Property<int?>("HallRowId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("RequestId")
+                    b.Property<string>("LastAgiloxAction")
                         .HasColumnType("TEXT");
+
+                    b.Property<string>("LastAgiloxStatus")
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int?>("PickedSlotId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("RequestedAt")
                         .HasColumnType("TEXT");
@@ -91,6 +135,8 @@ namespace AgiloxSortingHall.Migrations
 
                     b.HasIndex("HallRowId");
 
+                    b.HasIndex("PickedSlotId");
+
                     b.HasIndex("WorkTableId");
 
                     b.ToTable("RowCalls");
@@ -102,7 +148,17 @@ namespace AgiloxSortingHall.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
+                    b.Property<int>("Category")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("InputStationName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OutputStationName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -126,9 +182,12 @@ namespace AgiloxSortingHall.Migrations
                 {
                     b.HasOne("AgiloxSortingHall.Models.HallRow", "HallRow")
                         .WithMany()
-                        .HasForeignKey("HallRowId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HallRowId");
+
+                    b.HasOne("AgiloxSortingHall.Models.PalletSlot", "PickedSlot")
+                        .WithMany()
+                        .HasForeignKey("PickedSlotId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.HasOne("AgiloxSortingHall.Models.WorkTable", "WorkTable")
                         .WithMany()
@@ -137,6 +196,8 @@ namespace AgiloxSortingHall.Migrations
                         .IsRequired();
 
                     b.Navigation("HallRow");
+
+                    b.Navigation("PickedSlot");
 
                     b.Navigation("WorkTable");
                 });

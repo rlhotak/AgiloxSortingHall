@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "AgiloxSortingHall.Models.AgiloxCallbackDto",
+        "Type": "AgiloxSortingHall.Dto.AgiloxCallbackDto",
         "IsRequired": true
       }
     ],

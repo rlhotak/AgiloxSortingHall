@@ -1,0 +1,49 @@
+﻿@page
+@model AgiloxSortingHall.Pages.Administration.IndexModel
+
+@{
+    ViewData["Title"] = "Administrace - rozcestník";
+}
+
+@section AdminPageHeader {
+    <div class="admin-page-title">
+        <h1>Rozcestník</h1>
+        <div class="admin-page-subtitle">
+            Seznam administrativních nástrojů
+        </div>
+    </div>
+}
+
+<div class="row g-3">
+    <div class="col-md-6 col-xl-4">
+        <a asp-page="/Administration/SkladnikSettings" class="text-decoration-none">
+            <div class="card h-100 bg-dark border border-secondary rounded-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-gear-fill me-2"></i>
+                        Nastavení obrazovky skladníka
+                    </h5>
+                    <p class="card-text text-muted mb-0">
+                        Strategie výběru řady, řady, sloty a station area.
+                    </p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col-md-6 col-xl-4">
+        <a asp-page="/Administration/WorkTables" class="text-decoration-none">
+            <div class="card h-100 bg-dark border border-secondary rounded-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-diagram-3-fill me-2"></i>
+                        Nastavení pracovišť
+                    </h5>
+                    <p class="card-text text-muted mb-0">
+                        Počty a označení pracovišť, synchronizace s vnitřním systémem Agilox.
+                    </p>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

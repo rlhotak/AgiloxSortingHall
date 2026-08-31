@@ -1,0 +1,278 @@
+﻿@page
+@using AgiloxSortingHall.Models
+@using AgiloxSortingHall.Enums
+@using AgiloxSortingHall.Helpers
+@model AgiloxSortingHall.Pages.Administration.WorkTablesModel
+
+@{
+    ViewData["Title"] = "Nastavení pracovišť";
+    Layout = "_AdminLayout";
+}
+
+@section AdminPageHeader {
+    <div class="admin-page-title-row">
+        <div class="admin-page-title">
+            <h1>Správa stolů</h1>
+            <div class="admin-page-subtitle">
+                Přidání, úprava a mazání stolů
+            </div>
+        </div>
+
+        <div class="d-flex gap-2 align-items-center">
+            <button type="button"
+                    class="btn btn-success btn-lg d-flex align-items-center px-4 py-2"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#wtEditor"
+                    aria-controls="wtEditor"
+                    id="btnAddNew">
+                <i class="bi bi-plus-circle me-2 fs-3"></i>
+                <span class="fs-5">Přidat stůl</span>
+            </button>
+        </div>
+    </div>
+}
+
+@if (TempData["Flash"] is string flash && !string.IsNullOrWhiteSpace(flash))
+{
+    <div class="alert alert-info border-0 shadow-sm">@flash</div>
+}
+
+@if (!Model.Tables.Any())
+{
+    <div class="alert alert-info border-0 shadow-sm">
+        Zatím nemáš žádné stoly.
+    </div>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var t in Model.Tables)
+        {
+            <div class="col-12 col-md-6 col-lg-4 d-flex">
+                <div class="bg-dark text-light border border-secondary rounded-3 flex-fill p-4 shadow-sm">
+
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-table fs-2 me-3 text-info"></i>
+                            <div>
+                                <div class="fs-4 fw-semibold">@(!string.IsNullOrWhiteSpace(t.DisplayName) ? t.DisplayName : $"Stůl #{t.Id}")</div>
+                                <div class="text-secondary small">
+                                    @t.Category.ToUiText()
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 mt-2">
+                            <button type="button"
+                                    class="btn btn-info btn-sm d-flex align-items-center js-edit"
+                                    data-bs-toggle="offcanvas"
+                                    data-bs-target="#wtEditor"
+                                    aria-controls="wtEditor"
+                                    data-id="@t.Id"
+                                    data-displayname="@t.DisplayName"
+                                    data-input="@t.InputStationName"
+                                    data-output="@t.OutputStationName"
+                                    data-category="@((int)t.Category)">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+
+                            <form method="post" asp-page-handler="Delete" class="m-0"
+                                    onsubmit="return confirm('Opravdu smazat tento stůl?');">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@t.Id" />
+                                <button type="submit" class="btn btn-danger btn-sm d-flex align-items-center">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="small opacity-75">
+                        <div class="mb-1">
+                            <i class="bi bi-box-arrow-in-right me-1"></i>
+                            <span class="text-secondary">Input:</span>
+                            <span class="text-light">@t.InputStationName</span>
+                        </div>
+                        <div>
+                            <i class="bi bi-box-arrow-left me-1"></i>
+                            <span class="text-secondary">Output:</span>
+                            <span class="text-light">@t.OutputStationName</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<!-- Offcanvas editor (Create/Update) -->
+<div class="offcanvas offcanvas-end text-bg-dark"
+     tabindex="-1"
+     id="wtEditor"
+     aria-labelledby="wtEditorLabel"
+     style="width: min(520px, 95vw);">
+
+    <div class="offcanvas-header border-bottom border-secondary">
+        <div>
+            <h5 class="offcanvas-title fw-bold" id="wtEditorLabel">
+                <span id="editorTitle">Přidat stůl</span>
+            </h5>
+            <div class="text-secondary small">Vyplň údaje stanice a kategorii</div>
+        </div>
+
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Zavřít"></button>
+    </div>
+
+    <div class="offcanvas-body">
+        <div asp-validation-summary="ModelOnly" class="alert alert-warning border-0" role="alert"></div>
+
+        <form method="post" id="editorForm">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="Edit.Id" id="Edit_Id" />
+
+            <div class="mb-3">
+                <label class="form-label text-secondary">Zobrazovaný název</label>
+                <input class="form-control form-control-lg"
+                       name="Edit.DisplayName"
+                       id="Edit_DisplayName"
+                       placeholder="např. Stůl 1" />
+                <div class="form-text text-secondary">Může být prázdné (pak se zobrazí „Stůl #Id“).</div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-secondary">InputStationName</label>
+                <input class="form-control form-control-lg"
+                       name="Edit.InputStationName"
+                       id="Edit_InputStationName"
+                       placeholder="např. IN_STATION_01"
+                       required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-secondary">OutputStationName</label>
+                <input class="form-control form-control-lg"
+                       name="Edit.OutputStationName"
+                       id="Edit_OutputStationName"
+                       placeholder="např. OUT_STATION_01"
+                       required />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-secondary">Kategorie</label>
+                <select class="form-select form-select-lg"
+                        name="Edit.Category"
+                        id="Edit_Category">
+                    @foreach (var c in Model.CategoryOptions)
+                    {
+                        <option value="@((int)c)">@c.ToUiText()</option>
+                    }
+                </select>
+            </div>
+
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary btn-lg flex-fill" id="btnSave">
+                    <i class="bi bi-save me-2"></i>
+                    <span id="btnSaveText">Uložit</span>
+                </button>
+
+                <button type="button" class="btn btn-outline-secondary btn-lg" data-bs-dismiss="offcanvas">
+                    Zavřít
+                </button>
+            </div>
+        </form>
+
+        <hr class="border-secondary my-4" />
+
+        <div class="small text-secondary">
+            Poznámka: Názvy vstupních a výstupních stanic jsou v systému vyhodnocovány bez ohledu na velikost písmen.
+            Rozhodující je přesný název stanice dle konfigurace systému Agilox.
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        (function () {
+            const form = document.getElementById('editorForm');
+
+            const title = document.getElementById('editorTitle');
+            const btnSaveText = document.getElementById('btnSaveText');
+
+            const id = document.getElementById('Edit_Id');
+            const displayName = document.getElementById('Edit_DisplayName');
+            const input = document.getElementById('Edit_InputStationName');
+            const output = document.getElementById('Edit_OutputStationName');
+            const category = document.getElementById('Edit_Category');
+
+            const btnAddNew = document.getElementById('btnAddNew');
+
+            function setHandler(handlerName) {
+                form.setAttribute('action', `?handler=${handlerName}`);
+            }
+
+            function setCreateMode() {
+                title.textContent = 'Přidat stůl';
+                btnSaveText.textContent = 'Vytvořit';
+
+                id.value = '0';
+                displayName.value = '';
+                input.value = '';
+                output.value = '';
+                category.value = '0';
+
+                setHandler('Create');
+            }
+
+            function setEditMode(data) {
+                title.textContent = 'Upravit stůl';
+                btnSaveText.textContent = 'Uložit změny';
+
+                id.value = data.id;
+                displayName.value = data.displayName || '';
+                input.value = data.input || '';
+                output.value = data.output || '';
+                category.value = data.category || '0';
+
+                setHandler('Update');
+            }
+
+            btnAddNew?.addEventListener('click', setCreateMode);
+
+            document.querySelectorAll('.js-edit').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setEditMode({
+                        id: btn.getAttribute('data-id'),
+                        displayName: btn.getAttribute('data-displayname'),
+                        input: btn.getAttribute('data-input'),
+                        output: btn.getAttribute('data-output'),
+                        category: btn.getAttribute('data-category')
+                    });
+                });
+            });
+
+            setCreateMode();
+        })();
+    </script>
+}
+
+<style>
+    .form-control, .form-select {
+        background-color: #1b1b1d;
+        border-color: #2c2c2e;
+        color: #f3f2ef;
+    }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #1b1b1d;
+            border-color: rgba(255, 214, 16, 0.7);
+            box-shadow: 0 0 0 0.2rem rgba(255, 214, 16, 0.15);
+            color: #f3f2ef;
+        }
+
+    .form-text {
+        color: #b5b3b0 !important;
+    }
+</style>

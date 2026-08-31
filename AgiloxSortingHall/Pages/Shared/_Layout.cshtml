@@ -1,20 +1,26 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark-mode">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AgiloxSortingHall</title>
+
     <script type="importmap"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AgiloxSortingHall.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="@ViewData["BodyClass"]">
+
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
+
+    @await Html.PartialAsync("_ToastNotifications")
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -25,21 +31,46 @@
             crossorigin="anonymous"></script>
 
     <script>
+        // označení navigace (aby se nepřereloadovalo během POSTu)
+        document.addEventListener("submit", function () {
+            window.isNavigating = true;
+        });
+
+        // SignalR – reload haly
         const connection = new signalR.HubConnectionBuilder()
             .withUrl("/hallHub")
             .withAutomaticReconnect()
             .build();
 
-        // Když server řekne "HallUpdated", reload stránky
         connection.on("HallUpdated", () => {
-            location.reload();
+            if (window.isNavigating) {
+                console.debug("HallUpdated ignored – navigation in progress");
+                return;
+            }
+
+            const path = window.location.pathname.toLowerCase();
+
+            if (
+                path === "/" ||
+                path === "/index" ||
+                path === "/index/" ||
+                path.startsWith("/skladnik") ||
+                path.startsWith("/stul")
+            ) {
+                location.reload();
+            }
         });
 
         connection.start().catch(err => console.error(err.toString()));
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.toast').forEach(el => {
+                new bootstrap.Toast(el).show();
+            });
+        });
     </script>
 
-
-
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

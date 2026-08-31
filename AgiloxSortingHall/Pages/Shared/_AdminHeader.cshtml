@@ -1,0 +1,28 @@
+﻿<div class="settings-header">
+    <div class="settings-title">
+        <i class="bi bi-shield-lock"></i>
+        Administrace
+    </div>
+
+    <div class="d-flex align-items-center gap-2">
+
+        <span class="text-muted small me-2">
+            @User.Identity?.Name
+        </span>
+
+        <a asp-page="/Administration/Index"
+           class="btn btn-outline-secondary d-flex align-items-center">
+            <i class="bi bi-house-fill me-2"></i>
+            Rozcestník
+        </a>
+
+        <form method="post" asp-page="/Account/Logout" class="m-0">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+                    class="btn btn-outline-danger d-flex align-items-center">
+                <i class="bi bi-box-arrow-right me-2"></i>
+                Odhlásit
+            </button>
+        </form>
+    </div>
+</div>

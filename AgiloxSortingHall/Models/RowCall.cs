@@ -1,30 +1,12 @@
-﻿namespace AgiloxSortingHall.Models
+﻿using AgiloxSortingHall.Enums;
+
+namespace AgiloxSortingHall.Models
 {
     /// <summary>
-    /// Stav požadavku na paletu – čeká, doručeno, zrušeno.
-    /// </summary>
-    public enum RowCallStatus
-    {
-        /// <summary>
-        /// Požadavek čeká na vyřízení (nebo na doručení).
-        /// </summary>
-        Pending = 0,
-
-        /// <summary>
-        /// Požadavek byl úspěšně doručen.
-        /// </summary>
-        Delivered = 1,
-
-        /// <summary>
-        /// Požadavek byl zrušen uživatelem nebo systémem.
-        /// Funfact: Angláni prý používají cancelled namísto canceled.
-        /// </summary>
-        Cancelled = 2
-    }
-
-    /// <summary>
-    /// Reprezentuje požadavek pracovního stolu na paletu z konkrétní řady.
-    /// Sleduje stav, čas požadavku a identifikátor requestu odeslaného na Agilox.
+    /// Reprezentuje požadavek pracovního stolu.
+    /// Buď:
+    /// - "řada -> stůl" (HallRowId vyplněné)
+    /// - nebo "stůl -> pryč" (např. dokončení / odvoz od stolu, HallRowId může být null).
     /// </summary>
     public class RowCall
     {
@@ -45,13 +27,16 @@
 
         /// <summary>
         /// ID řady, ze které se má paleta odebrat.
+        /// Pro "normální" call řada->stůl je vyplněné,
+        /// pro "Hotovo" (odvoz od stolu) může být null.
         /// </summary>
-        public int HallRowId { get; set; }
+        public int? HallRowId { get; set; }
 
         /// <summary>
-        /// Navigační vlastnost na cílovou řadu.
+        /// Navigační vlastnost na řadu.
+        /// Může být null u požadavků typu "stůl -> pryč".
         /// </summary>
-        public HallRow HallRow { get; set; } = null!;
+        public HallRow? HallRow { get; set; }
 
         /// <summary>
         /// Datum a čas vytvoření požadavku (UTC).
@@ -64,11 +49,31 @@
         public RowCallStatus Status { get; set; } = RowCallStatus.Pending;
 
         /// <summary>
-        /// Identifikátor workflow odeslaného na Agilox,
+        /// Identifikátor order vráceného od Agiloxe,
         /// sloužící ke spárování s callbackem
-        /// (generován lokálně při odeslání požadavku).
+        /// (generován Agiloxem po odeslání požadavku).
         /// </summary>
-        public string? RequestId { get; set; } = null!;
-    }
+        public long? OrderId { get; set; }
 
+        /// <summary>
+        /// Slot, který byl při prvním úspěšném pickup callbacku označen jako InTransit.
+        /// Díky tomu jsou opakované callbacky od Agiloxu idempotentní.
+        /// </summary>
+        public int? PickedSlotId { get; set; }
+
+        /// <summary>
+        /// Navigace na slot, který patří k tomuto převozu.
+        /// </summary>
+        public PalletSlot? PickedSlot { get; set; }
+
+        /// <summary>
+        /// Poslední status, který Agilox poslal v callbacku (AgiloxStatus).
+        /// </summary>
+        public string? LastAgiloxStatus { get; set; }
+
+        /// <summary>
+        /// Poslední akce, kterou Agilox nahlásil v callbacku (AgiloxAction).
+        /// </summary>
+        public string? LastAgiloxAction { get; set; }
+    }
 }

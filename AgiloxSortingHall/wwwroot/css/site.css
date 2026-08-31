@@ -1,132 +1,1231 @@
 ﻿/**********************************************
- * GLOBALNÍ NASTAVENÍ (minimální)
+ * GLOBÁLNÍ NASTAVENÍ A BAREVNÉ SCHÉMA
  **********************************************/
 
-/* Defaultní velikost fontu (ponechána) */
+/* Základní font – trochu větší kvůli tabletům */
 html {
     font-size: 16px;
-}
-
-/* Minimální výška stránky */
-html {
     position: relative;
     min-height: 100%;
+    scrollbar-gutter: stable;
 }
 
+/* Žádný sticky footer, čisté pozadí */
 body {
-    margin-bottom: 60px; /* Bootstrap footer offset – můžeš klidně smazat */
+    margin-bottom: 0;
+    background: var(--hall-bg);
+    color: #111827;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+
+
+/* Bootstrap container-fluid má default padding – vypneme ho,
+   ať nám nekroutí výpočty z 100vw */
+.container-fluid.hall-page {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* CSS proměnné – snadná změna barev na jednom místě */
+:root {
+    --hall-bg: #f4f5fb;
+    --column-bg: #ffffff;
+    --column-border: #dde0f0;
+    --slot-border: #b4c3dd;
+    --slot-empty-bg: #ffffff;
+    --slot-occupied-bg: #cfe4ff;
+    --slot-intransit-bg: #eaf1ff;
+    --slot-label-color: #1f2933;
+    --queue-text-color: #6b7280;
+    --header-text: #111827;
+    --article-text: #4b5563;
+    --accent-primary: #2563eb;
+    --accent-primary-soft: rgba(37, 99, 235, 0.12);
 }
 
 
 
 /**********************************************
- * LAYOUT STRÁNKY HALY (Skladník i Stůl)
+ * LAYOUT STRÁNKY HALY (Skladník & Stůl)
  **********************************************/
 
-/* Obal stránky – sloupce se musí roztáhnout na výšku okna */
+/* Kořenový kontejner stránky vizualizace */
 .hall-page {
-    min-height: 100vh;
+    /*min-height: 100vh;*/
     display: flex;
     flex-direction: column;
-    /* proměnné pro výpočet velikosti slotů */
-    --slot-count: 5;
-    --vertical-reserved: 320px;
-    --slot-size: calc((100vh - var(--vertical-reserved)) / var(--slot-count));
+    background: var(--hall-bg);
+    /* Proměnné:
+       - --slot-count        = počet pozic ve sloupci (nastaví Razor)
+       - --column-count      = počet sloupců / řad (nastaví Razor)
+       - --horizontal-padding= levý/pravý padding celé mřížky
+       - --column-gap        = mezera mezi sloupci
+    */
+    --slot-count: 3;
+    --column-count: 9;
+    --horizontal-padding: 32px;
+    --column-gap: 16px;
+    /* šířka jednoho SLOUPCE:
+       (šířka okna - paddingy - mezery) / počet sloupců
+       → tj. přesně se vejde do šířky obrazovky, bez overflow */
+    --column-width: min( 240px, calc( (100vw - 2 * var(--horizontal-padding)
+            - (var(--column-count) - 1) * var(--column-gap)) / var(--column-count) ) );
 }
 
-
-/**********************************************
- * MŘÍŽKA SLOUPCŮ
- **********************************************/
-
-/* Kontejner s jednotlivými sloupci */
+/* Kontejner všech sloupců (řad) */
 .hall-columns-container {
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    overflow-x: auto; /* scroll na mobilu */
-    gap: 16px;
-    flex: 1 1 auto; /* zabere zbytek výšky */
-    padding-bottom: 8px;
+    flex: 1 1 auto;
+    padding: 8px var(--horizontal-padding) 16px;
+    gap: var(--column-gap);
+    overflow-x: auto; /* na menších šířkách může být scroll */
+    scroll-snap-type: x mandatory;
 }
 
-/* Jeden sloupec */
+/* Jeden sloupec = jedna řada */
 .hall-column {
     display: flex;
     flex-direction: column;
-    flex: 0 0 120px; /* šířka na mobilu */
+    /* šířka sloupce přímo z proměnné – včetně paddingu+borderu */
+    flex: 0 0 var(--column-width);
+    max-width: var(--column-width);
+    background: var(--column-bg);
+    border-radius: 12px;
+    border: 1px solid var(--column-border);
+    padding: 8px 6px 10px;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+    scroll-snap-align: start;
 }
+
+/* Sloupec jako tlačítko (na stránce stolů) */
+.column-button {
+    border-radius: 10px !important;
+    border-width: 0 !important;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    text-align: inherit;
+}
+
+    /* Lehký highlight při tapnutí / hoveru */
+    .column-button:hover,
+    .column-button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--accent-primary-soft);
+    }
+
+    /* Neaktivní / disabled stav – např. pokud už má stůl pending call */
+    .column-button.disabled {
+        opacity: 0.6;
+        pointer-events: none;
+    }
+
 
 
 /**********************************************
- * SLOTY (palety)
+ * HLAVIČKY ŘAD A POPISKY
  **********************************************/
 
-/* Jeden čtvereček slotu – velikost se vypočte z výšky obrazovky */
-.slot {
-    width: var(--slot-size);
-    height: var(--slot-size);
-    border: 3px solid;
-    box-sizing: border-box;
+/* Název řady (Řada1, Řada2, ...) */
+.header-cell {
+    font-weight: 600;
+    color: var(--header-text);
+    font-size: 0.95rem;
+    text-align: center;
+    margin-bottom: 6px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-    /* Stav prázdného slotu */
+/* Název artiklu pod sloupcem */
+.article-label {
+    color: var(--article-text);
+    font-size: 0.78rem;
+    text-align: center;
+    margin-top: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Text „fronta: Stůl 1, Stůl 2…“ */
+.queue-label {
+    min-height: 1.3rem;
+    color: var(--queue-text-color);
+    font-size: 0.72rem;
+    text-align: center;
+    margin-top: 3px;
+    padding: 0 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+/**********************************************
+ * SLOTY (PALETY) – VZHLED A STAVY
+ **********************************************/
+
+/* Slot = ČTVEREC:
+   - šířka 100 % sloupce (uvnitř paddingu)
+   - aspect-ratio: 1/1 → prohlížeč dopočítá výšku = šířka
+   - funguje na libovolném poměru stran (16:9, 16:10, 4:3, …) */
+.slot {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1.25 / 1;
+    border: 2px solid var(--slot-border);
+    box-sizing: border-box;
+    border-radius: 10px;
+    overflow: hidden;
+    background-clip: padding-box;
+    position: relative;
+}
+
+    /* Stav prázdné pozice */
     .slot.empty {
-        background-color: #fff;
+        background-color: var(--slot-empty-bg);
     }
 
     /* Běžně obsazená paleta */
     .slot.occupied {
-        background-color: #d0e8ff;
+        background-color: var(--slot-occupied-bg);
     }
 
-    /* Slot v převozu (Agilox order běží) */
+    /* Paleta, na kterou běží Agilox order */
     .slot.in-transit {
+        background-color: var(--slot-intransit-bg);
         border-style: dashed;
     }
 
-/* Wrapper – zarovná slot na střed sloupce */
+/* Wrapper kvůli centrování slotu ve sloupci */
 .slot-wrapper {
     display: flex;
     justify-content: center;
 }
 
 
+
 /**********************************************
- * POPISKY, HLAVIČKY A FRONTY
+ * TEXT UVNITŘ SLOTŮ (NÁZEV STOLU)
  **********************************************/
 
-/* Text uvnitř slotu – název stolu */
+/* Label uvnitř slotu, typicky „Stůl 1“ nebo „▶ Stůl 1“ */
 .slot-label {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--slot-label-color);
     padding: 4px;
     width: 100%;
     height: 100%;
+    line-height: 1.1;
+    overflow: hidden;
 }
 
-/* Text „fronta: Stůl X, …“ – malý mezní prostor */
-.queue-label {
-    min-height: 1.2rem;
-}
 
 
 /**********************************************
- * RESPONZIVITA – PC layout
+ * STAV „ČEKACÍ“ OBRAZOVKY PRO STŮL
  **********************************************/
 
-/* Na PC roztáhnout vizualizaci do šířky */
-@media (min-width: 992px) {
-    .hall-columns-container {
-        overflow-x: visible; /* žádný horizontální scroll */
-        justify-content: space-evenly;
+.hall-wait {
+    min-height: calc(100vh - 80px);
+    padding: 16px;
+}
+
+    /* Na tabletu ať je text přehledný a tlačítka velká */
+    .hall-wait h2 {
+        font-size: 1.4rem;
     }
 
+    .hall-wait p.fs-4 {
+        font-size: 1.2rem !important;
+    }
+
+    .hall-wait .btn-lg {
+        font-size: 1rem;
+    }
+
+
+
+/**********************************************
+ * RESPONSIVITA – TABLET / PC
+ **********************************************/
+
+/* 768–1199px – tablet na výšku / menší šířka.
+   Sloupce necháme scrollovat zleva doprava. */
+@media (max-width: 1199.98px) {
+    .hall-columns-container {
+        justify-content: flex-start;
+    }
+}
+
+/* 1200px a víc – 11" tablet na šířku / PC.
+   Sloupce centrované, žádný horizontální scroll navíc (pokud se vejdou). */
+@media (min-width: 1200px) {
+    .hall-columns-container {
+        justify-content: center;
+        overflow-x: visible;
+    }
+}
+
+/* VŠECHNO do 1599px = bez container okrajů */
+@media (max-width: 1599.98px) {
+    .container,
+    .container-fluid {
+        max-width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+
+
+/* Tlačítka artiklů na stránce stolu */
+.stul-article-btn {
+    border-radius: 10px;
+    padding: 10px 12px;
+    transition: box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+    .stul-article-btn:hover,
+    .stul-article-btn:focus-visible {
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+        transform: translateY(-1px);
+    }
+
+
+/* DARK MODE – přemapování barev přes CSS proměnné
+   Aplikuje se, když je na <html> třída .dark-mode */
+:root.dark-mode {
+    /* Pozadí celé aplikace - neutrální tmavý grafit (žádná modrá) */
+    --hall-bg: #141414;
+    /* Panely / card pozadí */
+    --column-bg: #1b1b1d;
+    --column-border: #2c2c2e;
+    /* Sloty */
+    --slot-border: #3a3a3c;
+    --slot-empty-bg: #1a1a1c;
+    --slot-occupied-bg: #234029; /* teplá tmavě zelená */
+    --slot-intransit-bg: #2f2a20; /* teplejší neutrální odstín */
+    /* Texty */
+    --slot-label-color: #e5e4e1; /* teplá světlá */
+    --queue-text-color: #b5b3b0;
+    --header-text: #f3f2ef;
+    --article-text: #d3d2cf;
+    --bs-info: #ffd610;
+    --bs-info-rgb: 255, 214, 16;
+    --bs-primary: #ffd610;
+    --bs-primary-rgb: 255, 214, 16;
+    --accent-primary: #ffd610;
+    --accent-primary-soft: rgba(255, 214, 16, 0.25);
+}
+
+    /* V dark režimu zesvětlíme běžný text */
+    :root.dark-mode body {
+        color: #e9e8e6; /* teplá bílá */
+    }
+
+
+/* Jen v dark režimu – pokud máš na <html> class="dark-mode" */
+html.dark-mode .btn-outline-info {
+    color: #ffd610 !important;
+    border-color: #ffd610 !important;
+}
+
+    html.dark-mode .btn-outline-info:hover,
+    html.dark-mode .btn-outline-info:focus {
+        background-color: #ffd610 !important;
+        color: #000 !important; /* aby text zůstal čitelný */
+    }
+
+html.dark-mode .icon-white i.bi {
+    color: #ffffff !important;
+}
+
+/* Žlutý primary pro přepínač Řady / Artikly v dark mode */
+html.dark-mode .btn-primary {
+    background-color: #ffd610 !important;
+    border-color: #ffd610 !important;
+    color: #000 !important; /* text uvnitř tlačítka */
+}
+
+    html.dark-mode .btn-primary:hover,
+    html.dark-mode .btn-primary:focus {
+        background-color: #ffe34a !important;
+        border-color: #ffe34a !important;
+    }
+
+/* Outline varianta (Artikly / neaktivní tlačítko apod.) */
+html.dark-mode .btn-outline-primary {
+    color: #ffd610 !important;
+    border-color: #ffd610 !important;
+}
+
+    html.dark-mode .btn-outline-primary:hover,
+    html.dark-mode .btn-outline-primary:focus {
+        background-color: #ffd610 !important;
+        color: #000 !important;
+        border-color: #ffd610 !important;
+    }
+
+
+/* Globální override Bootstrap success pro dark UI */
+.btn-success,
+.bg-success,
+.border-success,
+.text-success {
+    color: #28d17c !important; /* základní barva textu */
+}
+
+.btn-success {
+    background-color: #28d17c !important;
+    border-color: #1fb86a !important;
+}
+
+    .btn-success:hover {
+        background-color: #2fe389 !important;
+        border-color: #23c576 !important;
+    }
+
+    .btn-success:active {
+        background-color: #21b96c !important;
+        border-color: #1da45f !important;
+    }
+
+    /* Ikona success */
+    .text-success i,
+    .btn-success i {
+        color: #000 !important;
+    }
+
+/* Alert Success */
+.alert-success {
+    background-color: rgba(40, 209, 124, 0.15) !important;
+    border-color: #28d17c !important;
+    color: #28d17c !important;
+}
+
+/* Badge Success */
+.badge.bg-success {
+    background-color: #28d17c !important;
+    color: #000 !important;
+}
+
+/* zelené tlačítko odvézt */
+.btn-done {
+    background-color: #28d17c; /* jasná zelená */
+    border: 1px solid #1fb86a;
+    color: #000; /* černý text kvůli kontrastu */
+    font-weight: 600;
+    border-radius: 8px;
+    transition: 0.15s ease-in-out;
+}
+
+    .btn-done:hover {
+        background-color: #2fe389; /* světlejší */
+        border-color: #23c576;
+        color: #000;
+    }
+
+    .btn-done:active {
+        background-color: #21b96c;
+        border-color: #1da45f;
+    }
+
+    .btn-done i {
+        color: #000 !important;
+    }
+
+.table-selection-page {
+    padding-left: 34px !important;
+    padding-right: 34px !important;
+}
+
+.table-selection-page h1 {
+    font-size: 2.45rem;
+    line-height: 1.05;
+}
+
+.table-selection-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 16px;
+}
+
+.table-selection-card {
+    min-height: 184px;
+    padding: 20px 24px;
+    cursor: pointer;
+}
+
+.table-selection-card .fs-2 {
+    font-size: 1.38rem !important;
+    line-height: 1.15;
+}
+
+.table-selection-card .fs-5 {
+    font-size: 1.05rem !important;
+}
+
+.table-selection-card .bi.fs-2 {
+    font-size: 1.6rem !important;
+}
+
+.table-selection-card .bi.fs-4 {
+    font-size: 1.25rem !important;
+}
+
+.table-selection-card .d-flex.align-items-center.mb-4 {
+    margin-bottom: 1rem !important;
+}
+
+.table-selection-card .table-card-left > .mt-auto {
+    margin-top: 0 !important;
+}
+
+.table-card-layout {
+    display: flex;
+    align-items: stretch;
+    gap: 18px;
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
+}
+
+.table-card-left {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-card-actions {
+    width: 174px;
+    flex: 0 0 174px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-self: stretch;
+}
+
+    /* Oba formuláře v pravém sloupci budou 50/50 na výšku */
+    .table-card-actions form {
+        flex: 1 1 0;
+        min-height: 0;
+        display: flex;
+    }
+
+/* Obě tlačítka vyplní celý svůj formulář */
+.table-card-action-button {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Už není potřeba speciální flex jen pro spodní tlačítko,
+   ale nechávám třídy kompatibilní s aktuálním cshtml */
+.table-card-empty-form {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+}
+
+.table-card-empty-button {
+    height: 100%;
+    min-height: 0;
+}
+
+/* Žluté tlačítko */
+.btn-empty-palette {
+    background-color: #ffd610;
+    border: 1px solid #d9b800;
+    color: #000;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: 0.15s ease-in-out;
+    font-size: 1rem;
+}
+
+    .btn-empty-palette:hover {
+        background-color: #ffe34a;
+        border-color: #e6c400;
+        color: #000;
+    }
+
+    .btn-empty-palette:active {
+        background-color: #e6c100;
+        border-color: #c9aa00;
+        color: #000;
+    }
+
+    .btn-empty-palette i {
+        color: #000 !important;
+    }
+
+@media (max-width: 900px) {
+    .table-selection-page {
+        padding-left: 18px !important;
+        padding-right: 18px !important;
+    }
+
+    .table-selection-page > .d-flex:first-child {
+        align-items: flex-start !important;
+        flex-direction: column;
+        gap: 14px;
+    }
+
+    .table-selection-page h1 {
+        font-size: 2rem;
+    }
+
+    .table-selection-toolbar {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .table-selection-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 520px) {
+    .table-selection-card {
+        padding: 16px;
+    }
+
+    .table-card-layout {
+        flex-direction: column;
+    }
+
+    .table-card-actions {
+        width: 100%;
+        flex-basis: auto;
+    }
+
+    .table-card-action-button {
+        min-height: 58px;
+    }
+}
+
+.article-input {
+    font-size: 0.9rem; /* menší text */
+    padding: 8px 10px; /* menší výška než form-control-lg */
+}
+
+.article-save-btn {
+    padding: 10px 12px; /* rozumná výška tlačítka */
+}
+
+.article-label {
+    min-height: 1.2em; /* výška jednoho řádku textu */
+}
+
+/* Zákaz scrollu jen pro vybrané stránky */
+body.no-scroll {
+    overflow: hidden;
+    height: 100vh;
+}
+
+.hall-page > .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+/* =====================================================
+   Dropdown filtr – CTA jako "Obrazovka skladníka"
+   ===================================================== */
+
+/* === ZÁKLAD TLAČÍTKA (stejný box model jako btn-lg) === */
+.hall-filter .dropdown-toggle.btn-lg {
+    display: inline-flex;
+    align-items: center;
+    /* Bootstrap btn-lg – PIXEL PERFECT */
+    padding: 0.75rem 1.25rem;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    font-weight: 600;
+    color: #ffffff !important;
+    background-color: transparent !important;
+    border: 1px solid #ffffff !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* caret zarovnání */
+.hall-filter .dropdown-toggle::after {
+    margin-left: 8px;
+    transform: translateY(1px);
+}
+
+/* === HOVER (zavřený stav) === */
+.hall-filter .dropdown-toggle.btn-lg:hover {
+    background-color: rgba(255, 255, 255, 0.12) !important;
+    color: #ffffff !important;
+}
+
+/* === FOCUS / ACTIVE – jen když dropdown NENÍ otevřený (žádná bootstrap modrá) === */
+.hall-filter .dropdown-toggle.btn-lg:focus:not([aria-expanded="true"]),
+.hall-filter .dropdown-toggle.btn-lg:focus-visible:not([aria-expanded="true"]),
+.hall-filter .dropdown-toggle.btn-lg:active:not([aria-expanded="true"]) {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* === OTEVŘENÝ DROPDOWN – žlutý + černý text + tmavý border === */
+.hall-filter .dropdown-toggle.btn-lg[aria-expanded="true"] {
+    background-color: #ffd610 !important;
+    color: #000 !important;
+    border-color: #141414 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+
+
+/* =====================================================
+   Dropdown MENU – tmavé, bílé písmo
+   ===================================================== */
+
+.hall-filter .dropdown-menu {
+    background-color: #1b1b1d;
+    border: 1px solid #2c2c2e;
+    border-radius: 12px;
+    padding: 6px;
+    margin-top: 8px;
+    min-width: 220px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+}
+
+.hall-filter .dropdown-divider {
+    border-top-color: #2c2c2e;
+}
+
+/* položky */
+.hall-filter .dropdown-item {
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-weight: 500;
+}
+
+    /* hover položky */
+    .hall-filter .dropdown-item:hover,
+    .hall-filter .dropdown-item:focus {
+        background-color: rgba(255, 214, 16, 0.18);
+        color: #ffffff;
+    }
+
+    /* aktivní položka */
+    .hall-filter .dropdown-item.active,
+    .hall-filter .dropdown-item:active {
+        background-color: #ffd610;
+        color: #000;
+    }
+
+/* KIOSK: 960x600 – žádný scroll, vše se musí vejít */
+@media (max-width: 1000px) and (max-height: 700px) {
+
+    /* stránka na 100% výšky kiosku */
+    .hall-page {
+        height: 100vh;
+    }
+
+    /* sloupce ať zaberou zbytek výšky pod hlavičkou */
+    .hall-columns-container {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow: hidden; /* žádné scrollování */
+        align-items: stretch;
+    }
+
+    /* každý sloupec přes celou výšku a jako flex */
     .hall-column {
-        flex: 1 1 0; /* rovnoměrné rozložení */
-        max-width: 180px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 6px 6px 8px; /* trochu utáhnout */
+    }
+
+        /* form (input + tlačítka) vždy dole */
+        .hall-column form {
+            margin-top: auto; /* ✅ připíchne dolů */
+        }
+
+    /* Sloty: zrušit čtverce podle šířky a nechat je "vmáčknout" */
+    .slot {
+        aspect-ratio: auto !important; /* pryč čtverec */
+        height: auto !important;
+        min-height: 26px; /* aby to nezmizelo úplně */
+    }
+
+    /* Tohle je ten hlavní trik: sloty se rozdělí o dostupnou výšku.
+     Funguje, pokud jsou sloty ve sloupci poskládané pod sebou (což máš). */
+    .slot-wrapper {
+        flex: 1 1 0;
+        min-height: 0;
+    }
+
+        /* uvnitř wrapperu roztáhnout samotný slot na výšku wrapperu */
+        .slot-wrapper .slot {
+            height: 100% !important;
+            width: 100% !important;
+        }
+
+    /* Zmenšit ovládání, ať to žere míň místa */
+    .article-input {
+        padding: 6px 8px;
+        font-size: 0.85rem;
+        margin-top: 6px !important;
+    }
+
+    .article-save-btn {
+        padding: 6px 8px;
+        margin-top: 6px !important;
+    }
+
+    .btn-success.btn-lg,
+    .btn-outline-danger.btn-lg {
+        padding: 10px 10px;
+        font-size: 1rem;
+    }
+}
+
+/**********************************************
+ * SETTINGS PAGE – sjednocený design
+ **********************************************/
+
+.settings-page {
+    padding: 16px 32px 24px;
+}
+
+/* Hlavička stránky – podobně jako ostatní */
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.settings-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--bs-primary);
+}
+
+/* Panel (card) ve stylu hall-column */
+.settings-panel {
+    background: var(--column-bg);
+    border: 1px solid var(--column-border);
+    border-radius: 14px;
+    box-shadow: 0 1px 6px rgba(15, 23, 42, 0.08);
+    overflow: hidden;
+    margin-bottom: 14px;
+}
+
+.settings-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--column-border);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.settings-panel-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    color: var(--header-text);
+}
+
+.settings-panel-body {
+    padding: 14px;
+}
+
+/* Radio “strategie” jako příjemné tile */
+.strategy-list {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+}
+
+.strategy-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 12px;
+    border: 1px solid var(--column-border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+    width: 100%;
+}
+
+    .strategy-item input {
+        margin-top: 4px;
+        cursor: pointer;
+    }
+
+    .strategy-item:hover {
+        box-shadow: 0 0 0 2px var(--accent-primary-soft);
+    }
+
+    .strategy-item small {
+        color: var(--queue-text-color);
+    }
+
+    .strategy-item:has(input:checked) {
+        border-color: var(--accent-primary);
+        background: var(--accent-primary-soft);
+    }
+
+/* Řádky nastavení řad (místo tabulky) */
+.rows-list {
+    display: grid;
+    gap: 10px;
+}
+
+.row-item {
+    display: grid;
+    grid-template-columns: 64px 1fr 140px 170px 200px;
+    gap: 10px;
+    align-items: center;
+    padding: 10px 10px;
+    border: 1px solid var(--column-border);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+    .row-item .row-id {
+        font-weight: 700;
+        color: var(--header-text);
+        text-align: center;
+        opacity: 0.9;
+    }
+
+    .row-item .form-control {
+        border-radius: 10px;
+    }
+
+    .row-item .form-control-color {
+        width: 56px;
+        height: 40px;
+        padding: 4px;
+        border-radius: 10px;
+        border: 1px solid var(--column-border);
+        background: transparent;
+    }
+
+.row-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+}
+
+.btn-soft {
+    border-radius: 10px;
+}
+
+/* Jemnější danger tlačítko (ať nekřičí) */
+.btn-danger-outline {
+    border: 1px solid rgba(239, 68, 68, 0.75);
+    color: rgb(239, 68, 68);
+    background: transparent;
+    border-radius: 10px;
+}
+
+    .btn-danger-outline:hover {
+        background: rgba(239, 68, 68, 0.12);
+    }
+
+/* Horní “+” tlačítko jako square CTA */
+.btn-add-row {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 10px;
+}
+
+/* Mobil / tablet: rozpad mřížky */
+@media (max-width: 992px) {
+    .row-item {
+        grid-template-columns: 64px 1fr;
+        grid-template-areas:
+            "id name"
+            "id color"
+            "id cap"
+            "id actions";
+    }
+
+        .row-item .row-id {
+            grid-area: id;
+        }
+
+        .row-item .row-name {
+            grid-area: name;
+        }
+
+        .row-item .row-color {
+            grid-area: color;
+        }
+
+        .row-item .row-cap {
+            grid-area: cap;
+        }
+
+        .row-item .row-actions {
+            grid-area: actions;
+            justify-content: flex-start;
+        }
+}
+
+/* Globální success barva jen pro text/border/badge… */
+.bg-success,
+.border-success,
+.text-success {
+    color: #28d17c !important;
+}
+
+/* Success tlačítko má mít čitelný text */
+.btn-success {
+    background-color: #28d17c !important;
+    border-color: #1fb86a !important;
+    color: #000 !important;
+}
+
+    .btn-success i {
+        color: #000 !important;
+    }
+
+/* Skryj defaultní radio kolečko */
+.strategy-radio {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Ať label funguje jako karta */
+.strategy-card {
+    position: relative;
+    display: flex;
+    gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+    /* Hover efekt */
+    .strategy-card:hover {
+        border-color: rgba(255,255,255,0.25);
+        background: rgba(255,255,255,0.03);
+    }
+
+/* Zvýraznění vybrané strategie */
+.strategy-radio:checked + .strategy-content {
+    /* content necháme, ale zvýraznění uděláme přes celý card */
+}
+
+.strategy-radio:checked ~ .strategy-content,
+.strategy-radio:checked + .strategy-content {
+    /* fallback, kdyby někdo měnil strukturu */
+}
+
+.strategy-radio:checked {
+    /* nic */
+}
+
+
+    /* Volitelně: tučnější popisek při výběru */
+    .strategy-card:has(.strategy-radio:checked) .fw-bold {
+        text-decoration: none;
+    }
+
+
+/* =========================
+   ADMIN LAYOUT
+   ========================= */
+
+.admin-shell {
+    padding: 16px 32px 24px;
+}
+
+.admin-container {
+    width: 100%;
+}
+
+.admin-page-header {
+    margin-top: 14px;
+    margin-bottom: 14px;
+}
+
+.admin-page-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.admin-page-title h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--header-text);
+}
+
+.admin-page-subtitle {
+    margin-top: 4px;
+    color: var(--queue-text-color);
+    font-size: 1rem;
+}
+
+.admin-content {
+    min-width: 0;
+}
+
+    /* sjednocení karet/panelů i pro bootstrap cards v adminu */
+    .admin-card,
+    .admin-content .card,
+    .admin-content .settings-panel {
+        background: var(--column-bg);
+        border: 1px solid var(--column-border);
+        border-radius: 14px;
+        box-shadow: 0 1px 6px rgba(15, 23, 42, 0.08);
+    }
+
+    /* bootstrap card v adminu ať barevně sedí */
+    .admin-content .card {
+        color: var(--header-text);
+    }
+
+        .admin-content .card .card-body {
+            background: transparent;
+        }
+
+    .admin-content .text-muted,
+    .admin-content .text-secondary {
+        color: var(--queue-text-color) !important;
+    }
+
+@media (max-width: 992px) {
+    .admin-shell {
+        padding: 16px 16px 24px;
+    }
+
+    .admin-page-title h1 {
+        font-size: 1.6rem;
+    }
+}
+
+/* =========================
+   LOGIN / AUTH PAGE
+   ========================= */
+
+.auth-shell {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 460px;
+    background: var(--column-bg);
+    border: 1px solid var(--column-border);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
+    padding: 28px 24px;
+}
+
+.auth-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.auth-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--accent-primary-soft);
+    color: var(--accent-primary);
+    font-size: 1.4rem;
+    flex: 0 0 auto;
+}
+
+.auth-title {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--header-text);
+}
+
+.auth-subtitle {
+    margin-top: 4px;
+    color: var(--queue-text-color);
+    font-size: 0.98rem;
+}
+
+.auth-label {
+    color: var(--header-text);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.auth-input {
+    background-color: #1b1b1d;
+    border-color: #2c2c2e;
+    color: #f3f2ef;
+    min-height: 48px;
+    border-radius: 12px;
+}
+
+    .auth-input:focus {
+        background-color: #1b1b1d;
+        border-color: rgba(255, 214, 16, 0.7);
+        box-shadow: 0 0 0 0.2rem rgba(255, 214, 16, 0.15);
+        color: #f3f2ef;
+    }
+
+    .auth-input::placeholder {
+        color: #8e8c89;
+    }
+
+@media (max-width: 576px) {
+    .auth-card {
+        padding: 22px 18px;
+        border-radius: 16px;
+    }
+
+    .auth-title {
+        font-size: 1.6rem;
     }
 }

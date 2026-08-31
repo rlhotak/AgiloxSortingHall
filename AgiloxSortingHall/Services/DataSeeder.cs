@@ -1,13 +1,30 @@
 ﻿using AgiloxSortingHall.Data;
+using AgiloxSortingHall.Enums;
 using AgiloxSortingHall.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 namespace AgiloxSortingHall.Services
 {
+    /// <summary>
+    /// Konfigurace jedné řady na hale.
+    /// </summary>
     public record HallRowConfig(string Name, string ColorHex, int Capacity);
-    public record WorkTableConfig(string Name);
 
+    /// <summary>
+    /// Konfigurace jednoho pracovního stolu (logický stůl viditelný v UI),
+    /// včetně Agilox vstupní/výstupní stanice a kategorie pro filtr.
+    /// </summary>
+    public record WorkTableConfig(
+        string DisplayName,
+        string InputStationName,
+        string OutputStationName,
+        int Category
+    );
+
+    /// <summary>
+    /// Konfigurace haly (řady + stoly).
+    /// </summary>
     public class HallConfig
     {
         public List<HallRowConfig> Rows { get; set; } = new();
@@ -15,8 +32,7 @@ namespace AgiloxSortingHall.Services
     }
 
     /// <summary>
-    /// Třída umožňující inicializaci databáze
-    /// podle konfigurace haly (řady a stoly).
+    /// Třída umožňující inicializaci databáze podle konfigurace haly (řady a stoly).
     /// </summary>
     public class DataSeeder
     {
@@ -24,8 +40,7 @@ namespace AgiloxSortingHall.Services
         private readonly HallConfig _config;
 
         /// <summary>
-        /// Inicializuje DataSeeder injektovaným AppDbContextem
-        /// a konfiguračními daty haly.
+        /// Inicializuje DataSeeder injektovaným AppDbContextem a konfiguračními daty haly.
         /// </summary>
         public DataSeeder(AppDbContext db, IOptions<HallConfig> config)
         {
@@ -35,13 +50,13 @@ namespace AgiloxSortingHall.Services
 
         /// <summary>
         /// Naplní databázi výchozími daty:
-        /// - vytvoří řady dle konfigurace, včetně všech slotů
-        /// - vytvoří pracovní stoly dle konfigurace
+        /// - vytvoří/aktualizuje řady dle konfigurace, včetně slotů
+        /// - vytvoří/aktualizuje pracovní stoly dle konfigurace
         /// Metoda je idempotentní (opakované spuštění nic nezdvojí).
         /// </summary>
         public async Task SeedAsync()
         {
-            // Seed řad
+            // Řady (HallRows)
             foreach (var rowCfg in _config.Rows)
             {
                 var row = await _db.HallRows
@@ -57,7 +72,6 @@ namespace AgiloxSortingHall.Services
                         Capacity = rowCfg.Capacity
                     };
 
-                    // Vytvoříme pozice 0..Capacity-1
                     for (int i = 0; i < rowCfg.Capacity; i++)
                     {
                         row.Slots.Add(new PalletSlot
@@ -69,14 +83,60 @@ namespace AgiloxSortingHall.Services
 
                     _db.HallRows.Add(row);
                 }
+                else
+                {
+                    row.ColorHex = rowCfg.ColorHex;
+                    row.Capacity = rowCfg.Capacity;
+
+                    // Odstranit sloty navíc
+                    var extraSlots = row.Slots
+                        .Where(s => s.PositionIndex >= rowCfg.Capacity)
+                        .ToList();
+
+                    if (extraSlots.Any())
+                        _db.PalletSlots.RemoveRange(extraSlots);
+
+                    // Přidat chybějící sloty
+                    for (int i = 0; i < rowCfg.Capacity; i++)
+                    {
+                        if (!row.Slots.Any(s => s.PositionIndex == i))
+                        {
+                            row.Slots.Add(new PalletSlot
+                            {
+                                PositionIndex = i,
+                                State = PalletState.Empty
+                            });
+                        }
+                    }
+                }
             }
 
-            // Seed stolů
+            await _db.SaveChangesAsync();
+
+            // Stoly (WorkTables) – logické stoly pro UI, s Agilox vstup/výstup stanicí
             foreach (var tblCfg in _config.Tables)
             {
-                if (!await _db.WorkTables.AnyAsync(t => t.Name == tblCfg.Name))
+                // Unikátní klíč pro idempotenci: podle vstupní stanice (musí být unikátní)
+                var table = await _db.WorkTables
+                    .FirstOrDefaultAsync(t => t.InputStationName == tblCfg.InputStationName);
+
+                if (table == null)
                 {
-                    _db.WorkTables.Add(new WorkTable { Name = tblCfg.Name });
+                    _db.WorkTables.Add(new WorkTable
+                    {
+                        DisplayName = tblCfg.DisplayName,
+                        InputStationName = tblCfg.InputStationName,
+                        OutputStationName = tblCfg.OutputStationName,
+                        Category = (WorkTableCategory)tblCfg.Category
+                    });
+                }
+                else
+                {
+                    // aktualizace existujícího záznamu (sync s configem)
+                    table.DisplayName = tblCfg.DisplayName;
+                    table.InputStationName = tblCfg.InputStationName;
+                    table.OutputStationName = tblCfg.OutputStationName;
+                    table.Category = (WorkTableCategory)tblCfg.Category;
                 }
             }
 

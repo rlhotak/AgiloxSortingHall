@@ -1,6 +1,7 @@
-﻿@using AgiloxSortingHall.Models
+﻿@using AgiloxSortingHall.Enums
+@using AgiloxSortingHall.Models
 @using AgiloxSortingHall.ViewModels
-@model HallColumnVisualModel
+@model HallColumnViewModel
 
 @{
     var row = Model.Row;
@@ -14,7 +15,7 @@
 
     // z pending callů vyfiltrujeme ty, které už mají spuštěný workflow na Agiloxu
     var dispatchedCalls = rowQueue
-        .Where(c => !string.IsNullOrEmpty(c.RequestId))
+        .Where(c => c.OrderId != null)
         .OrderBy(c => c.RequestedAt)
         .ToList();
 
@@ -30,6 +31,16 @@
     // sloty, které jsou "v převozu" = mají na sobě běžící order na Agiloxu
     var inTransitSlotIds = new HashSet<int>();
 
+    string GetTableLabel(RowCall call)
+    {
+        if (!string.IsNullOrWhiteSpace(call.WorkTable?.InputStationName))
+        {
+            return call.WorkTable.InputStationName;
+        }
+
+        return call.WorkTable?.DisplayName ?? $"Stůl {call.WorkTableId}";
+    }
+
     // mapujeme jen tolik slotů, kolik máme jak obsazených slotů, tak dispatched callů
     var mapCount = Math.Min(occupiedSlots.Count, dispatchedCalls.Count);
 
@@ -38,7 +49,7 @@
         var slot = occupiedSlots[i];
         var call = dispatchedCalls[i];
 
-        var tableName = call.WorkTable?.Name ?? $"Stůl {call.WorkTableId}";
+        var tableName = GetTableLabel(call);
 
         // zvýraznění aktuálního stolu (na stránce konkrétního stolu)
         if (Model.CurrentTableId.HasValue && call.WorkTableId == Model.CurrentTableId.Value)
@@ -52,11 +63,25 @@
 
     // zbytek fronty = pending cally, které zatím nemají přidělenou paletu
     var remainingQueue = rowQueue.Skip(mapCount).ToList();
+
+    // text pro tooltip – seznam stolů, které ještě čekají
+    string? remainingQueueTooltip = remainingQueue.Any()
+        ? string.Join(", ",
+            remainingQueue.Select(GetTableLabel))
+        : null;
 }
 
 <!-- Název řady -->
-<div class="header-cell text-center fw-bold mb-2">
+<div class="header-cell text-center fw-bold mb-1">
     @row.Name
+    @if (remainingQueue.Any())
+    {
+        <span class="badge bg-warning text-dark"
+              data-bs-toggle="tooltip"
+              title="@remainingQueueTooltip">
+            @remainingQueue.Count
+        </span>
+    }
 </div>
 
 <!-- Sloty -->
@@ -67,19 +92,24 @@
     var cls = "slot empty";
     string? label = null;
 
-    if (slot != null && slot.State == PalletState.Occupied)
+    if (slot != null)
     {
-        // defaultně obsazená paleta
-        cls = "slot occupied";
-
-        // pokud je tahle paleta přiřazená běžícímu orderu, zobrazíme ji jako "in-transit"
-        if (inTransitSlotIds.Contains(slot.Id))
+        switch (slot.State)
         {
-            cls = "slot in-transit";
-        }
+            case PalletState.Empty:
+                cls = "slot empty";
+                break;
 
-        // popisek stolu, pokud je namapovaný
-        labelBySlotId.TryGetValue(slot.Id, out label);
+            case PalletState.Occupied:
+                cls = "slot occupied";
+                labelBySlotId.TryGetValue(slot.Id, out label);
+                break;
+
+            case PalletState.InTransit:
+                cls = "slot in-transit";
+                labelBySlotId.TryGetValue(slot.Id, out label);
+                break;
+        }
     }
 
     <div class="slot-wrapper mb-1">
@@ -95,16 +125,6 @@
 }
 
 <!-- Název artiklu řady -->
-<div class="article-label small text-muted text-center mt-1">
+<div class="article-label small text-light text-center mt-1">
     @row.Article
 </div>
-
-<!-- Zbytek fronty (ti, co čekají na paletu) -->
-@if (remainingQueue.Any())
-{
-    <div class="queue-label small text-muted text-center mt-1">
-        fronta (čekají na paletu):
-        @string.Join(", ",
-        remainingQueue.Select(c => c.WorkTable?.Name ?? $"Stůl {c.WorkTableId}"))
-</div>
-}
